@@ -1,23 +1,46 @@
 # etnoDB - Base de Dados Etnobotânica
 
-Sistema web para gerenciamento de dados etnobotânicos sobre a relação entre comunidades tradicionais e plantas, extraídos de artigos científicos.
+Sistema web para gerenciamento de **dados secundários** etnobotânicos sobre a relação entre comunidades tradicionais e plantas, extraídos de artigos científicos publicados.
+
+## O que é Etnobotânica?
+
+A etnobotânica é uma disciplina que investiga as interações e relações complexas entre as plantas e as pessoas ao longo do tempo e do espaço. Ela abrange o conhecimento tradicional e ocidental, incluindo os diversos usos (alimentares, medicinais, entre outros), a cosmovisão, os sistemas de gestão e classificação, e as línguas que as diferentes culturas mantêm em relação às plantas e aos seus ecossistemas terrestres e aquáticos associados. Em essência, busca compreender como as sociedades percebem, utilizam, manejam e atribuem significado cultural as plantas, atuando como uma ponte fundamental entre a biologia e as ciências humanas.
+
+> Prance, G.T. Ethnobotany, the science of survival: a declaration from Kaua'i. *Econ Bot* **61**, 1–2 (2007). https://doi.org/10.1007/BF02862367
 
 ## Sobre o Projeto
 
-O **etnoDB** é uma interface baseada na web para um banco de dados MongoDB que documenta o conhecimento tradicional sobre o uso de plantas por comunidades tradicionais brasileiras. Os dados são extraídos de publicações científicas que servem como evidências desta relação entre comunidades e plantas.
+O **etnoDB** é uma interface baseada na web para um banco de dados MongoDB que centraliza **dados secundários** sobre conhecimento tradicional de comunidades brasileiras em relação ao uso de plantas.
+
+### O que são Dados Secundários?
+
+**Dados secundários** são informações que já foram coletadas, publicadas e estão disponíveis em fontes existentes, como artigos científicos, livros, relatórios e outras publicações. Diferentemente dos dados primários (coletados diretamente pelo pesquisador através de entrevistas, observações ou experimentos), os dados secundários representam a compilação e sistematização de conhecimentos já documentados na literatura científica.
+
+No contexto do etnoDB:
+- **Fonte**: Artigos científicos publicados em periódicos revisados por pares
+- **Conteúdo**: Relações documentadas entre comunidades tradicionais e plantas (usos, nomes vernaculares, conhecimentos associados)
+- **Evidência**: Cada registro no banco de dados está vinculado à sua publicação científica original (referência bibliográfica completa com autores, ano, título, DOI)
+
+Essa abordagem permite:
+- Reunir conhecimento disperso em múltiplas publicações
+- Facilitar buscas e análises integradas de dados etnobotânicos
+- Preservar a rastreabilidade das informações até suas fontes originais
+- Respeitar os direitos autorais e a ética na pesquisa com comunidades tradicionais
 
 ## Arquitetura
 
 O projeto segue a arquitetura proposta em [etnoArquitetura](https://github.com/edalcin/etnoArquitetura), organizada em três contextos principais:
 
-### 1. **Aquisição** (Entrada de Dados)
-Interface para entrada de dados de múltiplas fontes, incluindo:
-- Extração de dados secundários de artigos científicos
-- Registro direto de dados primários com salvaguardas éticas
-- Padronização de dados através de padrões unificados
+### 1. **Aquisição** (Entrada de Dados Secundários)
+Interface dedicada à entrada de **dados secundários extraídos de artigos científicos publicados**.
 
 **Porta**: 3001
-**Funcionalidade**: Formulário hierárquico para entrada de referências → comunidades → plantas
+**Funcionalidade**: Formulário hierárquico para entrada de:
+- Referência bibliográfica completa (título, autores, ano, resumo, DOI)
+- Comunidades tradicionais documentadas no artigo
+- Plantas e seus usos reportados para cada comunidade
+
+**Importante**: Cada registro está sempre vinculado à sua publicação científica original, garantindo rastreabilidade e respeito aos direitos autorais.
 
 ### 2. **Curadoria** (Edição e Validação)
 Interface especializada para controle de qualidade com acesso restrito a pesquisadores e representantes das comunidades.

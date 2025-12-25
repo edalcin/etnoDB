@@ -1,0 +1,77 @@
+/**
+ * Curation Context Styles
+ * Table layout for reference list and status management
+ */
+
+/* Filter Buttons */
+.filter-btn {
+  @apply px-4 py-2 rounded-md text-sm font-medium border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 transition-colors;
+}
+
+.filter-btn-active {
+  @apply bg-forest-600 text-white border-forest-600 hover:bg-forest-700;
+}
+
+/* Table Styles */
+table {
+  @apply min-w-full bg-white;
+}
+
+table thead th {
+  @apply sticky top-0 z-10 bg-gray-50;
+}
+
+table tbody tr {
+  @apply border-b border-gray-200;
+}
+
+table tbody tr:last-child {
+  @apply border-b-0;
+}
+
+/* Status Badge Animations */
+.status-badge {
+  @apply transition-all duration-200;
+}
+
+/* Responsive Table */
+@media (max-width: 768px) {
+  .overflow-x-auto {
+    @apply -mx-4;
+  }
+
+  table {
+    @apply text-sm;
+  }
+
+  table th,
+  table td {
+    @apply px-2 py-2;
+  }
+}
+
+/* Status Section Styling */
+.card.border-l-4 {
+  border-left-width: 4px;
+}
+
+/* Radio Button Custom Styling */
+input[type="radio"]:checked {
+  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
+}
+
+/* Form Method Override Support */
+form[action*="_method"] {
+  position: relative;
+}
+
+/* Loading State */
+.htmx-request table {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Empty State */
+.text-center.py-12 {
+  @apply flex flex-col items-center justify-center;
+}

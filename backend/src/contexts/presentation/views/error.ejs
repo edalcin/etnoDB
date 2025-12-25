@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Erro - etnoDB</title>
+  <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body class="min-h-screen bg-gray-50">
+
+  <!-- Header -->
+  <header class="bg-red-700 text-white shadow-lg">
+    <div class="container mx-auto px-4 py-4">
+      <h1 class="text-2xl font-bold">Erro no Sistema</h1>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-12">
+    <div class="max-w-2xl mx-auto">
+
+      <!-- Error Message -->
+      <div class="bg-red-50 border border-red-200 rounded-lg p-8">
+        <div class="mb-4">
+          <svg class="mx-auto h-16 w-16 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+
+        <h2 class="text-2xl font-bold text-red-800 mb-4 text-center">
+          Ocorreu um Erro
+        </h2>
+
+        <div class="bg-white border border-red-200 rounded p-4 mb-6">
+          <p class="text-red-700"><%= message %></p>
+
+          <% if (error && error.stack) { %>
+            <details class="mt-4">
+              <summary class="text-sm text-gray-600 cursor-pointer">Detalhes técnicos</summary>
+              <pre class="mt-2 text-xs text-gray-700 overflow-auto"><%= error.stack %></pre>
+            </details>
+          <% } %>
+        </div>
+
+        <div class="text-center">
+          <a href="/" class="btn btn-primary">
+            Voltar para Busca
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-6 mt-auto">
+    <div class="container mx-auto px-4 text-center">
+      <p class="text-sm">etnoDB - Base de Dados Etnobotânica</p>
+    </div>
+  </footer>
+
+</body>
+</html>

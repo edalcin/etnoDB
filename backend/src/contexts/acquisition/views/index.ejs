@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= pageTitle %> - etnoDB</title>
+  <link rel="stylesheet" href="/styles/main.css">
+  <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+  <script src="https://unpkg.com/alpinejs@3.13.3" defer></script>
+</head>
+<body class="min-h-screen bg-gray-50" x-data="{ communityCount: 1, plantCounts: [1] }">
+
+  <!-- Header -->
+  <header class="bg-forest-700 text-white shadow-lg">
+    <div class="container mx-auto px-4 py-4">
+      <h1 class="text-2xl font-bold"><%= contextName %></h1>
+      <p class="text-forest-100 text-sm"><%= contextDescription %></p>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-8">
+
+    <!-- Error Messages -->
+    <% if (errors && errors.length > 0) { %>
+      <div class="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
+        <h3 class="text-red-800 font-semibold mb-2">Erros de validação:</h3>
+        <ul class="list-disc list-inside text-red-700">
+          <% errors.forEach(error => { %>
+            <li><%= error %></li>
+          <% }); %>
+        </ul>
+      </div>
+    <% } %>
+
+    <!-- Reference Form -->
+    <form method="POST" action="/reference/submit" class="space-y-8">
+
+      <!-- Reference Metadata Section -->
+      <section class="card">
+        <h2 class="text-xl font-semibold text-gray-900 mb-4">Dados da Referência</h2>
+
+        <div class="space-y-4">
+          <!-- Title -->
+          <div>
+            <label class="form-label" for="titulo">
+              Título <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              id="titulo"
+              name="titulo"
+              class="form-input"
+              value="<%= formData?.titulo || '' %>"
+              required
+              maxlength="500"
+            >
+          </div>
+
+          <!-- Authors (comma-separated) -->
+          <div>
+            <label class="form-label" for="autores">
+              Autores <span class="text-red-500">*</span>
+              <span class="text-gray-500 text-xs">(separados por vírgula)</span>
+            </label>
+            <input
+              type="text"
+              id="autores"
+              name="autores"
+              class="form-input"
+              value="<%= formData?.autores || '' %>"
+              placeholder="Silva, J., Santos, M., Oliveira, P."
+              required
+            >
+          </div>
+
+          <!-- Year -->
+          <div>
+            <label class="form-label" for="ano">
+              Ano de Publicação <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="number"
+              id="ano"
+              name="ano"
+              class="form-input"
+              value="<%= formData?.ano || '' %>"
+              min="1500"
+              max="2100"
+              required
+            >
+          </div>
+
+          <!-- Abstract -->
+          <div>
+            <label class="form-label" for="resumo">
+              Resumo
+            </label>
+            <textarea
+              id="resumo"
+              name="resumo"
+              class="form-input"
+              rows="4"
+              maxlength="5000"
+            ><%= formData?.resumo || '' %></textarea>
+          </div>
+
+          <!-- DOI -->
+          <div>
+            <label class="form-label" for="DOI">
+              DOI
+            </label>
+            <input
+              type="text"
+              id="DOI"
+              name="DOI"
+              class="form-input"
+              value="<%= formData?.DOI || '' %>"
+              placeholder="10.1000/xyz123"
+              maxlength="100"
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- Communities Section -->
+      <section>
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-xl font-semibold text-gray-900">Comunidades</h2>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            @click="communityCount++; plantCounts.push(1)"
+            hx-post="/community/add"
+            hx-target="#communities-container"
+            hx-swap="beforeend"
+            hx-vals='js:{"communityIndex": communityCount}'
+          >
+            + Adicionar Comunidade
+          </button>
+        </div>
+
+        <div id="communities-container" class="space-y-6">
+          <!-- Initial community form -->
+          <%- include('partials/community-form', { communityIndex: 0, community: null }) %>
+        </div>
+      </section>
+
+      <!-- Submit Button -->
+      <div class="flex justify-end gap-4">
+        <a href="/" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-primary">
+          Salvar Referência
+        </button>
+      </div>
+
+    </form>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-6 mt-12">
+    <div class="container mx-auto px-4 text-center">
+      <p class="text-sm">etnoDB - Base de Dados Etnobotânica</p>
+      <% if (showNavigation) { %>
+        <div class="mt-2 space-x-4">
+          <a href="http://localhost:3001" class="text-forest-300 hover:text-forest-200">Entrada de Dados</a>
+          <a href="http://localhost:3002" class="text-forest-300 hover:text-forest-200">Curadoria</a>
+          <a href="http://localhost:3003" class="text-forest-300 hover:text-forest-200">Busca Pública</a>
+        </div>
+      <% } %>
+    </div>
+  </footer>
+
+</body>
+</html>

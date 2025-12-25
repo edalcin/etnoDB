@@ -1,0 +1,118 @@
+<nav class="pagination-nav" aria-label="Paginação">
+  <div class="pagination-info">
+    <p class="text-sm text-gray-700">
+      Página <strong><%= pagination.page %></strong> de <strong><%= pagination.totalPages %></strong>
+    </p>
+  </div>
+
+  <div class="pagination-controls">
+    <!-- Previous Page Button -->
+    <% if (pagination.hasPrev) { %>
+      <a
+        href="/?<%= buildQueryString(filters, pagination.page - 1, pagination.limit) %>"
+        class="pagination-btn"
+      >
+        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        <span class="ml-1">Anterior</span>
+      </a>
+    <% } else { %>
+      <span class="pagination-btn pagination-btn-disabled">
+        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        <span class="ml-1">Anterior</span>
+      </span>
+    <% } %>
+
+    <!-- Page Numbers (show current and 2 on each side) -->
+    <div class="flex gap-1">
+      <%
+        const startPage = Math.max(1, pagination.page - 2);
+        const endPage = Math.min(pagination.totalPages, pagination.page + 2);
+
+        // Show first page if not in range
+        if (startPage > 1) {
+      %>
+        <a
+          href="/?<%= buildQueryString(filters, 1, pagination.limit) %>"
+          class="pagination-number"
+        >
+          1
+        </a>
+        <% if (startPage > 2) { %>
+          <span class="pagination-ellipsis">...</span>
+        <% } %>
+      <% } %>
+
+      <!-- Page number buttons -->
+      <% for (let i = startPage; i <= endPage; i++) { %>
+        <% if (i === pagination.page) { %>
+          <span class="pagination-number pagination-number-active">
+            <%= i %>
+          </span>
+        <% } else { %>
+          <a
+            href="/?<%= buildQueryString(filters, i, pagination.limit) %>"
+            class="pagination-number"
+          >
+            <%= i %>
+          </a>
+        <% } %>
+      <% } %>
+
+      <!-- Show last page if not in range -->
+      <% if (endPage < pagination.totalPages) { %>
+        <% if (endPage < pagination.totalPages - 1) { %>
+          <span class="pagination-ellipsis">...</span>
+        <% } %>
+        <a
+          href="/?<%= buildQueryString(filters, pagination.totalPages, pagination.limit) %>"
+          class="pagination-number"
+        >
+          <%= pagination.totalPages %>
+        </a>
+      <% } %>
+    </div>
+
+    <!-- Next Page Button -->
+    <% if (pagination.hasNext) { %>
+      <a
+        href="/?<%= buildQueryString(filters, pagination.page + 1, pagination.limit) %>"
+        class="pagination-btn"
+      >
+        <span class="mr-1">Próxima</span>
+        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </a>
+    <% } else { %>
+      <span class="pagination-btn pagination-btn-disabled">
+        <span class="mr-1">Próxima</span>
+        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </span>
+    <% } %>
+  </div>
+</nav>
+
+<%
+/**
+ * Helper function to build query string preserving filters
+ */
+function buildQueryString(filters, page, limit) {
+  const params = new URLSearchParams();
+
+  if (filters.comunidade) params.append('comunidade', filters.comunidade);
+  if (filters.planta) params.append('planta', filters.planta);
+  if (filters.estado) params.append('estado', filters.estado);
+  if (filters.municipio) params.append('municipio', filters.municipio);
+
+  params.append('page', page);
+  params.append('limit', limit);
+
+  return params.toString();
+}
+%>

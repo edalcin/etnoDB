@@ -1,0 +1,81 @@
+<section class="card mb-8 border-l-4 <%= reference.status === 'approved' ? 'border-green-500' : reference.status === 'rejected' ? 'border-red-500' : 'border-yellow-500' %>">
+  <div class="flex items-start justify-between mb-4">
+    <div>
+      <h2 class="text-xl font-semibold text-gray-900 mb-2">Status da Referência</h2>
+      <p class="text-sm text-gray-600">
+        ID: <code class="font-mono text-xs bg-gray-100 px-2 py-1 rounded"><%= reference._id %></code>
+      </p>
+    </div>
+    <div>
+      <%- include('status-badge', { status: reference.status }) %>
+    </div>
+  </div>
+
+  <!-- Status Change Form -->
+  <form method="POST" action="/reference/status/<%= reference._id %>" class="mt-4">
+    <div class="bg-gray-50 rounded-lg p-4">
+      <label class="form-label mb-3">Alterar Status:</label>
+
+      <div class="space-y-2">
+        <!-- Pending -->
+        <label class="flex items-center p-3 border rounded cursor-pointer hover:bg-white transition-colors <%= reference.status === 'pending' ? 'bg-white border-yellow-500 ring-1 ring-yellow-500' : 'border-gray-200' %>">
+          <input
+            type="radio"
+            name="status"
+            value="pending"
+            <%= reference.status === 'pending' ? 'checked' : '' %>
+            class="h-4 w-4 text-yellow-600 focus:ring-yellow-500"
+          >
+          <span class="ml-3 flex items-center gap-2">
+            <span class="font-medium text-gray-900">Pendente</span>
+            <span class="text-xs text-gray-600">(aguardando revisão)</span>
+          </span>
+        </label>
+
+        <!-- Approved -->
+        <label class="flex items-center p-3 border rounded cursor-pointer hover:bg-white transition-colors <%= reference.status === 'approved' ? 'bg-white border-green-500 ring-1 ring-green-500' : 'border-gray-200' %>">
+          <input
+            type="radio"
+            name="status"
+            value="approved"
+            <%= reference.status === 'approved' ? 'checked' : '' %>
+            class="h-4 w-4 text-green-600 focus:ring-green-500"
+          >
+          <span class="ml-3 flex items-center gap-2">
+            <span class="font-medium text-gray-900">Aprovado</span>
+            <span class="text-xs text-gray-600">(visível na busca pública)</span>
+          </span>
+        </label>
+
+        <!-- Rejected -->
+        <label class="flex items-center p-3 border rounded cursor-pointer hover:bg-white transition-colors <%= reference.status === 'rejected' ? 'bg-white border-red-500 ring-1 ring-red-500' : 'border-gray-200' %>">
+          <input
+            type="radio"
+            name="status"
+            value="rejected"
+            <%= reference.status === 'rejected' ? 'checked' : '' %>
+            class="h-4 w-4 text-red-600 focus:ring-red-500"
+          >
+          <span class="ml-3 flex items-center gap-2">
+            <span class="font-medium text-gray-900">Rejeitado</span>
+            <span class="text-xs text-gray-600">(não será exibido)</span>
+          </span>
+        </label>
+      </div>
+
+      <div class="mt-4">
+        <button type="submit" class="btn btn-primary">
+          Atualizar Status
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Metadata -->
+  <div class="mt-4 pt-4 border-t border-gray-200 text-xs text-gray-600 space-y-1">
+    <p><strong>Criado em:</strong> <%= new Date(reference.createdAt).toLocaleString('pt-BR') %></p>
+    <% if (reference.updatedAt && reference.updatedAt.toString() !== reference.createdAt.toString()) { %>
+      <p><strong>Atualizado em:</strong> <%= new Date(reference.updatedAt).toLocaleString('pt-BR') %></p>
+    <% } %>
+  </div>
+</section>

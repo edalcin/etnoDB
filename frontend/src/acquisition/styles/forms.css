@@ -1,0 +1,61 @@
+/**
+ * Acquisition Context Styles
+ * Custom styles for nested data entry forms
+ */
+
+/* Nested form animations */
+.htmx-swapping {
+  opacity: 0;
+  transition: opacity 200ms ease-out;
+}
+
+.htmx-added {
+  opacity: 0;
+}
+
+.htmx-added.htmx-settling {
+  opacity: 1;
+  transition: opacity 200ms ease-in;
+}
+
+/* Form section spacing */
+.card + .card {
+  margin-top: 1.5rem;
+}
+
+/* Button size variant */
+.btn-sm {
+  @apply px-3 py-1.5 text-sm;
+}
+
+/* Improved nested form borders */
+.border-forest-500 {
+  border-left-color: #16a34a;
+}
+
+/* Plant form compact layout */
+.bg-gray-50.p-4 {
+  background-color: #f9fafb;
+}
+
+/* Required field indicator */
+.text-red-500 {
+  color: #ef4444;
+}
+
+/* Form focus states */
+.form-input:focus {
+  outline: none;
+  ring: 2px;
+  ring-color: #16a34a;
+  border-color: #16a34a;
+}
+
+/* Loading states for HTMX requests */
+.htmx-request .htmx-indicator {
+  display: inline-block;
+}
+
+.htmx-indicator {
+  display: none;
+}

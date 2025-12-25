@@ -1,0 +1,62 @@
+# Dependencies
+node_modules/
+
+# Git
+.git/
+.gitignore
+
+# Tests
+tests/
+backend/tests/
+frontend/tests/
+*.test.js
+*.spec.js
+coverage/
+
+# Documentation
+docs/
+*.md
+README.md
+LICENSE.md
+
+# Specifications
+specs/
+.specify/
+
+# Development files
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+.cache/
+
+# Development configs
+nodemon.json
+.eslintrc.json
+.eslintignore
+.prettierrc
+.prettierignore
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+
+# Claude files
+CLAUDE.md
+.claude/

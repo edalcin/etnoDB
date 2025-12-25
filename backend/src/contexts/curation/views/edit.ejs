@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= pageTitle %> - etnoDB</title>
+  <link rel="stylesheet" href="/styles/main.css">
+  <link rel="stylesheet" href="/styles/curation/list.css">
+  <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+  <script src="https://unpkg.com/alpinejs@3.13.3" defer></script>
+</head>
+<body class="min-h-screen bg-gray-50" x-data="{ communityCount: <%= reference.comunidades.length %>, plantCounts: <%= JSON.stringify(reference.comunidades.map(c => c.plantas.length)) %> }">
+
+  <!-- Header -->
+  <header class="bg-forest-700 text-white shadow-lg">
+    <div class="container mx-auto px-4 py-4">
+      <h1 class="text-2xl font-bold"><%= contextName %></h1>
+      <p class="text-forest-100 text-sm"><%= contextDescription %></p>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-8">
+
+    <!-- Breadcrumb -->
+    <nav class="mb-6 text-sm">
+      <a href="/" class="text-forest-600 hover:text-forest-700">← Voltar para lista</a>
+    </nav>
+
+    <!-- Error Messages -->
+    <% if (errors && errors.length > 0) { %>
+      <div class="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
+        <h3 class="text-red-800 font-semibold mb-2">Erros de validação:</h3>
+        <ul class="list-disc list-inside text-red-700">
+          <% errors.forEach(error => { %>
+            <li><%= error %></li>
+          <% }); %>
+        </ul>
+      </div>
+    <% } %>
+
+    <!-- Status Section -->
+    <%- include('partials/status-section', { reference }) %>
+
+    <!-- Reference Edit Form -->
+    <form method="POST" action="/reference/update/<%= reference._id %>?_method=PUT" class="space-y-8">
+      <input type="hidden" name="_method" value="PUT">
+
+      <!-- Reference Metadata Section -->
+      <section class="card">
+        <h2 class="text-xl font-semibold text-gray-900 mb-4">Dados da Referência</h2>
+
+        <div class="space-y-4">
+          <!-- Title -->
+          <div>
+            <label class="form-label" for="titulo">
+              Título <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              id="titulo"
+              name="titulo"
+              class="form-input"
+              value="<%= reference.titulo %>"
+              required
+              maxlength="500"
+            >
+          </div>
+
+          <!-- Authors -->
+          <div>
+            <label class="form-label" for="autores">
+              Autores <span class="text-red-500">*</span>
+              <span class="text-gray-500 text-xs">(separados por vírgula)</span>
+            </label>
+            <input
+              type="text"
+              id="autores"
+              name="autores"
+              class="form-input"
+              value="<%= reference.autores.join(', ') %>"
+              required
+            >
+          </div>
+
+          <!-- Year -->
+          <div>
+            <label class="form-label" for="ano">
+              Ano de Publicação <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="number"
+              id="ano"
+              name="ano"
+              class="form-input"
+              value="<%= reference.ano %>"
+              min="1500"
+              max="2100"
+              required
+            >
+          </div>
+
+          <!-- Abstract -->
+          <div>
+            <label class="form-label" for="resumo">
+              Resumo
+            </label>
+            <textarea
+              id="resumo"
+              name="resumo"
+              class="form-input"
+              rows="4"
+              maxlength="5000"
+            ><%= reference.resumo || '' %></textarea>
+          </div>
+
+          <!-- DOI -->
+          <div>
+            <label class="form-label" for="DOI">
+              DOI
+            </label>
+            <input
+              type="text"
+              id="DOI"
+              name="DOI"
+              class="form-input"
+              value="<%= reference.DOI || '' %>"
+              maxlength="100"
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- Communities Section -->
+      <section>
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-xl font-semibold text-gray-900">Comunidades</h2>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            @click="communityCount++; plantCounts.push(1)"
+            hx-post="/reference/<%= reference._id %>/community/add"
+            hx-target="#communities-container"
+            hx-swap="beforeend"
+            hx-vals='js:{"communityIndex": communityCount}'
+          >
+            + Adicionar Comunidade
+          </button>
+        </div>
+
+        <div id="communities-container" class="space-y-6">
+          <!-- Existing communities -->
+          <% reference.comunidades.forEach((comunidade, idx) => { %>
+            <%- include('partials/community-form', { communityIndex: idx, community: comunidade }) %>
+          <% }); %>
+        </div>
+      </section>
+
+      <!-- Submit Buttons -->
+      <div class="flex justify-end gap-4">
+        <a href="/" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-primary">
+          Salvar Alterações
+        </button>
+      </div>
+
+    </form>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-6 mt-12">
+    <div class="container mx-auto px-4 text-center">
+      <p class="text-sm">etnoDB - Base de Dados Etnobotânica</p>
+    </div>
+  </footer>
+
+  <!-- Method override support for PUT requests -->
+  <script>
+    // Handle _method hidden field for PUT requests
+    document.querySelector('form').addEventListener('submit', function(e) {
+      const method = this.querySelector('[name="_method"]');
+      if (method && method.value === 'PUT') {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+        const action = this.getAttribute('action').replace('?_method=PUT', '');
+
+        fetch(action, {
+          method: 'PUT',
+          body: new URLSearchParams(formData)
+        }).then(response => {
+          if (response.redirected) {
+            window.location.href = response.url;
+          } else {
+            return response.text().then(html => {
+              document.open();
+              document.write(html);
+              document.close();
+            });
+          }
+        });
+      }
+    });
+  </script>
+
+</body>
+</html>

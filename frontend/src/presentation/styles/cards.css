@@ -1,0 +1,126 @@
+/**
+ * Presentation Context Styles
+ * Card-based layout for search results with responsive grid
+ */
+
+/* Results Grid - Responsive breakpoints */
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+  .results-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .results-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1920px) {
+  .results-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Result Card */
+.result-card {
+  @apply bg-white rounded-lg shadow-md p-5 hover:shadow-lg transition-shadow duration-200;
+  border: 1px solid #e5e7eb;
+}
+
+.result-card:hover {
+  border-color: #16a34a;
+}
+
+/* Text Truncation */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Pagination Styles */
+.pagination-nav {
+  @apply flex flex-col sm:flex-row items-center justify-between gap-4 mt-8 pt-6 border-t border-gray-200;
+}
+
+.pagination-info {
+  @apply text-sm text-gray-700;
+}
+
+.pagination-controls {
+  @apply flex items-center gap-2;
+}
+
+.pagination-btn {
+  @apply flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors;
+}
+
+.pagination-btn-disabled {
+  @apply opacity-50 cursor-not-allowed pointer-events-none;
+}
+
+.pagination-number {
+  @apply flex items-center justify-center w-10 h-10 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors;
+}
+
+.pagination-number-active {
+  @apply bg-forest-600 text-white border-forest-600 hover:bg-forest-700;
+}
+
+.pagination-ellipsis {
+  @apply flex items-center justify-center w-10 h-10 text-gray-500;
+}
+
+/* Community/Plant Sections within Cards */
+.result-card .bg-gray-50 {
+  background-color: #f9fafb;
+}
+
+/* Responsive text sizing */
+@media (max-width: 640px) {
+  .result-card {
+    @apply p-4;
+  }
+
+  .result-card h3 {
+    @apply text-base;
+  }
+
+  .pagination-nav {
+    @apply flex-col gap-3;
+  }
+
+  .pagination-controls {
+    @apply flex-wrap justify-center;
+  }
+}
+
+/* Loading State (for future HTMX integration) */
+.htmx-request .results-grid {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Empty State Styling */
+.empty-state-icon {
+  @apply mx-auto h-24 w-24 text-gray-400;
+}
+
+/* Search Filter Highlights */
+.form-input:focus-within {
+  @apply ring-2 ring-forest-500 border-forest-500;
+}
+
+/* Card hover effect for accessibility */
+.result-card:focus-within {
+  @apply ring-2 ring-forest-500 ring-offset-2;
+}

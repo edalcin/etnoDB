@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:7.0-jammy
+    container_name: etnodb-mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: etnodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - etnodb-network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/etnodb --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # etnoDB Application
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: etnodb-app
+    restart: unless-stopped
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    environment:
+      MONGO_URI: mongodb://mongodb:27017/etnodb
+      PORT_ACQUISITION: 3001
+      PORT_CURATION: 3002
+      PORT_PRESENTATION: 3003
+      NODE_ENV: development
+    ports:
+      - "3001:3001"  # Acquisition context
+      - "3002:3002"  # Curation context
+      - "3003:3003"  # Presentation context
+    volumes:
+      - ../backend:/app/backend
+      - ../frontend:/app/frontend
+      - /app/node_modules
+    networks:
+      - etnodb-network
+    command: npm run dev
+
+volumes:
+  mongodb_data:
+    driver: local
+
+networks:
+  etnodb-network:
+    driver: bridge

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title><%= typeof pageTitle !== 'undefined' ? pageTitle + ' - etnoDB' : 'etnoDB - Base de Dados Etnobotânica' %></title>
+
+  <!-- Tailwind CSS -->
+  <link rel="stylesheet" href="/styles/main.css">
+
+  <!-- HTMX -->
+  <script src="https://unpkg.com/htmx.org@1.9.10" defer></script>
+
+  <!-- Alpine.js -->
+  <script src="https://unpkg.com/alpinejs@3.13.3/dist/cdn.min.js" defer></script>
+
+  <!-- Context-specific styles -->
+  <% if (typeof contextStyles !== 'undefined') { %>
+    <link rel="stylesheet" href="/styles/<%= contextStyles %>.css">
+  <% } %>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-forest-700 text-white shadow-lg">
+    <div class="container mx-auto px-4 py-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-2xl font-bold text-white mb-0">
+            <%= typeof contextName !== 'undefined' ? contextName : 'etnoDB' %>
+          </h1>
+          <% if (typeof contextDescription !== 'undefined') { %>
+            <p class="text-forest-100 text-sm"><%= contextDescription %></p>
+          <% } %>
+        </div>
+
+        <!-- Navigation Links -->
+        <% if (typeof showNavigation !== 'undefined' && showNavigation) { %>
+          <nav class="flex gap-4">
+            <a href="http://localhost:3001" class="text-white hover:text-forest-200 transition-colors">Entrada de Dados</a>
+            <a href="http://localhost:3002" class="text-white hover:text-forest-200 transition-colors">Curadoria</a>
+            <a href="http://localhost:3003" class="text-white hover:text-forest-200 transition-colors">Busca Pública</a>
+          </nav>
+        <% } %>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-grow container mx-auto px-4 py-8">
+    <%- body %>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-6 mt-auto">
+    <div class="container mx-auto px-4 text-center">
+      <p class="text-sm">
+        etnoDB - Base de Dados Etnobotânica
+        <% if (typeof version !== 'undefined') { %>
+          | v<%= version %>
+        <% } %>
+      </p>
+      <p class="text-xs text-gray-400 mt-1">
+        Dados de comunidades tradicionais seguindo princípios C.A.R.E.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Context-specific scripts -->
+  <% if (typeof contextScripts !== 'undefined') { %>
+    <script src="/scripts/<%= contextScripts %>.js"></script>
+  <% } %>
+
+</body>
+</html>

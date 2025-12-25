@@ -1,0 +1,134 @@
+<div class="card border-l-4 border-forest-500" x-data="{ plantCount: 1 }">
+  <div class="flex items-center justify-between mb-4">
+    <h3 class="text-lg font-semibold text-gray-900">Comunidade <%= communityIndex + 1 %></h3>
+    <% if (communityIndex > 0) { %>
+      <button
+        type="button"
+        class="text-red-600 hover:text-red-800 text-sm"
+        @click="$el.closest('.card').remove()"
+      >
+        Remover Comunidade
+      </button>
+    <% } %>
+  </div>
+
+  <div class="space-y-4">
+    <!-- Community Name -->
+    <div>
+      <label class="form-label" for="comunidades[<%= communityIndex %>][nome]">
+        Nome da Comunidade <span class="text-red-500">*</span>
+      </label>
+      <input
+        type="text"
+        id="comunidades[<%= communityIndex %>][nome]"
+        name="comunidades[<%= communityIndex %>][nome]"
+        class="form-input"
+        value="<%= community?.nome || '' %>"
+        required
+        maxlength="200"
+      >
+    </div>
+
+    <!-- Municipality -->
+    <div>
+      <label class="form-label" for="comunidades[<%= communityIndex %>][municipio]">
+        Município <span class="text-red-500">*</span>
+      </label>
+      <input
+        type="text"
+        id="comunidades[<%= communityIndex %>][municipio]"
+        name="comunidades[<%= communityIndex %>][municipio]"
+        class="form-input"
+        value="<%= community?.municipio || '' %>"
+        required
+        maxlength="100"
+      >
+    </div>
+
+    <!-- State -->
+    <div>
+      <label class="form-label" for="comunidades[<%= communityIndex %>][estado]">
+        Estado <span class="text-red-500">*</span>
+      </label>
+      <input
+        type="text"
+        id="comunidades[<%= communityIndex %>][estado]"
+        name="comunidades[<%= communityIndex %>][estado]"
+        class="form-input"
+        value="<%= community?.estado || '' %>"
+        placeholder="São Paulo"
+        required
+        maxlength="100"
+      >
+    </div>
+
+    <!-- Location (optional) -->
+    <div>
+      <label class="form-label" for="comunidades[<%= communityIndex %>][local]">
+        Local (detalhamento)
+      </label>
+      <input
+        type="text"
+        id="comunidades[<%= communityIndex %>][local]"
+        name="comunidades[<%= communityIndex %>][local]"
+        class="form-input"
+        value="<%= community?.local || '' %>"
+        placeholder="limite sul do Núcleo Picinguaba"
+        maxlength="500"
+      >
+    </div>
+
+    <!-- Economic Activities (comma-separated) -->
+    <div>
+      <label class="form-label" for="comunidades[<%= communityIndex %>][atividadesEconomicas]">
+        Atividades Econômicas
+        <span class="text-gray-500 text-xs">(separadas por vírgula)</span>
+      </label>
+      <input
+        type="text"
+        id="comunidades[<%= communityIndex %>][atividadesEconomicas]"
+        name="comunidades[<%= communityIndex %>][atividadesEconomicas]"
+        class="form-input"
+        value="<%= community?.atividadesEconomicas?.join(', ') || '' %>"
+        placeholder="pesca, agricultura, turismo"
+      >
+    </div>
+
+    <!-- Observations -->
+    <div>
+      <label class="form-label" for="comunidades[<%= communityIndex %>][observacoes]">
+        Observações
+      </label>
+      <textarea
+        id="comunidades[<%= communityIndex %>][observacoes]"
+        name="comunidades[<%= communityIndex %>][observacoes]"
+        class="form-input"
+        rows="2"
+        maxlength="2000"
+      ><%= community?.observacoes || '' %></textarea>
+    </div>
+
+    <!-- Plants Section -->
+    <div class="border-t pt-4">
+      <div class="flex items-center justify-between mb-3">
+        <h4 class="text-md font-semibold text-gray-800">Plantas</h4>
+        <button
+          type="button"
+          class="btn btn-secondary btn-sm text-sm px-3 py-1"
+          @click="plantCount++"
+          hx-post="/plant/add/<%= communityIndex %>"
+          hx-target="#plants-container-<%= communityIndex %>"
+          hx-swap="beforeend"
+          hx-vals='js:{"plantIndex": plantCount}'
+        >
+          + Adicionar Planta
+        </button>
+      </div>
+
+      <div id="plants-container-<%= communityIndex %>" class="space-y-3">
+        <!-- Initial plant form -->
+        <%- include('plant-form', { communityIndex, plantIndex: 0, plant: null }) %>
+      </div>
+    </div>
+  </div>
+</div>

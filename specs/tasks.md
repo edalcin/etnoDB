@@ -27,18 +27,18 @@ Per plan.md, this project uses web application structure:
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create project directory structure per plan.md (backend/, frontend/, docker/, specs/)
-- [ ] T002 Initialize Node.js project with package.json in repository root
-- [ ] T003 [P] Install backend dependencies (express, mongodb, ejs) in package.json
-- [ ] T004 [P] Install frontend build tools (tailwindcss, postcss, autoprefixer) in package.json
-- [ ] T005 [P] Install development dependencies (nodemon, eslint, jest) in package.json
-- [ ] T006 [P] Create .gitignore file with node_modules, dist/, .env, coverage/
-- [ ] T007 [P] Create .env.example file with MONGO_URI, PORT_ACQUISITION, PORT_CURATION, PORT_PRESENTATION, NODE_ENV
-- [ ] T008 [P] Create ESLint configuration in .eslintrc.json with Node.js/ES6 rules
-- [ ] T009 [P] Configure Tailwind CSS in tailwind.config.js with content paths for EJS templates
-- [ ] T010 [P] Create PostCSS configuration in postcss.config.js for Tailwind processing
-- [ ] T011 [P] Create Jest configuration in jest.config.js for unit and integration tests
-- [ ] T012 [P] Create npm scripts in package.json (dev, build, test, lint)
+- [X] T001 Create project directory structure per plan.md (backend/, frontend/, docker/, specs/)
+- [X] T002 Initialize Node.js project with package.json in repository root
+- [X] T003 [P] Install backend dependencies (express, mongodb, ejs) in package.json
+- [X] T004 [P] Install frontend build tools (tailwindcss, postcss, autoprefixer) in package.json
+- [X] T005 [P] Install development dependencies (nodemon, eslint, jest) in package.json
+- [X] T006 [P] Create .gitignore file with node_modules, dist/, .env, coverage/
+- [X] T007 [P] Create .env.example file with MONGO_URI, PORT_ACQUISITION, PORT_CURATION, PORT_PRESENTATION, NODE_ENV
+- [X] T008 [P] Create ESLint configuration in .eslintrc.json with Node.js/ES6 rules
+- [X] T009 [P] Configure Tailwind CSS in tailwind.config.js with content paths for EJS templates
+- [X] T010 [P] Create PostCSS configuration in postcss.config.js for Tailwind processing
+- [X] T011 [P] Create Jest configuration in jest.config.js for unit and integration tests
+- [X] T012 [P] Create npm scripts in package.json (dev, build, test, lint)
 
 **Checkpoint**: Basic project structure ready
 
@@ -50,18 +50,18 @@ Per plan.md, this project uses web application structure:
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T013 Create MongoDB connection module in backend/src/shared/database.js
-- [ ] T014 [P] Create configuration loader in backend/src/shared/config.js (loads from .env)
-- [ ] T015 [P] Create logger utility in backend/src/shared/logger.js using debug package
-- [ ] T016 Create Reference data model in backend/src/models/Reference.js (schema definition, no ORM)
-- [ ] T017 Create validation service in backend/src/services/validation.js (validateReference function per data-model.md)
-- [ ] T018 Create database service in backend/src/services/database.js (CRUD operations for references)
-- [ ] T019 [P] Create base Tailwind CSS file in frontend/src/shared/styles/main.css with @tailwind directives
-- [ ] T020 [P] Create shared layout partial in backend/src/shared/views/layout.ejs (HTML head, HTMX/Alpine.js scripts)
-- [ ] T021 Create main server entry point in backend/src/server.js (initializes all three contexts on separate ports)
-- [ ] T022 Create MongoDB index creation script in backend/src/scripts/create-indexes.js (per data-model.md)
-- [ ] T023 [P] Create Docker Compose file in docker/docker-compose.yml (app + MongoDB services)
-- [ ] T024 [P] Create development Dockerfile in docker/Dockerfile (multi-stage build pattern)
+- [X] T013 Create MongoDB connection module in backend/src/shared/database.js
+- [X] T014 [P] Create configuration loader in backend/src/shared/config.js (loads from .env)
+- [X] T015 [P] Create logger utility in backend/src/shared/logger.js using debug package
+- [X] T016 Create Reference data model in backend/src/models/Reference.js (schema definition, no ORM)
+- [X] T017 Create validation service in backend/src/services/validation.js (validateReference function per data-model.md)
+- [X] T018 Create database service in backend/src/services/database.js (CRUD operations for references)
+- [X] T019 [P] Create base Tailwind CSS file in frontend/src/shared/styles/main.css with @tailwind directives
+- [X] T020 [P] Create shared layout partial in backend/src/shared/views/layout.ejs (HTML head, HTMX/Alpine.js scripts)
+- [X] T021 Create main server entry point in backend/src/server.js (initializes all three contexts on separate ports)
+- [X] T022 Create MongoDB index creation script in backend/src/scripts/create-indexes.js (per data-model.md)
+- [X] T023 [P] Create Docker Compose file in docker/docker-compose.yml (app + MongoDB services)
+- [X] T024 [P] Create development Dockerfile in docker/Dockerfile (multi-stage build pattern)
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -75,23 +75,23 @@ Per plan.md, this project uses web application structure:
 
 ### Implementation for User Story 1
 
-- [ ] T025 [P] [US1] Create Express app instance in backend/src/contexts/acquisition/app.js (port 3001 configuration)
-- [ ] T026 [P] [US1] Create routes file in backend/src/contexts/acquisition/routes.js (GET /, POST /reference/submit, POST /community/add, POST /plant/add/:communityIndex)
-- [ ] T027 [P] [US1] Create main acquisition form view in backend/src/contexts/acquisition/views/index.ejs (reference metadata fields)
-- [ ] T028 [P] [US1] Create community form fragment partial in backend/src/contexts/acquisition/views/partials/community-form.ejs (for HTMX rendering)
-- [ ] T029 [P] [US1] Create plant form fragment partial in backend/src/contexts/acquisition/views/partials/plant-form.ejs (for HTMX rendering)
-- [ ] T030 [P] [US1] Create success page view in backend/src/contexts/acquisition/views/success.ejs (confirmation message)
-- [ ] T031 [US1] Implement GET / route handler in routes.js (render empty form)
-- [ ] T032 [US1] Implement POST /community/add route handler in routes.js (return community form HTML fragment)
-- [ ] T033 [US1] Implement POST /plant/add/:communityIndex route handler in routes.js (return plant form HTML fragment)
-- [ ] T034 [US1] Implement POST /reference/submit route handler in routes.js (parse form data, validate, insert to MongoDB with status="pending")
-- [ ] T035 [US1] Add form data parsing logic to handle nested arrays (comunidades[0][plantas][0][nomeCientifico])
-- [ ] T036 [US1] Add comma-separated string to array conversion (e.g., "pesca,agricultura" → ["pesca","agricultura"])
-- [ ] T037 [US1] Add validation error handling and form re-rendering with errors in routes.js
-- [ ] T038 [P] [US1] Create acquisition-specific styles in frontend/src/acquisition/styles/forms.css (nested form styling)
-- [ ] T039 [US1] Add Alpine.js client-side interactions in acquisition views (remove community/plant buttons)
-- [ ] T040 [US1] Integrate database service insertReference function in submit route handler
-- [ ] T041 [US1] Add logging for acquisition operations (form submissions, validation errors)
+- [X] T025 [P] [US1] Create Express app instance in backend/src/contexts/acquisition/app.js (port 3001 configuration)
+- [X] T026 [P] [US1] Create routes file in backend/src/contexts/acquisition/routes.js (GET /, POST /reference/submit, POST /community/add, POST /plant/add/:communityIndex)
+- [X] T027 [P] [US1] Create main acquisition form view in backend/src/contexts/acquisition/views/index.ejs (reference metadata fields)
+- [X] T028 [P] [US1] Create community form fragment partial in backend/src/contexts/acquisition/views/partials/community-form.ejs (for HTMX rendering)
+- [X] T029 [P] [US1] Create plant form fragment partial in backend/src/contexts/acquisition/views/partials/plant-form.ejs (for HTMX rendering)
+- [X] T030 [P] [US1] Create success page view in backend/src/contexts/acquisition/views/success.ejs (confirmation message)
+- [X] T031 [US1] Implement GET / route handler in routes.js (render empty form)
+- [X] T032 [US1] Implement POST /community/add route handler in routes.js (return community form HTML fragment)
+- [X] T033 [US1] Implement POST /plant/add/:communityIndex route handler in routes.js (return plant form HTML fragment)
+- [X] T034 [US1] Implement POST /reference/submit route handler in routes.js (parse form data, validate, insert to MongoDB with status="pending")
+- [X] T035 [US1] Add form data parsing logic to handle nested arrays (comunidades[0][plantas][0][nomeCientifico])
+- [X] T036 [US1] Add comma-separated string to array conversion (e.g., "pesca,agricultura" → ["pesca","agricultura"])
+- [X] T037 [US1] Add validation error handling and form re-rendering with errors in routes.js
+- [X] T038 [P] [US1] Create acquisition-specific styles in frontend/src/acquisition/styles/forms.css (nested form styling)
+- [X] T039 [US1] Add Alpine.js client-side interactions in acquisition views (remove community/plant buttons)
+- [X] T040 [US1] Integrate database service insertReference function in submit route handler
+- [X] T041 [US1] Add logging for acquisition operations (form submissions, validation errors)
 
 **Checkpoint**: At this point, User Story 1 should be fully functional - researchers can enter complete references with nested communities and plants
 
@@ -105,28 +105,28 @@ Per plan.md, this project uses web application structure:
 
 ### Implementation for User Story 2
 
-- [ ] T042 [P] [US2] Create Express app instance in backend/src/contexts/presentation/app.js (port 3003 configuration)
-- [ ] T043 [P] [US2] Create routes file in backend/src/contexts/presentation/routes.js (GET / with query parameters)
-- [ ] T044 [P] [US2] Create search interface view in backend/src/contexts/presentation/views/index.ejs (search filters + results grid)
-- [ ] T045 [P] [US2] Create result card partial in backend/src/contexts/presentation/views/partials/result-card.ejs (card layout for reference display)
-- [ ] T046 [P] [US2] Create empty state partial in backend/src/contexts/presentation/views/partials/empty-state.ejs (no results message)
-- [ ] T047 [P] [US2] Create pagination partial in backend/src/contexts/presentation/views/partials/pagination.ejs (prev/next controls)
-- [ ] T048 [US2] Implement GET / route handler in routes.js (parse query params, build MongoDB query)
-- [ ] T049 [US2] Add search query builder function in routes.js (handles comunidade, planta, estado, municipio filters with regex)
-- [ ] T050 [US2] Add MongoDB query for community name filter (status="approved" AND comunidades.nome matches)
-- [ ] T051 [US2] Add MongoDB query for plant name filter ($or nomeCientifico/nomeVernacular matches)
-- [ ] T052 [US2] Add MongoDB query for state filter (exact match on comunidades.estado)
-- [ ] T053 [US2] Add MongoDB query for municipality filter (exact match on comunidades.municipio)
-- [ ] T054 [US2] Add combined filter logic (AND across all provided filters)
-- [ ] T055 [US2] Add pagination logic (skip/limit based on page and limit query params)
-- [ ] T056 [US2] Add result count calculation for pagination metadata
-- [ ] T057 [P] [US2] Create presentation-specific styles in frontend/src/presentation/styles/cards.css (card grid, responsive breakpoints)
-- [ ] T058 [US2] Add search result rendering with card layout in index.ejs
-- [ ] T059 [US2] Add empty state rendering when no results found
-- [ ] T060 [US2] Add pagination controls rendering with query string preservation
-- [ ] T061 [US2] Integrate database service searchReferences function in route handler
-- [ ] T062 [US2] Add input sanitization for search parameters (prevent NoSQL injection)
-- [ ] T063 [US2] Add logging for search operations (queries, result counts)
+- [X] T042 [P] [US2] Create Express app instance in backend/src/contexts/presentation/app.js (port 3003 configuration)
+- [X] T043 [P] [US2] Create routes file in backend/src/contexts/presentation/routes.js (GET / with query parameters)
+- [X] T044 [P] [US2] Create search interface view in backend/src/contexts/presentation/views/index.ejs (search filters + results grid)
+- [X] T045 [P] [US2] Create result card partial in backend/src/contexts/presentation/views/partials/result-card.ejs (card layout for reference display)
+- [X] T046 [P] [US2] Create empty state partial in backend/src/contexts/presentation/views/partials/empty-state.ejs (no results message)
+- [X] T047 [P] [US2] Create pagination partial in backend/src/contexts/presentation/views/partials/pagination.ejs (prev/next controls)
+- [X] T048 [US2] Implement GET / route handler in routes.js (parse query params, build MongoDB query)
+- [X] T049 [US2] Add search query builder function in routes.js (handles comunidade, planta, estado, municipio filters with regex)
+- [X] T050 [US2] Add MongoDB query for community name filter (status="approved" AND comunidades.nome matches)
+- [X] T051 [US2] Add MongoDB query for plant name filter ($or nomeCientifico/nomeVernacular matches)
+- [X] T052 [US2] Add MongoDB query for state filter (exact match on comunidades.estado)
+- [X] T053 [US2] Add MongoDB query for municipality filter (exact match on comunidades.municipio)
+- [X] T054 [US2] Add combined filter logic (AND across all provided filters)
+- [X] T055 [US2] Add pagination logic (skip/limit based on page and limit query params)
+- [X] T056 [US2] Add result count calculation for pagination metadata
+- [X] T057 [P] [US2] Create presentation-specific styles in frontend/src/presentation/styles/cards.css (card grid, responsive breakpoints)
+- [X] T058 [US2] Add search result rendering with card layout in index.ejs
+- [X] T059 [US2] Add empty state rendering when no results found
+- [X] T060 [US2] Add pagination controls rendering with query string preservation
+- [X] T061 [US2] Integrate database service searchReferences function in route handler
+- [X] T062 [US2] Add input sanitization for search parameters (prevent NoSQL injection)
+- [X] T063 [US2] Add logging for search operations (queries, result counts)
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently - data can be entered (US1) and searched (US2)
 
@@ -140,31 +140,31 @@ Per plan.md, this project uses web application structure:
 
 ### Implementation for User Story 3
 
-- [ ] T064 [P] [US3] Create Express app instance in backend/src/contexts/curation/app.js (port 3002 configuration)
-- [ ] T065 [P] [US3] Create routes file in backend/src/contexts/curation/routes.js (GET /, GET /reference/edit/:id, PUT /reference/update/:id, POST /reference/status/:id, POST /reference/:id/community/add, POST /reference/:id/plant/add/:communityIndex)
-- [ ] T066 [P] [US3] Create reference list view in backend/src/contexts/curation/views/index.ejs (table with title, authors, year, status, actions)
-- [ ] T067 [P] [US3] Create reference edit view in backend/src/contexts/curation/views/edit.ejs (pre-populated form with all fields editable)
-- [ ] T068 [P] [US3] Create status badge partial in backend/src/contexts/curation/views/partials/status-badge.ejs (color-coded status indicators)
-- [ ] T069 [P] [US3] Create status change section partial in backend/src/contexts/curation/views/partials/status-section.ejs (radio buttons for pending/approved/rejected)
-- [ ] T070 [US3] Implement GET / route handler in routes.js (list all references with optional status filter)
-- [ ] T071 [US3] Add status filter logic (query param ?status=pending/approved/rejected/all)
-- [ ] T072 [US3] Add pagination for reference list (default 50 per page)
-- [ ] T073 [US3] Add sorting by createdAt descending (most recent first)
-- [ ] T074 [US3] Implement GET /reference/edit/:id route handler in routes.js (fetch reference by ID, render edit form)
-- [ ] T075 [US3] Add 404 handling for non-existent reference IDs
-- [ ] T076 [US3] Implement PUT /reference/update/:id route handler in routes.js (parse form data, validate, update MongoDB document)
-- [ ] T077 [US3] Add updatedAt timestamp update on content changes
-- [ ] T078 [US3] Implement POST /reference/status/:id route handler in routes.js (update only status field)
-- [ ] T079 [US3] Add status value validation (must be pending/approved/rejected)
-- [ ] T080 [US3] Implement POST /reference/:id/community/add route handler (reuse acquisition community fragment)
-- [ ] T081 [US3] Implement POST /reference/:id/plant/add/:communityIndex route handler (reuse acquisition plant fragment)
-- [ ] T082 [P] [US3] Create curation-specific styles in frontend/src/curation/styles/list.css (table styling, status badges)
-- [ ] T083 [US3] Add success message display on query param ?success=true
-- [ ] T084 [US3] Add form pre-population logic in edit view (populate from fetched reference data)
-- [ ] T085 [US3] Integrate database service updateReference function in update route handler
-- [ ] T086 [US3] Integrate database service updateStatus function in status route handler
-- [ ] T087 [US3] Add logging for curation operations (edits, status changes)
-- [ ] T088 [US3] Test integration: approve reference in curation, verify it appears in presentation search
+- [X] T064 [P] [US3] Create Express app instance in backend/src/contexts/curation/app.js (port 3002 configuration)
+- [X] T065 [P] [US3] Create routes file in backend/src/contexts/curation/routes.js (GET /, GET /reference/edit/:id, PUT /reference/update/:id, POST /reference/status/:id, POST /reference/:id/community/add, POST /reference/:id/plant/add/:communityIndex)
+- [X] T066 [P] [US3] Create reference list view in backend/src/contexts/curation/views/index.ejs (table with title, authors, year, status, actions)
+- [X] T067 [P] [US3] Create reference edit view in backend/src/contexts/curation/views/edit.ejs (pre-populated form with all fields editable)
+- [X] T068 [P] [US3] Create status badge partial in backend/src/contexts/curation/views/partials/status-badge.ejs (color-coded status indicators)
+- [X] T069 [P] [US3] Create status change section partial in backend/src/contexts/curation/views/partials/status-section.ejs (radio buttons for pending/approved/rejected)
+- [X] T070 [US3] Implement GET / route handler in routes.js (list all references with optional status filter)
+- [X] T071 [US3] Add status filter logic (query param ?status=pending/approved/rejected/all)
+- [X] T072 [US3] Add pagination for reference list (default 50 per page)
+- [X] T073 [US3] Add sorting by createdAt descending (most recent first)
+- [X] T074 [US3] Implement GET /reference/edit/:id route handler in routes.js (fetch reference by ID, render edit form)
+- [X] T075 [US3] Add 404 handling for non-existent reference IDs
+- [X] T076 [US3] Implement PUT /reference/update/:id route handler in routes.js (parse form data, validate, update MongoDB document)
+- [X] T077 [US3] Add updatedAt timestamp update on content changes
+- [X] T078 [US3] Implement POST /reference/status/:id route handler in routes.js (update only status field)
+- [X] T079 [US3] Add status value validation (must be pending/approved/rejected)
+- [X] T080 [US3] Implement POST /reference/:id/community/add route handler (reuse acquisition community fragment)
+- [X] T081 [US3] Implement POST /reference/:id/plant/add/:communityIndex route handler (reuse acquisition plant fragment)
+- [X] T082 [P] [US3] Create curation-specific styles in frontend/src/curation/styles/list.css (table styling, status badges)
+- [X] T083 [US3] Add success message display on query param ?success=true
+- [X] T084 [US3] Add form pre-population logic in edit view (populate from fetched reference data)
+- [X] T085 [US3] Integrate database service updateReference function in update route handler
+- [X] T086 [US3] Integrate database service updateStatus function in status route handler
+- [X] T087 [US3] Add logging for curation operations (edits, status changes)
+- [X] T088 [US3] Test integration: approve reference in curation, verify it appears in presentation search
 
 **Checkpoint**: All user stories should now be independently functional - data entry (US1), public search (US2), and curation workflow (US3) all operational
 
@@ -174,28 +174,28 @@ Per plan.md, this project uses web application structure:
 
 **Purpose**: Improvements that affect multiple user stories and production readiness
 
-- [ ] T089 [P] Compile Tailwind CSS for production (purge unused styles) in frontend build script
-- [ ] T090 [P] Add error page template in backend/src/shared/views/error.ejs (500, 404 errors)
-- [ ] T091 [P] Add global error handling middleware in each context app.js (catch unhandled errors)
-- [ ] T092 [P] Add request logging middleware in each context app.js (log all HTTP requests)
-- [ ] T093 [P] Create production Dockerfile in docker/Dockerfile with multi-stage build (builder + production stages)
-- [ ] T094 [P] Add Docker health check in Dockerfile (curl to each port endpoint)
-- [ ] T095 [P] Create .dockerignore file (exclude node_modules, tests, docs, .git)
-- [ ] T096 [P] Add input sanitization utilities in backend/src/shared/utils/sanitize.js (HTML escaping, string length limits)
-- [ ] T097 [P] Add Portuguese language validation messages in validation.js (all error messages in Portuguese)
-- [ ] T098 Add MongoDB connection error handling and retry logic in database.js
-- [ ] T099 Add graceful shutdown handling in server.js (close MongoDB connection on SIGTERM)
-- [ ] T100 [P] Update README.md with project overview, architecture diagram, and quickstart link
-- [ ] T101 [P] Add responsive meta tags to layout.ejs (viewport, mobile optimization)
+- [X] T089 [P] Compile Tailwind CSS for production (purge unused styles) in frontend build script
+- [X] T090 [P] Add error page template in backend/src/shared/views/error.ejs (500, 404 errors)
+- [X] T091 [P] Add global error handling middleware in each context app.js (catch unhandled errors)
+- [X] T092 [P] Add request logging middleware in each context app.js (log all HTTP requests)
+- [X] T093 [P] Create production Dockerfile in docker/Dockerfile with multi-stage build (builder + production stages)
+- [X] T094 [P] Add Docker health check in Dockerfile (curl to each port endpoint)
+- [X] T095 [P] Create .dockerignore file (exclude node_modules, tests, docs, .git)
+- [X] T096 [P] Add input sanitization utilities in backend/src/shared/utils/sanitize.js (HTML escaping, string length limits)
+- [X] T097 [P] Add Portuguese language validation messages in validation.js (all error messages in Portuguese)
+- [X] T098 Add MongoDB connection error handling and retry logic in database.js
+- [X] T099 Add graceful shutdown handling in server.js (close MongoDB connection on SIGTERM)
+- [X] T100 [P] Update README.md with project overview, architecture diagram, and quickstart link
+- [X] T101 [P] Add responsive meta tags to layout.ejs (viewport, mobile optimization)
 - [ ] T102 [P] Add favicon and app icons in frontend/src/shared/assets/
-- [ ] T103 [P] Optimize MongoDB queries with projection (limit returned fields) in database service
+- [X] T103 [P] Optimize MongoDB queries with projection (limit returned fields) in database service
 - [ ] T104 Test Docker build locally (verify image size <500MB per requirement)
 - [ ] T105 Test all three contexts accessible on correct ports (3001, 3002, 3003)
 - [ ] T106 Validate data entry workflow end-to-end (US1 → US3 → US2 integration)
 - [ ] T107 Validate responsive design on mobile (320px), tablet (768px), desktop (1920px)
 - [ ] T108 Performance test search with 1000 records (verify <2s response time per requirement)
-- [ ] T109 [P] Create GitHub Actions workflow in .github/workflows/docker-publish.yml (build and push to ghcr.io/edalcin/)
-- [ ] T110 [P] Add environment variable documentation in README.md (all required .env variables)
+- [X] T109 [P] Create GitHub Actions workflow in .github/workflows/docker-publish.yml (build and push to ghcr.io/edalcin/)
+- [X] T110 [P] Add environment variable documentation in README.md (all required .env variables)
 
 **Checkpoint**: Production-ready application - all user stories functional, Docker container optimized, ready for Unraid deployment
 

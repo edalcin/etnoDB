@@ -1,2 +1,275 @@
-# etnoDB
-Implementação de uma interface para um banco de dados MongoDB sobre dados secundários da relação entre comunidades tradicionais e as plantas
+# etnoDB - Base de Dados Etnobotânica
+
+Sistema web para gerenciamento de dados etnobotânicos sobre a relação entre comunidades tradicionais e plantas, extraídos de artigos científicos.
+
+## Sobre o Projeto
+
+O **etnoDB** é uma interface baseada na web para um banco de dados MongoDB que documenta o conhecimento tradicional sobre o uso de plantas por comunidades tradicionais brasileiras. Os dados são extraídos de publicações científicas que servem como evidências desta relação entre comunidades e plantas.
+
+## Arquitetura
+
+O projeto segue a arquitetura proposta em [etnoArquitetura](https://github.com/edalcin/etnoArquitetura), organizada em três contextos principais:
+
+### 1. **Aquisição** (Entrada de Dados)
+Interface para entrada de dados de múltiplas fontes, incluindo:
+- Extração de dados secundários de artigos científicos
+- Registro direto de dados primários com salvaguardas éticas
+- Padronização de dados através de padrões unificados
+
+**Porta**: 3001
+**Funcionalidade**: Formulário hierárquico para entrada de referências → comunidades → plantas
+
+### 2. **Curadoria** (Edição e Validação)
+Interface especializada para controle de qualidade com acesso restrito a pesquisadores e representantes das comunidades.
+
+**Porta**: 3002
+**Funcionalidade**:
+- Listagem de referências com status (pendente/aprovada/rejeitada)
+- Edição de conteúdo (metadados, comunidades, plantas)
+- Workflow de aprovação implementando princípios C.A.R.E. (Collective Benefit, Authority to Control, Responsibility, Ethics)
+- Validação taxonômica (planejada para implementação futura)
+
+### 3. **Apresentação** (Busca e Visualização)
+Interface pública para disseminação dos dados curados.
+
+**Porta**: 3003
+**Funcionalidade**:
+- Busca por comunidade, planta (nome científico ou vernacular), estado e município
+- Visualização de resultados em formato de cards responsivos
+- Acesso aberto aos dados aprovados
+- Exportação de dados em formatos abertos (planejado)
+
+## Estrutura de Dados
+
+O banco de dados utiliza uma estrutura hierárquica em MongoDB, conforme definido em [`/docs/dataStructure.json`](./docs/dataStructure.json):
+
+```
+Referência (Publicação Científica)
+├── titulo
+├── autores[]
+├── ano
+├── resumo
+├── DOI
+├── status (pending/approved/rejected)
+└── comunidades[] (uma ou mais)
+    ├── nome
+    ├── municipio
+    ├── estado
+    ├── local
+    ├── atividadesEconomicas[]
+    ├── observacoes
+    └── plantas[] (uma ou mais)
+        ├── nomeCientifico[]
+        ├── nomeVernacular[]
+        └── tipoUso[]
+```
+
+### Exemplo de Registro
+
+Uma referência científica pode documentar múltiplas comunidades, e cada comunidade pode ter múltiplas plantas associadas:
+
+```json
+{
+  "titulo": "Diversity Of Plant Uses In Two Caiçara Communities",
+  "autores": ["HANAZAKI, N.", "TAMASHIRO, J. Y.", ...],
+  "ano": 2000,
+  "status": "approved",
+  "comunidades": [
+    {
+      "nome": "Ponta do Almada",
+      "municipio": "Ubatuba",
+      "estado": "São Paulo",
+      "plantas": [
+        {
+          "nomeCientifico": ["Foeniculum vulgare"],
+          "nomeVernacular": ["erva-doce"],
+          "tipoUso": ["medicinal"]
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Stack Tecnológica
+
+- **Backend**: Node.js 20 LTS + Express.js
+- **Frontend**: HTMX + Alpine.js + Tailwind CSS
+- **Banco de Dados**: MongoDB 7.0+
+- **Containerização**: Docker (Alpine Linux)
+- **Template Engine**: EJS
+- **Testes**: Jest + mongodb-memory-server
+
+## Arquitetura Técnica
+
+- **Tipo de Projeto**: Aplicação web com backend e frontend
+- **Organização**: Três aplicações Express rodando em portas separadas dentro de um único container Docker
+- **Renderização**: Server-side rendering com HTMX para interatividade
+- **Responsividade**: Design responsivo de 320px (mobile) a 1920px+ (desktop)
+
+## Requisitos
+
+- Node.js 20 LTS ou superior
+- MongoDB 7.0 ou superior
+- Docker 24.0+ (para deploy em container)
+- npm 10.0+
+
+## Instalação e Desenvolvimento
+
+### Configuração Local
+
+```bash
+# Clone o repositório
+git clone <repository-url>
+cd etnoDB
+
+# Instale as dependências
+npm install
+
+# Configure as variáveis de ambiente
+cp .env.example .env
+# Edite .env com suas configurações
+
+# Inicie o ambiente de desenvolvimento
+npm run dev
+```
+
+### Usando Docker Compose
+
+```bash
+# Inicia aplicação + MongoDB
+docker-compose up
+```
+
+### Acessando as Interfaces
+
+Após iniciar a aplicação:
+
+- **Aquisição** (entrada de dados): http://localhost:3001
+- **Curadoria** (edição e aprovação): http://localhost:3002
+- **Apresentação** (busca pública): http://localhost:3003
+
+## Deploy
+
+### Build do Container Docker
+
+```bash
+docker build -f docker/Dockerfile -t ghcr.io/edalcin/etnodb:latest .
+```
+
+### Publicação
+
+```bash
+docker push ghcr.io/edalcin/etnodb:latest
+```
+
+O container é publicado automaticamente no GitHub Container Registry (ghcr.io/edalcin/) a cada modificação no código.
+
+### Deploy no Unraid
+
+1. Instale a imagem `ghcr.io/edalcin/etnodb:latest`
+2. Configure as variáveis de ambiente:
+   - `MONGO_URI`: String de conexão do MongoDB
+   - `NODE_ENV=production`
+3. Mapeie as portas 3001, 3002 e 3003
+4. Conecte à rede do container MongoDB
+
+## Princípios C.A.R.E.
+
+O projeto implementa os princípios C.A.R.E. para dados de povos indígenas e comunidades tradicionais:
+
+- **C**ollective Benefit: Benefício coletivo para as comunidades
+- **A**uthority to Control: Autoridade das comunidades sobre seus dados
+- **R**esponsibility: Responsabilidade no uso dos dados
+- **E**thics: Ética na coleta, armazenamento e disseminação
+
+## Padrões de Dados
+
+O projeto considera a adoção de padrões abertos de dados:
+- Darwin Core (biodiversidade)
+- Plinian Core (espécies)
+- SocioBio (dados socioambientais)
+
+## Documentação Técnica
+
+A documentação técnica completa está disponível em:
+
+- **Especificação de Requisitos**: [`specs/001-web-interface/spec.md`](./specs/001-web-interface/spec.md)
+- **Plano de Implementação**: [`specs/001-web-interface/plan.md`](./specs/001-web-interface/plan.md)
+- **Modelo de Dados**: [`specs/001-web-interface/data-model.md`](./specs/001-web-interface/data-model.md)
+- **Contratos de API**: [`specs/001-web-interface/contracts/`](./specs/001-web-interface/contracts/)
+- **Quickstart para Desenvolvedores**: [`specs/001-web-interface/quickstart.md`](./specs/001-web-interface/quickstart.md)
+
+## Workflow Completo
+
+1. **Pesquisador** acessa interface de **Aquisição** (porta 3001)
+2. Insere dados da referência científica com comunidades e plantas
+3. Dados salvos com status `pending`
+4. **Curador** acessa interface de **Curadoria** (porta 3002)
+5. Revisa e edita dados se necessário
+6. Aprova referência (status → `approved`)
+7. **Público** acessa interface de **Apresentação** (porta 3003)
+8. Busca e visualiza dados aprovados
+
+## Contribuindo
+
+1. Sempre faça commit diretamente no branch `main`
+2. Não crie branches adicionais
+3. Siga as convenções de código (ESLint)
+4. Escreva mensagens de commit descritivas
+5. Atualize a documentação quando relevante
+
+## Performance
+
+- **Busca**: < 2 segundos para 1000 registros
+- **Concorrência**: Suporta 10+ usuários simultâneos
+- **Tamanho do Docker**: 120-180MB (meta: < 500MB)
+- **Entrada de dados**: < 10 minutos para referência com 2 comunidades e 5 plantas
+
+## Segurança
+
+- Sem autenticação por padrão (controle de acesso gerenciado em nível de rede/infraestrutura)
+- Validação server-side de todos os dados
+- Sanitização de inputs para prevenir XSS e NoSQL injection
+- Todas as interfaces em português
+
+## Próximas Funcionalidades
+
+- Validação taxonômica automática (APIs de Flora e Funga do Brasil, GBIF)
+- Autenticação para curadoria
+- Histórico de alterações (audit trail)
+- Exportação de dados (CSV, JSON)
+- API REST para integrações externas
+- Integração com APIs de periódicos científicos
+
+## Licença
+
+MIT License
+
+Copyright (c) 2025
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+## Contato
+
+Para mais informações sobre o projeto, consulte a [arquitetura etnobotânica](https://github.com/edalcin/etnoArquitetura).
+
+---
+
+**Nota**: Este projeto documenta conhecimentos de comunidades tradicionais. O uso dos dados deve respeitar os direitos das comunidades e seguir os princípios C.A.R.E.

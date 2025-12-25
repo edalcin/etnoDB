@@ -141,20 +141,31 @@ Description: Apresentação - Busca pública (Home)
 
 Clique novamente em **"Add another Path, Port, Variable, Label or Device"** para adicionar **variáveis de ambiente**.
 
-Você precisa adicionar **2 variáveis**:
+**Como adicionar cada variável:**
+1. Clique no botão azul **"+"**
+2. Selecione o tipo: **"Variable"** (não "Path" ou "Port")
+3. Preencha `Key` e `Value`
+4. Clique em **"Add another..."** para a próxima variável
 
-#### Variável 1: MongoDB URI
+#### Variável 1: MongoDB URI (OBRIGATÓRIA)
 ```
 Key: MONGO_URI
 Value: mongodb://mongodb:27017/etnodb
 ```
 
 **Explicação**:
+- Define como a aplicação se conecta ao MongoDB
+- Valor padrão assume MongoDB rodando localmente em container Docker
 - `mongodb` = nome do container MongoDB (descoberta de DNS automática)
 - `27017` = porta padrão MongoDB
 - `etnodb` = nome do banco de dados
 
-#### Variável 2: Node Environment
+**Variações**:
+- Se MongoDB em outro host: `mongodb://[OUTRO_HOST]:27017/etnodb`
+- Se usando MongoDB Atlas (cloud): `mongodb+srv://user:pass@cluster.mongodb.net/etnodb`
+- Se com autenticação: `mongodb://user:password@mongodb:27017/etnodb`
+
+#### Variável 2: Node Environment (OBRIGATÓRIA)
 ```
 Key: NODE_ENV
 Value: production
@@ -163,12 +174,40 @@ Value: production
 **Explicação**:
 - Define a aplicação em modo produção
 - Otimiza performance e segurança
+- Valores aceitos: `production` (padrão) ou `development`
 
-**Como adicionar cada variável:**
-1. Clique no botão azul **"+"**
-2. Selecione o tipo: **"Variable"** (não "Path" ou "Port")
-3. Preencha `Key` e `Value`
-4. Clique em **"Add another..."** para a próxima variável
+#### Variável 3: Porta Aquisição (OPCIONAL)
+```
+Key: PORT_ACQUISITION
+Value: 3001
+```
+
+**Explicação**:
+- Porta interna para interface de entrada de dados
+- Padrão: `3001`
+- Só alterar se conflitar com outra aplicação
+
+#### Variável 4: Porta Curadoria (OPCIONAL)
+```
+Key: PORT_CURATION
+Value: 3002
+```
+
+**Explicação**:
+- Porta interna para interface de edição de dados
+- Padrão: `3002`
+- Só alterar se conflitar com outra aplicação
+
+#### Variável 5: Porta Apresentação (OPCIONAL)
+```
+Key: PORT_PRESENTATION
+Value: 3003
+```
+
+**Explicação**:
+- Porta interna para interface pública (home page)
+- Padrão: `3003`
+- Só alterar se conflitar com outra aplicação
 
 ---
 
@@ -204,10 +243,25 @@ Port Mappings:
 ├── 3002 → 3002 (Curadoria)
 └── 3003 → 3003 (Apresentação)
 
-Environment Variables:
+Environment Variables (Obrigatórias):
 ├── MONGO_URI: mongodb://mongodb:27017/etnodb
 └── NODE_ENV: production
+
+Environment Variables (Opcionais - apenas se usar portas diferentes):
+├── PORT_ACQUISITION: 3001
+├── PORT_CURATION: 3002
+└── PORT_PRESENTATION: 3003
 ```
+
+**Resumo de Variáveis de Ambiente:**
+
+| Variável | Obrigatória? | Padrão | Descrição |
+|----------|--------------|--------|-----------|
+| `MONGO_URI` | ✅ Sim | `mongodb://mongodb:27017/etnodb` | Conexão ao MongoDB |
+| `NODE_ENV` | ✅ Sim | `production` | Modo de execução |
+| `PORT_ACQUISITION` | ❌ Não | `3001` | Porta de entrada de dados |
+| `PORT_CURATION` | ❌ Não | `3002` | Porta de edição/aprovação |
+| `PORT_PRESENTATION` | ❌ Não | `3003` | Porta pública (home) |
 
 ---
 
@@ -439,17 +493,56 @@ docker logs etnodb
 
 ## Seção 8: Configurações Avançadas
 
-### Usar MongoDB Atlas (Cloud)
+### Customizar Portas e Variáveis de Ambiente
+
+**Cenário**: Você quer usar portas diferentes das padrões ou conectar a MongoDB em outro host.
+
+#### Editar Variáveis Existentes
+
+1. Em **Docker Containers**, clique no container **`etnodb`**
+2. Clique em **"Edit"**
+3. Procure por **"Environment Variables"** (seção com seus KEY=VALUE)
+4. Clique na variável que quer alterar (ex: `MONGO_URI`)
+5. Atualize o valor conforme necessário
+6. Clique em **"Apply"** para salvar
+
+#### Exemplo: Alterar Porta de Apresentação
+
+Se a porta 3003 está sendo usada por outra aplicação:
+
+1. Clique em **Edit** no container `etnodb`
+2. Na seção **Port Mappings**, altere:
+   - De: `Container Port 3003 → Host Port 3003`
+   - Para: `Container Port 3003 → Host Port 4003`
+3. Na seção **Environment Variables**, altere:
+   - Adicione/altere: `PORT_PRESENTATION = 4003`
+4. Clique em **Apply**
+5. Acesse: `http://<ip-unraid>:4003/` (nova porta)
+
+#### Exemplo: Usar MongoDB Atlas (Cloud)
 
 Se preferir usar MongoDB em nuvem em vez de container local:
 
 1. Crie conta em [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
 2. Crie um cluster (Free tier disponível)
 3. Copie a connection string: `mongodb+srv://user:pass@cluster.mongodb.net/etnodb`
-4. Na edição do container `etnodb`, altere:
-   ```
-   MONGO_URI: mongodb+srv://user:pass@cluster.mongodb.net/etnodb
-   ```
+4. Na edição do container `etnodb`:
+   - Clique em **Edit**
+   - Procure por variável `MONGO_URI`
+   - Atualize o valor para: `mongodb+srv://user:pass@cluster.mongodb.net/etnodb`
+   - Clique em **Apply**
+
+**Nota**: Se MongoDB Atlas requer autenticação, inclua na URL: `mongodb+srv://username:password@cluster.mongodb.net/etnodb`
+
+#### Exemplo: Customizar Porta MongoDB
+
+Se MongoDB não está na porta padrão 27017:
+
+1. Na edição do container `etnodb`:
+   - Procure por variável `MONGO_URI`
+   - Atualize de: `mongodb://mongodb:27017/etnodb`
+   - Para: `mongodb://mongodb:27777/etnodb` (ou sua porta customizada)
+   - Clique em **Apply**
 
 ### Armazenamento Persistente
 
@@ -463,6 +556,20 @@ Para persistir dados fora do container:
    Host Path: /mnt/user/appdata/etnodb/data
    Read Only: No
    ```
+
+### Adicionar Novas Variáveis de Ambiente
+
+Se precisar adicionar outras variáveis no futuro:
+
+1. Clique em etnodb → **"Edit"**
+2. Clique em **"Add another Path, Port, Variable, Label or Device"**
+3. Selecione tipo **"Variable"**
+4. Preencha:
+   ```
+   Key: NOME_DA_VARIAVEL
+   Value: valor_desejado
+   ```
+5. Clique em **Apply**
 
 ---
 

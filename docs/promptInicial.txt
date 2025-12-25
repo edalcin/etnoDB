@@ -1,0 +1,9 @@
+Este projeto irá criar uma interface baseada na web para um banco de dados no ArangoDB que contém dados sobre a relação de comunidades tradicionais com as plantas.
+Estes dados são extraídos de artigos científicos, que são as evidências desta relação entre comunidades tradicionais e as plantas.
+O banco de dados possui as coleções "comunidades" e "plantas", como nós; e "referencias", como edge. Este último representa a relação de uma evidência - um artigo científico - de que uma comunidade se relaciona com uma ou mais plantas.
+Preciso de uma interface amigável e simples que permita entrar dados de plantas (vetores com nomesCientíficos e nomesVernaculares), dados de comunidades tradicionais (nome e tipo de comunidade), e dados da referencia (titulo, vetor com autores, ano e DOI), que vai estar associado a uma comunidade e "n" plantas. 
+Este projeto deve rodar em um docker que será instalado no Unraid. 
+O docker será gerado automáticamente a cada modificação do código, e ficará disponível em ghcr.io/edalcin/ 
+Este projeto irá commit sempre para o main branch e nunca irá criar qualquer outro branch. 
+Esta aplicação irá rodar no mesmo servidor que o ArangoDB, apenas em um outro docker. 
+A interface será dividida nos contextos de "aquisição" (entrada de dados), "curadoria" (edição dos dados) e "apresentação" (busca e apresentação dos dados, em forma de cards), conforme a arquitetura definida em https://github.com/edalcin/etnoArquitetura

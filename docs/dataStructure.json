@@ -1,0 +1,111 @@
+{
+  "titulo": "Diversity Of Plant Uses In Two Caiçara Communities From The Atlantic Forest Coast, Brazil",
+  "autores": [
+    "HANAZAKI, N.",
+    "TAMASHIRO, J. Y.",
+    "LEITÃO-FILHO, H. F.",
+    "BEGOSSI, A."
+  ],
+  "ano": 2000,
+  "resumo": "Caiçaras são habitantes nativos da costa atlântica no sudeste do Brasil, cuja subsistência se baseia especialmente na agricultura e pesca artesanal. Devido ao seu conhecimento sobre o meio ambiente adquirido ao longo de gerações, o povo Caiçara pode desempenhar um papel importante na conservação da Mata Atlântica.",
+  "DOI": "",
+  "comunidades": [
+    {
+      "nome": "Ponta do Almada",
+      "municipio": "Ubatuba",
+      "estado": "São Paulo",
+      "local": "limite sul do Núcleo Picinguaba do Parque Estadual da Serra do Mar",
+      "atividadesEconomicas": [
+        "pesca",
+        "agricultura",
+        "turismo"
+      ],
+      "observacoes": "É a menor das duas comunidades, com 31 casas e cerca de 125 residentes",
+      "plantas": [
+        {
+          "nomeCientifico": [
+            "Foeniculum vulgare"
+          ],
+          "nomeVernacular": [
+            "erva-doce"
+          ],
+          "tipoUso": [
+            "medicinal"
+          ]
+        },
+        {
+          "nomeCientifico": [
+            "Astrocaryum aculeatissimum"
+          ],
+          "nomeVernacular": [
+            "brejaúva"
+          ],
+          "tipoUso": [
+            "artesanato"
+          ]
+        },
+        {
+          "nomeCientifico": [
+            "Euterpe edulis"
+          ],
+          "nomeVernacular": [
+            "palmito",
+            "jiçara"
+          ],
+          "tipoUso": [
+            "alimento",
+            "artersanato"
+          ]
+        }
+      ]
+    },
+    {
+      "nome": "Praia do Camburí",
+      "municipio": "Ubatuba",
+      "estado": "São Paulo",
+      "local": "Núcleo Picinguaba do Parque Estadual da Serra do Mar",
+      "atividadesEconomicas": [
+        "pesca",
+        "agricultura",
+        "turismo"
+      ],
+      "observacoes": "É a maior comunidade, com 70 casas e aproximadamente 300 residentes",
+      "plantas": [
+        {
+          "nomeCientifico": [
+            "Foeniculum vulgare"
+          ],
+          "nomeVernacular": [
+            "erva-doce"
+          ],
+          "tipoUso": [
+            "medicinal"
+          ]
+        },
+        {
+          "nomeCientifico": [
+            "Bidens pilosa"
+          ],
+          "nomeVernacular": [
+            "picão",
+            "picão-preto"
+          ],
+          "tipoUso": [
+            "medicinal"
+          ]
+        },
+        {
+          "nomeCientifico": [
+            "Matricaria chamomilla"
+          ],
+          "nomeVernacular": [
+            "camomila"
+          ],
+          "tipoUso": [
+            "medicinal"
+          ]
+        }
+      ]
+    }
+  ]
+}

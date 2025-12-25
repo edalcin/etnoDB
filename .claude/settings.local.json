@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:github.com)",
+      "Bash(git fetch:*)",
+      "Bash(powershell:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nAdiciona README.md completo do projeto etnoDB\n\n- Descreve o projeto e seus objetivos\n- Documenta arquitetura em três contextos \\(aquisição, curadoria, apresentação\\)\n- Referencia etnoArquitetura \\(https://github.com/edalcin/etnoArquitetura\\)\n- Documenta estrutura de dados hierárquica \\(referência → comunidades → plantas\\)\n- Inclui stack tecnológica \\(Node.js, Express, HTMX, MongoDB\\)\n- Adiciona instruções de instalação e deploy\n- Documenta workflow completo do sistema\n- Inclui princípios C.A.R.E. para dados de comunidades tradicionais\n- Adiciona licença MIT\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push:*)",
+      "Bash(git checkout:*)",
+      "Bash(git merge 001-web-interface --no-ff -m \"$\\(cat <<''EOF''\nMerge: Adiciona README.md e especificações completas do projeto etnoDB\n\n- README.md com arquitetura, estrutura de dados e documentação\n- Especificações completas em specs/001-web-interface/\n- Plano de implementação com 110 tarefas organizadas\n- Contratos de API para os três contextos\n- Modelo de dados documentado\n- Quickstart para desenvolvedores\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git branch:*)",
+      "Bash(git commit:*)"
+    ]
+  }
+}

@@ -1,5 +1,9 @@
 # etnoDB - Base de Dados Etnobotânica
 
+<div align="center">
+  <img src="./docs/etnodbLogoTrans.png" alt="etnoDB Logo" width="200">
+</div>
+
 Sistema web para gerenciamento de **dados secundários** etnobotânicos sobre a relação entre comunidades tradicionais e plantas, extraídos de artigos científicos publicados.
 
 ## O que é Etnobotânica?
@@ -52,12 +56,13 @@ Interface especializada para controle de qualidade com acesso restrito a pesquis
 - Workflow de aprovação implementando princípios C.A.R.E. (Collective Benefit, Authority to Control, Responsibility, Ethics)
 - Validação taxonômica (planejada para implementação futura)
 
-### 3. **Apresentação** (Busca e Visualização)
-Interface pública para disseminação dos dados curados.
+### 3. **Apresentação** (Busca e Visualização) - Home Page
+Interface pública e padrão para disseminação dos dados curados, com apresentação aprimorada.
 
-**Porta**: 3003
+**Porta**: 3003 (Interface padrão)
 **Funcionalidade**:
-- Busca por comunidade, planta (nome científico ou vernacular), estado e município
+- Logo do projeto centralizado na home page
+- Busca avançada por comunidade, planta (nome científico ou vernacular), estado e município
 - Visualização de resultados em formato de cards responsivos
 - Acesso aberto aos dados aprovados
 - Exportação de dados em formatos abertos (planejado)
@@ -217,11 +222,11 @@ O projeto considera a adoção de padrões abertos de dados:
 
 A documentação técnica completa está disponível em:
 
-- **Especificação de Requisitos**: [`specs/001-web-interface/spec.md`](./specs/001-web-interface/spec.md)
-- **Plano de Implementação**: [`specs/001-web-interface/plan.md`](./specs/001-web-interface/plan.md)
-- **Modelo de Dados**: [`specs/001-web-interface/data-model.md`](./specs/001-web-interface/data-model.md)
-- **Contratos de API**: [`specs/001-web-interface/contracts/`](./specs/001-web-interface/contracts/)
-- **Quickstart para Desenvolvedores**: [`specs/001-web-interface/quickstart.md`](./specs/001-web-interface/quickstart.md)
+- **Especificação de Requisitos**: [`specs/spec.md`](./specs/spec.md)
+- **Plano de Implementação**: [`specs/plan.md`](./specs/plan.md)
+- **Modelo de Dados**: [`specs/data-model.md`](./specs/data-model.md)
+- **Contratos de API**: [`specs/contracts/`](./specs/contracts/)
+- **Quickstart para Desenvolvedores**: [`specs/quickstart.md`](./specs/quickstart.md)
 
 ## Workflow Completo
 
@@ -234,21 +239,6 @@ A documentação técnica completa está disponível em:
 7. **Público** acessa interface de **Apresentação** (porta 3003)
 8. Busca e visualiza dados aprovados
 
-## Contribuindo
-
-1. Sempre faça commit diretamente no branch `main`
-2. Não crie branches adicionais
-3. Siga as convenções de código (ESLint)
-4. Escreva mensagens de commit descritivas
-5. Atualize a documentação quando relevante
-
-## Performance
-
-- **Busca**: < 2 segundos para 1000 registros
-- **Concorrência**: Suporta 10+ usuários simultâneos
-- **Tamanho do Docker**: 120-180MB (meta: < 500MB)
-- **Entrada de dados**: < 10 minutos para referência com 2 comunidades e 5 plantas
-
 ## Segurança
 
 - Sem autenticação por padrão (controle de acesso gerenciado em nível de rede/infraestrutura)
@@ -259,39 +249,25 @@ A documentação técnica completa está disponível em:
 ## Próximas Funcionalidades
 
 - Validação taxonômica automática (APIs de Flora e Funga do Brasil, GBIF)
-- Autenticação para curadoria
+- Autenticação para curadoria e entrada de dados
 - Histórico de alterações (audit trail)
 - Exportação de dados (CSV, JSON)
 - API REST para integrações externas
 - Integração com APIs de periódicos científicos
 
-## Licença
+## Contribuições
 
-MIT License
+Contribuições são bem-vindas! Caso tenha sugestões, encontre bugs ou tenha comentários sobre o projeto, abra uma [Issue](../../issues).
 
-Copyright (c) 2025
+## Suporte
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+Para questões, problemas ou sugestões sobre o etnoDB, utilize a seção [Issues](../../issues) do repositório.
 
 ## Contato
 
-Para mais informações sobre o projeto, consulte a [arquitetura etnobotânica](https://github.com/edalcin/etnoArquitetura).
+Para mais informações sobre o projeto:
+- **Desenvolvedor**: Eduardo Dalcin - edalcin@jbrj.gov.br
+- **Referência Arquitetônica**: [etnoArquitetura](https://github.com/edalcin/etnoArquitetura)
 
 ---
 

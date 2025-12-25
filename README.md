@@ -195,12 +195,17 @@ O container é publicado automaticamente no GitHub Container Registry (ghcr.io/e
 
 ### Deploy no Unraid
 
-1. Instale a imagem `ghcr.io/edalcin/etnodb:latest`
-2. Configure as variáveis de ambiente:
-   - `MONGO_URI`: String de conexão do MongoDB
-   - `NODE_ENV=production`
-3. Mapeie as portas 3001, 3002 e 3003
-4. Conecte à rede do container MongoDB
+Para instruções detalhadas de instalação via interface web do Unraid, consulte:
+📖 **[Guia Completo de Instalação no Unraid](./docs/UNRAID_INSTALLATION.md)**
+
+**Resumo rápido:**
+1. Crie container MongoDB (se necessário)
+2. Adicione container etnoDB via interface Docker do Unraid
+3. Configure variáveis de ambiente:
+   - `MONGO_URI`: `mongodb://mongodb:27017/etnodb`
+   - `NODE_ENV`: `production`
+4. Mapeie portas: 3001 (Aquisição), 3002 (Curadoria), 3003 (Apresentação)
+5. Configure segurança: restrinja portas 3001 e 3002 a rede local
 
 ## Princípios C.A.R.E.
 

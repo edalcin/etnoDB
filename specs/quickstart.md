@@ -131,15 +131,16 @@ etnoDB/
 │   ├── Dockerfile               # Production container
 │   └── docker-compose.yml       # Development environment
 ├── specs/                       # Feature specifications
-│   └── 001-web-interface/
-│       ├── spec.md              # Requirements specification
-│       ├── plan.md              # Implementation plan
-│       ├── research.md          # Technology decisions
-│       ├── data-model.md        # Data model documentation
-│       ├── quickstart.md        # This file
-│       └── contracts/           # API contracts
+│   ├── spec.md                  # Requirements specification
+│   ├── plan.md                  # Implementation plan
+│   ├── research.md              # Technology decisions
+│   ├── data-model.md            # Data model documentation
+│   ├── quickstart.md            # This file
+│   ├── checklists/              # Feature checklists
+│   └── contracts/               # API contracts
 ├── docs/                        # Additional documentation
-│   └── dataStructure.json       # MongoDB schema reference
+│   ├── dataStructure.json       # MongoDB schema reference
+│   └── UNRAID_INSTALLATION.md   # Unraid deployment guide
 ├── .env.example                 # Environment variables template
 ├── package.json                 # Node.js dependencies
 └── README.md                    # Project overview
@@ -309,43 +310,51 @@ docker push ghcr.io/edalcin/etnodb:latest
 
 ### Prerequisites
 
-- Unraid server with Docker support
-- MongoDB container already running on Unraid
-- Network connectivity between containers
+- Unraid server with Docker support enabled
+- MongoDB container running on Unraid (or using MongoDB Atlas cloud)
+- Network connectivity between containers (if using local MongoDB)
+- Access to Unraid web interface
 
-### Deployment Steps
+### Quick Start
 
-1. **Pull Image** in Unraid Docker UI:
-   - Repository: `ghcr.io/edalcin/etnodb:latest`
-   - Network: `bridge` or custom network with MongoDB
+For **complete step-by-step instructions** with screenshots, see:
+📖 **[Guia Completo de Instalação no Unraid](../../docs/UNRAID_INSTALLATION.md)** (Portuguese)
 
-2. **Configure Environment Variables**:
-   ```
-   MONGO_URI=mongodb://<mongo-container-ip>:27017/etnodb
-   NODE_ENV=production
-   PORT_ACQUISITION=3001
-   PORT_CURATION=3002
-   PORT_PRESENTATION=3003
-   ```
+### Quick Reference
 
-3. **Port Mapping**:
-   - Container Port 3001 → Host Port 3001 (Acquisition)
-   - Container Port 3002 → Host Port 3002 (Curation)
-   - Container Port 3003 → Host Port 3003 (Presentation)
+**Container Configuration:**
+```
+Name: etnodb
+Repository: ghcr.io/edalcin/etnodb:latest
+Network Type: bridge
 
-4. **Start Container**
+Port Mapping:
+- 3001 → 3001 (Acquisition)
+- 3002 → 3002 (Curation)
+- 3003 → 3003 (Presentation - Public Home Page)
 
-5. **Access Contexts**:
-   - Acquisition: `http://<unraid-ip>:3001`
-   - Curation: `http://<unraid-ip>:3002`
-   - Presentation: `http://<unraid-ip>:3003`
+Environment Variables:
+- MONGO_URI=mongodb://mongodb:27017/etnodb
+- NODE_ENV=production
+```
+
+### Access After Installation
+
+Once container is running (`Status: running`):
+
+- **Presentation** (Public Home): `http://<unraid-ip>:3003`
+- **Acquisition** (Data Entry): `http://<unraid-ip>:3001`
+- **Curation** (Data Review): `http://<unraid-ip>:3002`
 
 ### Network Security
 
-**Access Control** (handled at infrastructure level):
-- Expose only port 3003 (presentation) to public network
-- Restrict ports 3001 (acquisition) and 3002 (curation) to trusted network
-- Use Unraid firewall rules or reverse proxy
+**Recommended Security Configuration:**
+- ✅ Expose port **3003** (presentation/home) to public network
+- 🔒 Restrict ports **3001** and **3002** to trusted network only
+- Use Unraid firewall rules or reverse proxy (nginx/Traefik)
+- Consider authentication layer for acquisition and curation
+
+**See** [UNRAID_INSTALLATION.md - Seção 4](../../docs/UNRAID_INSTALLATION.md#seção-4-segurança-e-acesso) for detailed security configuration
 
 ---
 

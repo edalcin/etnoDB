@@ -9,6 +9,39 @@ const { Constraints, Status } = require('../models/Reference');
 const logger = require('../shared/logger');
 
 /**
+ * Valid community types
+ */
+const VALID_COMMUNITY_TYPES = [
+  'Andirobeiras',
+  'Apanhadores de sempre-vivas',
+  'Caatingueiros',
+  'Caiçaras',
+  'Castanheiras',
+  'Catadores de mangaba',
+  'Ciganos',
+  'Cipozeiros',
+  'Extrativistas',
+  'Faxinalenses',
+  'Geraizeiros',
+  'Ilhéus',
+  'Indígenas',
+  'Isqueiros',
+  'Morroquianos',
+  'Pantaneiros',
+  'Pescadores artesanais',
+  'Piaçaveiros',
+  'Pomeranos',
+  'Povos de terreiro',
+  'Quebradeiras de coco babaçu',
+  'Quilombolas',
+  'Retireiros',
+  'Ribeirinhos',
+  'Seringueiros',
+  'Vazanteiros',
+  'Veredeiros'
+];
+
+/**
  * Validate reference data
  * @param {Object} data - Reference data to validate
  * @returns {Object} { isValid: boolean, errors: string[] }
@@ -91,6 +124,13 @@ function validateCommunity(comunidade, index) {
     errors.push(`${prefix}: Nome é obrigatório`);
   } else if (comunidade.nome.length > Constraints.comunidade.nome.maxLength) {
     errors.push(`${prefix}: Nome deve ter no máximo ${Constraints.comunidade.nome.maxLength} caracteres`);
+  }
+
+  // Tipo validation
+  if (!comunidade.tipo || typeof comunidade.tipo !== 'string' || comunidade.tipo.trim().length === 0) {
+    errors.push(`${prefix}: Tipo de comunidade é obrigatório`);
+  } else if (!VALID_COMMUNITY_TYPES.includes(comunidade.tipo)) {
+    errors.push(`${prefix}: Tipo de comunidade inválido. Selecione uma opção válida da lista`);
   }
 
   // Município validation (optional)

@@ -18,6 +18,9 @@ const logger = require('../../shared/logger');
  * GET / - Main data entry form
  */
 router.get('/', (req, res) => {
+  console.log('[DEBUG] GET / - Loading data entry form');
+  logger.acquisition('Loading data entry form');
+
   res.render('index', {
     pageTitle: 'Entrada de Dados',
     contextName: 'Entrada de Dados Etnobotânicos',
@@ -124,6 +127,9 @@ router.post('/plant/add/:communityIndex', (req, res) => {
  */
 router.post('/reference/submit', async (req, res) => {
   try {
+    console.log('\n========================================');
+    console.log('[DEBUG] POST /reference/submit - FORM SUBMITTED');
+    console.log('========================================');
     logger.acquisition('Processing reference submission');
 
     // Parse form data into reference structure

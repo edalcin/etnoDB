@@ -196,6 +196,48 @@ router.post('/reference/submit', async (req, res) => {
  */
 function parseFormData(formData) {
   console.log('[DEBUG] parseFormData() called');
+
+  // Check if comunidades is already parsed as JSON array
+  if (Array.isArray(formData.comunidades)) {
+    console.log('[DEBUG] Data already parsed as JSON! Using direct structure.');
+
+    // Data is already in the correct format (sent as JSON)
+    const reference = {
+      titulo: formData.titulo?.trim() || '',
+      autores: parseCommaSeparated(formData.autores).map(formatAuthorABNT),
+      ano: parseInt(formData.ano) || 0,
+      resumo: formData.resumo?.trim() || '',
+      DOI: formData.DOI?.trim() || '',
+      comunidades: formData.comunidades.map(com => ({
+        nome: com.nome?.trim() || '',
+        municipio: com.municipio?.trim() || '',
+        estado: com.estado?.trim() || '',
+        local: com.local?.trim() || '',
+        atividadesEconomicas: Array.isArray(com.atividadesEconomicas)
+          ? com.atividadesEconomicas
+          : parseCommaSeparated(com.atividadesEconomicas),
+        observacoes: com.observacoes?.trim() || '',
+        plantas: (com.plantas || []).map(p => ({
+          nomeCientifico: Array.isArray(p.nomeCientifico)
+            ? p.nomeCientifico
+            : parseCommaSeparated(p.nomeCientifico),
+          nomeVernacular: Array.isArray(p.nomeVernacular)
+            ? p.nomeVernacular
+            : parseCommaSeparated(p.nomeVernacular),
+          tipoUso: Array.isArray(p.tipoUso)
+            ? p.tipoUso
+            : parseCommaSeparated(p.tipoUso)
+        }))
+      }))
+    };
+
+    console.log('[DEBUG] Parsed communities (JSON):', reference.comunidades.length);
+    console.log('[DEBUG] Full reference structure:', JSON.stringify(reference, null, 2));
+    return reference;
+  }
+
+  // Original parsing for form-urlencoded format
+  console.log('[DEBUG] Parsing form-urlencoded format');
   const comunidadeKeys = Object.keys(formData).filter(k => k.startsWith('comunidades'));
   console.log('[DEBUG] Community keys found:', comunidadeKeys.length, 'keys');
   console.log('[DEBUG] Community keys:', comunidadeKeys);

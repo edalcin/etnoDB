@@ -12,8 +12,13 @@
   <!-- Header -->
   <header class="bg-forest-700 text-white shadow-lg">
     <div class="container mx-auto px-4 py-4">
-      <h1 class="text-2xl font-bold"><%= contextName %></h1>
-      <p class="text-forest-100 text-sm"><%= contextDescription %></p>
+      <div class="flex items-center gap-4">
+        <img src="/images/logo.png" alt="etnoDB Logo" class="h-16 w-16">
+        <div>
+          <h1 class="text-2xl font-bold"><%= contextName %></h1>
+          <p class="text-forest-100 text-sm"><%= contextDescription %></p>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -80,19 +85,44 @@
             <thead>
               <tr class="bg-gray-50 border-b border-gray-200">
                 <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                  Título
+                  <a href="?status=<%= statusFilter %>&sort=titulo&order=<%= sortField === 'titulo' && sortOrder === 'asc' ? 'desc' : 'asc' %>" class="hover:text-forest-600 flex items-center gap-1">
+                    Título
+                    <% if (sortField === 'titulo') { %>
+                      <span><%= sortOrder === 'asc' ? '↑' : '↓' %></span>
+                    <% } %>
+                  </a>
                 </th>
                 <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                  Autores
+                  <a href="?status=<%= statusFilter %>&sort=autores&order=<%= sortField === 'autores' && sortOrder === 'asc' ? 'desc' : 'asc' %>" class="hover:text-forest-600 flex items-center gap-1">
+                    Autores
+                    <% if (sortField === 'autores') { %>
+                      <span><%= sortOrder === 'asc' ? '↑' : '↓' %></span>
+                    <% } %>
+                  </a>
                 </th>
                 <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                  Ano
+                  <a href="?status=<%= statusFilter %>&sort=ano&order=<%= sortField === 'ano' && sortOrder === 'asc' ? 'desc' : 'asc' %>" class="hover:text-forest-600 flex items-center gap-1">
+                    Ano
+                    <% if (sortField === 'ano') { %>
+                      <span><%= sortOrder === 'asc' ? '↑' : '↓' %></span>
+                    <% } %>
+                  </a>
                 </th>
                 <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                  Status
+                  <a href="?status=<%= statusFilter %>&sort=status&order=<%= sortField === 'status' && sortOrder === 'asc' ? 'desc' : 'asc' %>" class="hover:text-forest-600 flex items-center gap-1">
+                    Status
+                    <% if (sortField === 'status') { %>
+                      <span><%= sortOrder === 'asc' ? '↑' : '↓' %></span>
+                    <% } %>
+                  </a>
                 </th>
                 <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                  Criado
+                  <a href="?status=<%= statusFilter %>&sort=createdAt&order=<%= sortField === 'createdAt' && sortOrder === 'asc' ? 'desc' : 'asc' %>" class="hover:text-forest-600 flex items-center gap-1">
+                    Criado
+                    <% if (sortField === 'createdAt') { %>
+                      <span><%= sortOrder === 'asc' ? '↑' : '↓' %></span>
+                    <% } %>
+                  </a>
                 </th>
                 <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                   Ações

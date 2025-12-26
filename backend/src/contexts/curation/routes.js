@@ -18,17 +18,23 @@ const { Status } = require('../../models/Reference');
 const logger = require('../../shared/logger');
 
 /**
- * GET / - List all references with optional status filter
+ * GET / - List all references with optional status filter and sorting
  */
 router.get('/', async (req, res) => {
   try {
-    const { status, page = 1, limit = 50 } = req.query;
+    const { status, page = 1, limit = 50, sort = 'createdAt', order = 'desc' } = req.query;
 
     // Build query
     const query = {};
     if (status && status !== 'all' && Object.values(Status).includes(status)) {
       query.status = status;
     }
+
+    // Build sort object
+    const validSortFields = ['titulo', 'autores', 'ano', 'status', 'createdAt'];
+    const sortField = validSortFields.includes(sort) ? sort : 'createdAt';
+    const sortOrder = order === 'asc' ? 1 : -1;
+    const sortObj = { [sortField]: sortOrder };
 
     // Fetch references with pagination
     const pageNum = parseInt(page) || 1;
@@ -38,7 +44,7 @@ router.get('/', async (req, res) => {
     const references = await findReferences(query, {
       limit: limitNum,
       skip,
-      sort: { createdAt: -1 },
+      sort: sortObj,
       projection: {
         titulo: 1,
         autores: 1,
@@ -49,7 +55,7 @@ router.get('/', async (req, res) => {
       }
     });
 
-    logger.curation(`Listing ${references.length} references (status: ${status || 'all'})`);
+    logger.curation(`Listing ${references.length} references (status: ${status || 'all'}, sort: ${sortField} ${order})`);
 
     res.render('index', {
       pageTitle: 'Curadoria',
@@ -58,6 +64,8 @@ router.get('/', async (req, res) => {
       showNavigation: true,
       references,
       statusFilter: status || 'all',
+      sortField,
+      sortOrder: order,
       success: req.query.success === 'true'
     });
 
@@ -71,6 +79,8 @@ router.get('/', async (req, res) => {
       showNavigation: true,
       references: [],
       statusFilter: 'all',
+      sortField: 'createdAt',
+      sortOrder: 'desc',
       success: false,
       error: 'Erro ao listar referências: ' + error.message
     });

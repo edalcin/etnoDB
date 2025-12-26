@@ -176,6 +176,23 @@ router.post('/reference/submit', async (req, res) => {
 });
 
 /**
+ * Filter out empty plants (plants without any names)
+ * @param {Array} plantas - Array of plants
+ * @returns {Array} Filtered array of plants
+ */
+function filterEmptyPlants(plantas) {
+  return plantas.filter(plant => {
+    const hasScientificName = Array.isArray(plant.nomeCientifico) &&
+      plant.nomeCientifico.some(n => n && typeof n === 'string' && n.trim().length > 0);
+
+    const hasVernacularName = Array.isArray(plant.nomeVernacular) &&
+      plant.nomeVernacular.some(n => n && typeof n === 'string' && n.trim().length > 0);
+
+    return hasScientificName || hasVernacularName;
+  });
+}
+
+/**
  * Parse form data into reference structure
  * Handles nested arrays from HTML form (comunidades[0][plantas][0][field])
  * Converts comma-separated strings to arrays
@@ -201,7 +218,7 @@ function parseFormData(formData) {
           ? com.atividadesEconomicas
           : parseCommaSeparated(com.atividadesEconomicas),
         observacoes: com.observacoes?.trim() || '',
-        plantas: (com.plantas || []).map(p => ({
+        plantas: filterEmptyPlants((com.plantas || []).map(p => ({
           nomeCientifico: Array.isArray(p.nomeCientifico)
             ? p.nomeCientifico
             : parseCommaSeparated(p.nomeCientifico),
@@ -211,7 +228,7 @@ function parseFormData(formData) {
           tipoUso: Array.isArray(p.tipoUso)
             ? p.tipoUso
             : parseCommaSeparated(p.tipoUso)
-        }))
+        })))
       }))
     };
 
@@ -284,7 +301,7 @@ function parseFormData(formData) {
       local: comunidade.local?.trim() || '',
       atividadesEconomicas: parseCommaSeparated(comunidade.atividadesEconomicas),
       observacoes: comunidade.observacoes?.trim() || '',
-      plantas
+      plantas: filterEmptyPlants(plantas)
     });
   });
 

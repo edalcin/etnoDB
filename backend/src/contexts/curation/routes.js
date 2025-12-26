@@ -307,6 +307,23 @@ router.post('/reference/:id/plant/add/:communityIndex', (req, res) => {
 });
 
 /**
+ * Filter out empty plants (plants without any names)
+ * @param {Array} plantas - Array of plants
+ * @returns {Array} Filtered array of plants
+ */
+function filterEmptyPlants(plantas) {
+  return plantas.filter(plant => {
+    const hasScientificName = Array.isArray(plant.nomeCientifico) &&
+      plant.nomeCientifico.some(n => n && typeof n === 'string' && n.trim().length > 0);
+
+    const hasVernacularName = Array.isArray(plant.nomeVernacular) &&
+      plant.nomeVernacular.some(n => n && typeof n === 'string' && n.trim().length > 0);
+
+    return hasScientificName || hasVernacularName;
+  });
+}
+
+/**
  * Parse form data into reference structure
  * (Same logic as acquisition context)
  */
@@ -371,7 +388,7 @@ function parseFormData(formData) {
       local: comunidade.local?.trim() || '',
       atividadesEconomicas: parseCommaSeparated(comunidade.atividadesEconomicas),
       observacoes: comunidade.observacoes?.trim() || '',
-      plantas
+      plantas: filterEmptyPlants(plantas)
     });
   });
 

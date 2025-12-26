@@ -297,7 +297,7 @@ function parseFormData(formData) {
 
       plantas.push({
         nomeCientifico: parseCommaSeparated(plant.nomeCientifico),
-        nomeVernacular: parseCommaSeparated(plant.nomeVernacular),
+        nomeVernacular: parseCommaSeparated(plant.nomeVernacular).map(formatVernacularName),
         tipoUso: parseCommaSeparated(plant.tipoUso)
       });
     });
@@ -306,7 +306,7 @@ function parseFormData(formData) {
       nome: comunidade.nome?.trim() || '',
       tipo: comunidade.tipo?.trim() || '',
       municipio: comunidade.municipio?.trim() || '',
-      estado: comunidade.estado?.trim() || '',
+      estado: formatStateName(comunidade.estado || ''),
       local: comunidade.local?.trim() || '',
       atividadesEconomicas: parseCommaSeparated(comunidade.atividadesEconomicas),
       observacoes: comunidade.observacoes?.trim() || '',
@@ -324,6 +324,69 @@ function parseCommaSeparated(str) {
     .split(',')
     .map(item => item.trim())
     .filter(item => item.length > 0);
+}
+
+/**
+ * Format vernacular names to lowercase with hyphens
+ * @param {string} name - Vernacular name
+ * @returns {string} Formatted vernacular name
+ */
+function formatVernacularName(name) {
+  if (!name || typeof name !== 'string') return '';
+
+  return name
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, '-');
+}
+
+/**
+ * Convert state abbreviation to full name
+ * @param {string} state - State abbreviation or full name
+ * @returns {string} Full state name
+ */
+function formatStateName(state) {
+  if (!state || typeof state !== 'string') return '';
+
+  const stateMap = {
+    'AC': 'Acre',
+    'AL': 'Alagoas',
+    'AP': 'Amapá',
+    'AM': 'Amazonas',
+    'BA': 'Bahia',
+    'CE': 'Ceará',
+    'DF': 'Distrito Federal',
+    'ES': 'Espírito Santo',
+    'GO': 'Goiás',
+    'MA': 'Maranhão',
+    'MT': 'Mato Grosso',
+    'MS': 'Mato Grosso do Sul',
+    'MG': 'Minas Gerais',
+    'PA': 'Pará',
+    'PB': 'Paraíba',
+    'PR': 'Paraná',
+    'PE': 'Pernambuco',
+    'PI': 'Piauí',
+    'RJ': 'Rio de Janeiro',
+    'RN': 'Rio Grande do Norte',
+    'RS': 'Rio Grande do Sul',
+    'RO': 'Rondônia',
+    'RR': 'Roraima',
+    'SC': 'Santa Catarina',
+    'SP': 'São Paulo',
+    'SE': 'Sergipe',
+    'TO': 'Tocantins'
+  };
+
+  const trimmed = state.trim().toUpperCase();
+
+  // If it's a known abbreviation, convert it
+  if (stateMap[trimmed]) {
+    return stateMap[trimmed];
+  }
+
+  // Otherwise, return as-is (might already be full name)
+  return state.trim();
 }
 
 module.exports = router;

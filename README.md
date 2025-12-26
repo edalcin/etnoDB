@@ -96,35 +96,39 @@ Referência (Publicação Científica)
 
 ### Tipos de Comunidades Tradicionais
 
-O sistema suporta a classificação de comunidades tradicionais em 27 categorias, baseadas nas classificações utilizadas em estudos etnobotânicos brasileiros:
+O sistema suporta a classificação de comunidades tradicionais em 29 categorias, conforme o **Decreto nº 11.481, de 6 de abril de 2023**, que regulamenta a Política Nacional de Desenvolvimento Sustentável dos Povos e Comunidades Tradicionais:
 
-- Andirobeiras
-- Apanhadores de sempre-vivas
+- Andirobeiros
+- Apanhadores de flores sempre-vivas
+- Benzedeiros
 - Caatingueiros
+- Caboclos
 - Caiçaras
-- Castanheiras
 - Catadores de mangaba
-- Ciganos
 - Cipozeiros
+- Comunidades de fundos e fechos de pasto
+- Comunidades quilombolas
 - Extrativistas
+- Extrativistas costeiros e marinhos
 - Faxinalenses
 - Geraizeiros
 - Ilhéus
-- Indígenas
-- Isqueiros
+- Juventude de povos e comunidades tradicionais
 - Morroquianos
 - Pantaneiros
 - Pescadores artesanais
-- Piaçaveiros
-- Pomeranos
-- Povos de terreiro
+- Povo pomerano
+- Povos ciganos
+- Povos e comunidades de terreiro / matriz africana
+- Povos indígenas
 - Quebradeiras de coco babaçu
-- Quilombolas
-- Retireiros
+- Raizeiros
+- Retireiros do Araguaia
 - Ribeirinhos
-- Seringueiros
 - Vazanteiros
 - Veredeiros
+
+> **Referência Legal**: Decreto nº 11.481, de 6 de abril de 2023 - Regulamenta a Política Nacional de Desenvolvimento Sustentável dos Povos e Comunidades Tradicionais, instituída pelo Decreto nº 6.040, de 7 de fevereiro de 2007.
 
 ### Exemplo de Registro
 

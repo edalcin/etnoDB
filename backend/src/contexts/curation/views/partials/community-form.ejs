@@ -1,4 +1,4 @@
-<div class="card border-l-4 border-forest-500" x-data="{ plantCount: 1 }">
+<div class="card border-l-4 border-forest-500" x-data="{ plantCount: <%= community && community.plantas ? community.plantas.length : 1 %> }">
   <div class="flex items-center justify-between mb-4">
     <h3 class="text-lg font-semibold text-gray-900">Comunidade <%= communityIndex + 1 %></h3>
     <% if (communityIndex > 0) { %>

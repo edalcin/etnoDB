@@ -172,11 +172,129 @@
         <!-- Existing plants or initial plant form -->
         <% if (community && community.plantas && community.plantas.length > 0) { %>
           <% community.plantas.forEach((planta, pIdx) => { %>
-            <%- include('plant-form', { communityIndex: communityIndex, plantIndex: pIdx, plant: planta }) %>
+            <div class="bg-gray-50 p-4 rounded border">
+              <div class="flex items-center justify-between mb-3">
+                <h5 class="text-sm font-semibold text-gray-700">Planta <%= pIdx + 1 %></h5>
+                <% if (pIdx > 0) { %>
+                  <button
+                    type="button"
+                    class="text-red-600 hover:text-red-800 text-xs"
+                    @click="$el.closest('.bg-gray-50').remove()"
+                  >
+                    Remover
+                  </button>
+                <% } %>
+              </div>
+
+              <div class="space-y-3">
+                <!-- Scientific Name -->
+                <div>
+                  <label class="form-label text-sm" for="comunidades[<%= communityIndex %>][plantas][<%= pIdx %>][nomeCientifico]">
+                    Nome Científico
+                    <span class="text-gray-500 text-xs">(separados por vírgula)</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="comunidades[<%= communityIndex %>][plantas][<%= pIdx %>][nomeCientifico]"
+                    name="comunidades[<%= communityIndex %>][plantas][<%= pIdx %>][nomeCientifico]"
+                    class="form-input text-sm"
+                    value="<%= planta?.nomeCientifico?.join(', ') || '' %>"
+                    placeholder="Foeniculum vulgare, Bidens pilosa L."
+                  >
+                </div>
+
+                <!-- Vernacular Name -->
+                <div>
+                  <label class="form-label text-sm" for="comunidades[<%= communityIndex %>][plantas][<%= pIdx %>][nomeVernacular]">
+                    Nome Vernacular
+                    <span class="text-gray-500 text-xs">(separados por vírgula)</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="comunidades[<%= communityIndex %>][plantas][<%= pIdx %>][nomeVernacular]"
+                    name="comunidades[<%= communityIndex %>][plantas][<%= pIdx %>][nomeVernacular]"
+                    class="form-input text-sm"
+                    value="<%= planta?.nomeVernacular?.join(', ') || '' %>"
+                    placeholder="erva-doce, picão, jiçara"
+                  >
+                </div>
+
+                <p class="text-xs text-gray-600 italic">* Pelo menos um nome (científico ou vernacular) é obrigatório</p>
+
+                <!-- Type of Use -->
+                <div>
+                  <label class="form-label text-sm" for="comunidades[<%= communityIndex %>][plantas][<%= pIdx %>][tipoUso]">
+                    Tipo de Uso
+                    <span class="text-gray-500 text-xs">(separados por vírgula)</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="comunidades[<%= communityIndex %>][plantas][<%= pIdx %>][tipoUso]"
+                    name="comunidades[<%= communityIndex %>][plantas][<%= pIdx %>][tipoUso]"
+                    class="form-input text-sm"
+                    value="<%= planta?.tipoUso?.join(', ') || '' %>"
+                    placeholder="medicinal, alimentício, artesanato"
+                  >
+                </div>
+              </div>
+            </div>
           <% }); %>
         <% } else { %>
           <!-- Initial plant form when no plants exist -->
-          <%- include('plant-form', { communityIndex: communityIndex, plantIndex: 0, plant: null }) %>
+          <div class="bg-gray-50 p-4 rounded border">
+            <div class="flex items-center justify-between mb-3">
+              <h5 class="text-sm font-semibold text-gray-700">Planta 1</h5>
+            </div>
+
+            <div class="space-y-3">
+              <!-- Scientific Name -->
+              <div>
+                <label class="form-label text-sm" for="comunidades[<%= communityIndex %>][plantas][0][nomeCientifico]">
+                  Nome Científico
+                  <span class="text-gray-500 text-xs">(separados por vírgula)</span>
+                </label>
+                <input
+                  type="text"
+                  id="comunidades[<%= communityIndex %>][plantas][0][nomeCientifico]"
+                  name="comunidades[<%= communityIndex %>][plantas][0][nomeCientifico]"
+                  class="form-input text-sm"
+                  placeholder="Foeniculum vulgare, Bidens pilosa L."
+                >
+              </div>
+
+              <!-- Vernacular Name -->
+              <div>
+                <label class="form-label text-sm" for="comunidades[<%= communityIndex %>][plantas][0][nomeVernacular]">
+                  Nome Vernacular
+                  <span class="text-gray-500 text-xs">(separados por vírgula)</span>
+                </label>
+                <input
+                  type="text"
+                  id="comunidades[<%= communityIndex %>][plantas][0][nomeVernacular]"
+                  name="comunidades[<%= communityIndex %>][plantas][0][nomeVernacular]"
+                  class="form-input text-sm"
+                  placeholder="erva-doce, picão, jiçara"
+                >
+              </div>
+
+              <p class="text-xs text-gray-600 italic">* Pelo menos um nome (científico ou vernacular) é obrigatório</p>
+
+              <!-- Type of Use -->
+              <div>
+                <label class="form-label text-sm" for="comunidades[<%= communityIndex %>][plantas][0][tipoUso]">
+                  Tipo de Uso
+                  <span class="text-gray-500 text-xs">(separados por vírgula)</span>
+                </label>
+                <input
+                  type="text"
+                  id="comunidades[<%= communityIndex %>][plantas][0][tipoUso]"
+                  name="comunidades[<%= communityIndex %>][plantas][0][tipoUso]"
+                  class="form-input text-sm"
+                  placeholder="medicinal, alimentício, artesanato"
+                >
+              </div>
+            </div>
+          </div>
         <% } %>
       </div>
     </div>

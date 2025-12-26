@@ -60,7 +60,7 @@ router.get('/', async (req, res) => {
     res.render('index', {
       pageTitle: 'Busca Pública',
       contextName: 'Busca de Dados Etnobotânicos',
-      contextDescription: 'Explore conhecimento tradicional sobre plantas',
+      contextDescription: 'Conheça a relação de comunidades tradicionais com suas plantas',
       showNavigation: true,
       filters: {
         q: q || '',
@@ -87,7 +87,7 @@ router.get('/', async (req, res) => {
     res.render('index', {
       pageTitle: 'Busca Pública',
       contextName: 'Busca de Dados Etnobotânicos',
-      contextDescription: 'Explore conhecimento tradicional sobre plantas',
+      contextDescription: 'Conheça a relação de comunidades tradicionais com suas plantas',
       showNavigation: true,
       filters: {
         q: '',

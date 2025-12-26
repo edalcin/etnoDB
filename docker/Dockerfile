@@ -29,6 +29,13 @@ RUN npm run build:css
 # ============================================
 FROM node:20-alpine
 
+# Build metadata
+ARG BUILD_DATE
+ARG GIT_COMMIT
+LABEL build.date="${BUILD_DATE}"
+LABEL build.commit="${GIT_COMMIT}"
+LABEL build.version="1.0.0-debug"
+
 # Install curl for health checks
 RUN apk add --no-cache curl
 

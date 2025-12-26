@@ -73,8 +73,10 @@
 
   <!-- Metadata -->
   <div class="mt-4 pt-4 border-t border-gray-200 text-xs text-gray-600 space-y-1">
-    <p><strong>Criado em:</strong> <%= new Date(reference.createdAt).toLocaleString('pt-BR') %></p>
-    <% if (reference.updatedAt && reference.updatedAt.toString() !== reference.createdAt.toString()) { %>
+    <% if (reference.createdAt) { %>
+      <p><strong>Criado em:</strong> <%= new Date(reference.createdAt).toLocaleString('pt-BR') %></p>
+    <% } %>
+    <% if (reference.updatedAt && reference.createdAt && reference.updatedAt.toString() !== reference.createdAt.toString()) { %>
       <p><strong>Atualizado em:</strong> <%= new Date(reference.updatedAt).toLocaleString('pt-BR') %></p>
     <% } %>
   </div>

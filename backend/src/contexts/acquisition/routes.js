@@ -130,10 +130,14 @@ router.post('/reference/submit', async (req, res) => {
     console.log('\n========================================');
     console.log('[DEBUG] POST /reference/submit - FORM SUBMITTED');
     console.log('========================================');
+    console.log('[DEBUG] Request body keys:', Object.keys(req.body));
+    console.log('[DEBUG] Request body:', JSON.stringify(req.body, null, 2));
     logger.acquisition('Processing reference submission');
 
     // Parse form data into reference structure
+    console.log('[DEBUG] About to parse form data...');
     const referenceData = parseFormData(req.body);
+    console.log('[DEBUG] Form data parsed successfully!');
 
     // Validate reference data
     const validation = validateReference(referenceData);
@@ -166,6 +170,12 @@ router.post('/reference/submit', async (req, res) => {
     });
 
   } catch (error) {
+    console.log('\n========================================');
+    console.log('[DEBUG] ERROR CAUGHT!');
+    console.log('========================================');
+    console.log('[DEBUG] Error message:', error.message);
+    console.log('[DEBUG] Error stack:', error.stack);
+    console.log('========================================\n');
     logger.error('Failed to submit reference:', error.message);
 
     res.render('index', {
@@ -185,7 +195,10 @@ router.post('/reference/submit', async (req, res) => {
  * Converts comma-separated strings to arrays
  */
 function parseFormData(formData) {
-  logger.acquisition('Raw form data keys:', Object.keys(formData).filter(k => k.startsWith('comunidades')));
+  console.log('[DEBUG] parseFormData() called');
+  const comunidadeKeys = Object.keys(formData).filter(k => k.startsWith('comunidades'));
+  console.log('[DEBUG] Community keys found:', comunidadeKeys.length, 'keys');
+  console.log('[DEBUG] Community keys:', comunidadeKeys);
 
   // Parse basic reference fields
   const reference = {
@@ -196,6 +209,12 @@ function parseFormData(formData) {
     DOI: formData.DOI?.trim() || '',
     comunidades: []
   };
+
+  console.log('[DEBUG] Basic reference fields parsed:', {
+    titulo: reference.titulo,
+    autores: reference.autores,
+    ano: reference.ano
+  });
 
   // Parse communities (nested structure)
   const comunidadesData = {};
@@ -256,7 +275,8 @@ function parseFormData(formData) {
     });
   });
 
-  logger.acquisition('Parsed reference:', JSON.stringify(reference, null, 2));
+  console.log('[DEBUG] Parsed communities:', reference.comunidades.length);
+  console.log('[DEBUG] Full reference structure:', JSON.stringify(reference, null, 2));
 
   return reference;
 }

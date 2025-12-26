@@ -158,11 +158,11 @@
         <button
           type="button"
           class="btn btn-secondary btn-sm text-sm px-3 py-1"
-          @click="plantCount++"
-          hx-post="/reference/<%= referenceId %>/plant/add/<%= communityIndex %>"
-          hx-target="#plants-container-<%= communityIndex %>"
-          hx-swap="beforeend"
-          hx-vals='js:{"plantIndex": plantCount}'
+          @click="htmx.ajax('POST', '/reference/<%= referenceId %>/plant/add/<%= communityIndex %>', {
+            target: '#plants-container-<%= communityIndex %>',
+            swap: 'beforeend',
+            values: { plantIndex: plantCount }
+          }).then(() => { plantCount++; })"
         >
           + Adicionar Planta
         </button>

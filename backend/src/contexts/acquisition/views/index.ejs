@@ -135,11 +135,11 @@
           <button
             type="button"
             class="btn btn-secondary"
-            @click="communityCount++; plantCounts.push(1)"
-            hx-post="/community/add"
-            hx-target="#communities-container"
-            hx-swap="beforeend"
-            hx-vals='js:{"communityIndex": communityCount}'
+            @click="htmx.ajax('POST', '/community/add', {
+              target: '#communities-container',
+              swap: 'beforeend',
+              values: { communityIndex: communityCount }
+            }).then(() => { communityCount++; plantCounts.push(1); })"
           >
             + Adicionar Comunidade
           </button>

@@ -101,7 +101,7 @@ router.post('/plant/add/:communityIndex', (req, res) => {
     <!-- Type of Use -->
     <div>
       <label class="form-label text-sm" for="comunidades[${communityIndex}][plantas][${plantIndex}][tipoUso]">
-        Tipo de Uso <span class="text-red-500">*</span>
+        Tipo de Uso
         <span class="text-gray-500 text-xs">(separados por vírgula)</span>
       </label>
       <input
@@ -110,7 +110,6 @@ router.post('/plant/add/:communityIndex', (req, res) => {
         name="comunidades[${communityIndex}][plantas][${plantIndex}][tipoUso]"
         class="form-input text-sm"
         placeholder="medicinal, alimentício, artesanato"
-        required
       >
     </div>
   </div>
@@ -180,6 +179,8 @@ router.post('/reference/submit', async (req, res) => {
  * Converts comma-separated strings to arrays
  */
 function parseFormData(formData) {
+  logger.acquisition('Raw form data keys:', Object.keys(formData).filter(k => k.startsWith('comunidades')));
+
   // Parse basic reference fields
   const reference = {
     titulo: formData.titulo?.trim() || '',
@@ -248,6 +249,8 @@ function parseFormData(formData) {
       plantas
     });
   });
+
+  logger.acquisition('Parsed reference:', JSON.stringify(reference, null, 2));
 
   return reference;
 }

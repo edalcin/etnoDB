@@ -178,15 +178,8 @@ function validatePlant(planta, communityIndex, plantIndex) {
     });
   }
 
-  // Type of use validation
-  if (!Array.isArray(planta.tipoUso) || planta.tipoUso.length === 0) {
-    errors.push(`${prefix}: Pelo menos um tipo de uso é obrigatório`);
-  } else {
-    const emptyUses = planta.tipoUso.filter(u => !u || typeof u !== 'string' || u.trim().length === 0);
-    if (emptyUses.length > 0) {
-      errors.push(`${prefix}: Todos os tipos de uso devem ser válidos`);
-    }
-
+  // Type of use validation (optional field)
+  if (Array.isArray(planta.tipoUso) && planta.tipoUso.length > 0) {
     planta.tipoUso.forEach((uso, idx) => {
       if (uso && uso.length > Constraints.planta.tipoUso.maxLength) {
         errors.push(`${prefix}: Tipo de uso ${idx + 1} deve ter no máximo ${Constraints.planta.tipoUso.maxLength} caracteres`);

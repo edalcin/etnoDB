@@ -121,7 +121,7 @@ function parseFormData(formData) {
   // Parse basic reference fields
   const reference = {
     titulo: formData.titulo?.trim() || '',
-    autores: parseCommaSeparated(formData.autores),
+    autores: parseCommaSeparated(formData.autores).map(formatAuthorABNT),
     ano: parseInt(formData.ano) || 0,
     resumo: formData.resumo?.trim() || '',
     DOI: formData.DOI?.trim() || '',
@@ -202,6 +202,48 @@ function parseCommaSeparated(str) {
     .split(',')
     .map(item => item.trim())
     .filter(item => item.length > 0);
+}
+
+/**
+ * Convert author name to ABNT format
+ * Format: SOBRENOME, N.
+ * @param {string} author - Author name in any format
+ * @returns {string} Author name in ABNT format
+ */
+function formatAuthorABNT(author) {
+  if (!author || typeof author !== 'string') return '';
+
+  author = author.trim();
+  if (author.length === 0) return '';
+
+  // Check if already in format "SOBRENOME, Nome" or "Sobrenome, Nome"
+  if (author.includes(',')) {
+    const [lastName, firstName] = author.split(',').map(part => part.trim());
+
+    if (!firstName || firstName.length === 0) {
+      // Only last name provided
+      return lastName.toUpperCase();
+    }
+
+    // Extract first letter of first name
+    const firstInitial = firstName.charAt(0).toUpperCase();
+    return `${lastName.toUpperCase()}, ${firstInitial}.`;
+  }
+
+  // Format: "Nome Sobrenome" - need to reverse
+  const parts = author.split(/\s+/).filter(p => p.length > 0);
+
+  if (parts.length === 1) {
+    // Only one word - treat as last name
+    return parts[0].toUpperCase();
+  }
+
+  // Last part is the last name, rest is first names
+  const lastName = parts[parts.length - 1];
+  const firstNames = parts.slice(0, -1);
+  const firstInitial = firstNames[0].charAt(0).toUpperCase();
+
+  return `${lastName.toUpperCase()}, ${firstInitial}.`;
 }
 
 module.exports = router;

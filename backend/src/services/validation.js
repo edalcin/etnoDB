@@ -93,10 +93,8 @@ function validateCommunity(comunidade, index) {
     errors.push(`${prefix}: Nome deve ter no máximo ${Constraints.comunidade.nome.maxLength} caracteres`);
   }
 
-  // Município validation
-  if (!comunidade.municipio || typeof comunidade.municipio !== 'string' || comunidade.municipio.trim().length === 0) {
-    errors.push(`${prefix}: Município é obrigatório`);
-  } else if (comunidade.municipio.length > Constraints.comunidade.municipio.maxLength) {
+  // Município validation (optional)
+  if (comunidade.municipio && comunidade.municipio.length > Constraints.comunidade.municipio.maxLength) {
     errors.push(`${prefix}: Município deve ter no máximo ${Constraints.comunidade.municipio.maxLength} caracteres`);
   }
 
@@ -149,15 +147,21 @@ function validatePlant(planta, communityIndex, plantIndex) {
   const errors = [];
   const prefix = `Comunidade ${communityIndex}, Planta ${plantIndex}`;
 
-  // Scientific name validation
-  if (!Array.isArray(planta.nomeCientifico) || planta.nomeCientifico.length === 0) {
-    errors.push(`${prefix}: Pelo menos um nome científico é obrigatório`);
-  } else {
-    const emptyNames = planta.nomeCientifico.filter(n => !n || typeof n !== 'string' || n.trim().length === 0);
-    if (emptyNames.length > 0) {
-      errors.push(`${prefix}: Todos os nomes científicos devem ser válidos`);
-    }
+  // Check if at least one name (scientific OR vernacular) is provided
+  const hasScientificName = Array.isArray(planta.nomeCientifico) &&
+    planta.nomeCientifico.length > 0 &&
+    planta.nomeCientifico.some(n => n && typeof n === 'string' && n.trim().length > 0);
 
+  const hasVernacularName = Array.isArray(planta.nomeVernacular) &&
+    planta.nomeVernacular.length > 0 &&
+    planta.nomeVernacular.some(n => n && typeof n === 'string' && n.trim().length > 0);
+
+  if (!hasScientificName && !hasVernacularName) {
+    errors.push(`${prefix}: Pelo menos um nome (científico ou vernacular) é obrigatório`);
+  }
+
+  // Scientific name validation (if provided)
+  if (Array.isArray(planta.nomeCientifico) && planta.nomeCientifico.length > 0) {
     planta.nomeCientifico.forEach((nome, idx) => {
       if (nome && nome.length > Constraints.planta.nomeCientifico.maxLength) {
         errors.push(`${prefix}: Nome científico ${idx + 1} deve ter no máximo ${Constraints.planta.nomeCientifico.maxLength} caracteres`);
@@ -165,15 +169,8 @@ function validatePlant(planta, communityIndex, plantIndex) {
     });
   }
 
-  // Vernacular name validation
-  if (!Array.isArray(planta.nomeVernacular) || planta.nomeVernacular.length === 0) {
-    errors.push(`${prefix}: Pelo menos um nome vernacular é obrigatório`);
-  } else {
-    const emptyNames = planta.nomeVernacular.filter(n => !n || typeof n !== 'string' || n.trim().length === 0);
-    if (emptyNames.length > 0) {
-      errors.push(`${prefix}: Todos os nomes vernaculares devem ser válidos`);
-    }
-
+  // Vernacular name validation (if provided)
+  if (Array.isArray(planta.nomeVernacular) && planta.nomeVernacular.length > 0) {
     planta.nomeVernacular.forEach((nome, idx) => {
       if (nome && nome.length > Constraints.planta.nomeVernacular.maxLength) {
         errors.push(`${prefix}: Nome vernacular ${idx + 1} deve ter no máximo ${Constraints.planta.nomeVernacular.maxLength} caracteres`);

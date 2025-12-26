@@ -29,22 +29,6 @@
       >
     </div>
 
-    <!-- Municipality -->
-    <div>
-      <label class="form-label" for="comunidades[<%= communityIndex %>][municipio]">
-        Município <span class="text-red-500">*</span>
-      </label>
-      <input
-        type="text"
-        id="comunidades[<%= communityIndex %>][municipio]"
-        name="comunidades[<%= communityIndex %>][municipio]"
-        class="form-input"
-        value="<%= community?.municipio || '' %>"
-        required
-        maxlength="100"
-      >
-    </div>
-
     <!-- State -->
     <div>
       <label class="form-label" for="comunidades[<%= communityIndex %>][estado]">
@@ -58,6 +42,21 @@
         value="<%= community?.estado || '' %>"
         placeholder="São Paulo"
         required
+        maxlength="100"
+      >
+    </div>
+
+    <!-- Municipality -->
+    <div>
+      <label class="form-label" for="comunidades[<%= communityIndex %>][municipio]">
+        Município
+      </label>
+      <input
+        type="text"
+        id="comunidades[<%= communityIndex %>][municipio]"
+        name="comunidades[<%= communityIndex %>][municipio]"
+        class="form-input"
+        value="<%= community?.municipio || '' %>"
         maxlength="100"
       >
     </div>

@@ -16,7 +16,7 @@
     <!-- Scientific Name (comma-separated) -->
     <div>
       <label class="form-label text-sm" for="comunidades[<%= communityIndex %>][plantas][<%= plantIndex %>][nomeCientifico]">
-        Nome Científico <span class="text-red-500">*</span>
+        Nome Científico
         <span class="text-gray-500 text-xs">(separados por vírgula)</span>
       </label>
       <input
@@ -26,26 +26,26 @@
         class="form-input text-sm"
         value="<%= plant?.nomeCientifico?.join(', ') || '' %>"
         placeholder="Foeniculum vulgare, Bidens pilosa L."
-        required
       >
     </div>
 
     <!-- Vernacular Name (comma-separated) -->
     <div>
       <label class="form-label text-sm" for="comunidades[<%= communityIndex %>][plantas][<%= plantIndex %>][nomeVernacular]">
-        Nome Vernacular <span class="text-red-500">*</span>
+        Nome Vernacular
         <span class="text-gray-500 text-xs">(separados por vírgula)</span>
       </label>
       <input
         type="text"
         id="comunidades[<%= communityIndex %>][plantas][<%= plantIndex %>][nomeVernacular]"
-        name="comunidades[<%= communityIndex %>][plantas][<%= plantIndex %>][nomeVernacular]"
+        name="comunidades[<%= comunityIndex %>][plantas][<%= plantIndex %>][nomeVernacular]"
         class="form-input text-sm"
         value="<%= plant?.nomeVernacular?.join(', ') || '' %>"
         placeholder="erva-doce, picão, jiçara"
-        required
       >
     </div>
+
+    <p class="text-xs text-gray-600 italic">* Pelo menos um nome (científico ou vernacular) é obrigatório</p>
 
     <!-- Type of Use (comma-separated) -->
     <div>

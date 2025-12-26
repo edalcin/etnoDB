@@ -126,7 +126,61 @@
 
       <div id="plants-container-<%= communityIndex %>" class="space-y-3">
         <!-- Initial plant form -->
-        <%- include('./plant-form', { communityIndex: communityIndex, plantIndex: 0, plant: null }) %>
+        <div class="bg-gray-50 p-4 rounded border">
+          <div class="flex items-center justify-between mb-3">
+            <h5 class="text-sm font-semibold text-gray-700">Planta 1</h5>
+          </div>
+
+          <div class="space-y-3">
+            <!-- Scientific Name (comma-separated) -->
+            <div>
+              <label class="form-label text-sm" for="comunidades[<%= communityIndex %>][plantas][0][nomeCientifico]">
+                Nome Científico
+                <span class="text-gray-500 text-xs">(separados por vírgula)</span>
+              </label>
+              <input
+                type="text"
+                id="comunidades[<%= communityIndex %>][plantas][0][nomeCientifico]"
+                name="comunidades[<%= communityIndex %>][plantas][0][nomeCientifico]"
+                class="form-input text-sm"
+                placeholder="Foeniculum vulgare, Bidens pilosa L."
+              >
+            </div>
+
+            <!-- Vernacular Name (comma-separated) -->
+            <div>
+              <label class="form-label text-sm" for="comunidades[<%= communityIndex %>][plantas][0][nomeVernacular]">
+                Nome Vernacular
+                <span class="text-gray-500 text-xs">(separados por vírgula)</span>
+              </label>
+              <input
+                type="text"
+                id="comunidades[<%= communityIndex %>][plantas][0][nomeVernacular]"
+                name="comunidades[<%= communityIndex %>][plantas][0][nomeVernacular]"
+                class="form-input text-sm"
+                placeholder="erva-doce, picão, jiçara"
+              >
+            </div>
+
+            <p class="text-xs text-gray-600 italic">* Pelo menos um nome (científico ou vernacular) é obrigatório</p>
+
+            <!-- Type of Use (comma-separated) -->
+            <div>
+              <label class="form-label text-sm" for="comunidades[<%= communityIndex %>][plantas][0][tipoUso]">
+                Tipo de Uso <span class="text-red-500">*</span>
+                <span class="text-gray-500 text-xs">(separados por vírgula)</span>
+              </label>
+              <input
+                type="text"
+                id="comunidades[<%= communityIndex %>][plantas][0][tipoUso]"
+                name="comunidades[<%= communityIndex %>][plantas][0][tipoUso]"
+                class="form-input text-sm"
+                placeholder="medicinal, alimentício, artesanato"
+                required
+              >
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

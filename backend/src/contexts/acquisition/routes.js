@@ -51,11 +51,73 @@ router.post('/plant/add/:communityIndex', (req, res) => {
 
   logger.acquisition(`Adding plant form fragment to community #${communityIndex}, plant #${plantIndex}`);
 
-  res.render('partials/plant-form', {
-    communityIndex,
-    plantIndex,
-    plant: null
-  });
+  // Return HTML directly to avoid EJS include issues with nested partials
+  const html = `
+<div class="bg-gray-50 p-4 rounded border">
+  <div class="flex items-center justify-between mb-3">
+    <h5 class="text-sm font-semibold text-gray-700">Planta ${plantIndex + 1}</h5>
+    <button
+      type="button"
+      class="text-red-600 hover:text-red-800 text-xs"
+      @click="$el.closest('.bg-gray-50').remove()"
+    >
+      Remover
+    </button>
+  </div>
+
+  <div class="space-y-3">
+    <!-- Scientific Name -->
+    <div>
+      <label class="form-label text-sm" for="comunidades[${communityIndex}][plantas][${plantIndex}][nomeCientifico]">
+        Nome Científico
+        <span class="text-gray-500 text-xs">(separados por vírgula)</span>
+      </label>
+      <input
+        type="text"
+        id="comunidades[${communityIndex}][plantas][${plantIndex}][nomeCientifico]"
+        name="comunidades[${communityIndex}][plantas][${plantIndex}][nomeCientifico]"
+        class="form-input text-sm"
+        placeholder="Foeniculum vulgare, Bidens pilosa L."
+      >
+    </div>
+
+    <!-- Vernacular Name -->
+    <div>
+      <label class="form-label text-sm" for="comunidades[${communityIndex}][plantas][${plantIndex}][nomeVernacular]">
+        Nome Vernacular
+        <span class="text-gray-500 text-xs">(separados por vírgula)</span>
+      </label>
+      <input
+        type="text"
+        id="comunidades[${communityIndex}][plantas][${plantIndex}][nomeVernacular]"
+        name="comunidades[${communityIndex}][plantas][${plantIndex}][nomeVernacular]"
+        class="form-input text-sm"
+        placeholder="erva-doce, picão, jiçara"
+      >
+    </div>
+
+    <p class="text-xs text-gray-600 italic">* Pelo menos um nome (científico ou vernacular) é obrigatório</p>
+
+    <!-- Type of Use -->
+    <div>
+      <label class="form-label text-sm" for="comunidades[${communityIndex}][plantas][${plantIndex}][tipoUso]">
+        Tipo de Uso <span class="text-red-500">*</span>
+        <span class="text-gray-500 text-xs">(separados por vírgula)</span>
+      </label>
+      <input
+        type="text"
+        id="comunidades[${communityIndex}][plantas][${plantIndex}][tipoUso]"
+        name="comunidades[${communityIndex}][plantas][${plantIndex}][tipoUso]"
+        class="form-input text-sm"
+        placeholder="medicinal, alimentício, artesanato"
+        required
+      >
+    </div>
+  </div>
+</div>
+  `;
+
+  res.send(html);
 });
 
 /**

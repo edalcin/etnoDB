@@ -32,13 +32,12 @@
     <!-- Community Type -->
     <div>
       <label class="form-label" for="comunidades[<%= communityIndex %>][tipo]">
-        Tipo de Comunidade <span class="text-red-500">*</span>
+        Tipo de Comunidade
       </label>
       <select
         id="comunidades[<%= communityIndex %>][tipo]"
         name="comunidades[<%= communityIndex %>][tipo]"
         class="form-input"
-        required
       >
         <option value="">Selecione o tipo...</option>
         <option value="Andirobeiras" <%= community?.tipo === 'Andirobeiras' ? 'selected' : '' %>>Andirobeiras</option>

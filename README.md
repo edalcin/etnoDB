@@ -62,7 +62,8 @@ Interface pública e padrão para disseminação dos dados curados, com apresent
 **Porta**: 3003 (Interface padrão)
 **Funcionalidade**:
 - Logo do projeto centralizado na home page
-- Busca avançada por comunidade, planta (nome científico ou vernacular), estado e município
+- Busca Google-like em todos os campos do documento
+- Busca avançada por tipo de comunidade, nome da comunidade, planta (nome científico ou vernacular), estado e município
 - Visualização de resultados em formato de cards responsivos
 - Acesso aberto aos dados aprovados
 - Exportação de dados em formatos abertos (planejado)
@@ -81,6 +82,7 @@ Referência (Publicação Científica)
 ├── status (pending/approved/rejected)
 └── comunidades[] (uma ou mais)
     ├── nome
+    ├── tipo (Andirobeiras, Caiçaras, Quilombolas, etc.)
     ├── municipio
     ├── estado
     ├── local
@@ -91,6 +93,38 @@ Referência (Publicação Científica)
         ├── nomeVernacular[]
         └── tipoUso[]
 ```
+
+### Tipos de Comunidades Tradicionais
+
+O sistema suporta a classificação de comunidades tradicionais em 27 categorias, baseadas nas classificações utilizadas em estudos etnobotânicos brasileiros:
+
+- Andirobeiras
+- Apanhadores de sempre-vivas
+- Caatingueiros
+- Caiçaras
+- Castanheiras
+- Catadores de mangaba
+- Ciganos
+- Cipozeiros
+- Extrativistas
+- Faxinalenses
+- Geraizeiros
+- Ilhéus
+- Indígenas
+- Isqueiros
+- Morroquianos
+- Pantaneiros
+- Pescadores artesanais
+- Piaçaveiros
+- Pomeranos
+- Povos de terreiro
+- Quebradeiras de coco babaçu
+- Quilombolas
+- Retireiros
+- Ribeirinhos
+- Seringueiros
+- Vazanteiros
+- Veredeiros
 
 ### Exemplo de Registro
 
@@ -105,6 +139,7 @@ Uma referência científica pode documentar múltiplas comunidades, e cada comun
   "comunidades": [
     {
       "nome": "Ponta do Almada",
+      "tipo": "Caiçaras",
       "municipio": "Ubatuba",
       "estado": "São Paulo",
       "plantas": [
@@ -274,6 +309,7 @@ A documentação técnica completa está disponível em:
 - Exportação de dados (CSV, JSON)
 - API REST para integrações externas
 - Integração com APIs de periódicos científicos
+- Extração automática de dados de artigos científicos por Inteligência Artificial
 
 ## Contribuições
 

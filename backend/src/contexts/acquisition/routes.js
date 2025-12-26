@@ -210,6 +210,7 @@ function parseFormData(formData) {
       DOI: formData.DOI?.trim() || '',
       comunidades: formData.comunidades.map(com => ({
         nome: com.nome?.trim() || '',
+        tipo: com.tipo?.trim() || '',
         municipio: com.municipio?.trim() || '',
         estado: com.estado?.trim() || '',
         local: com.local?.trim() || '',
@@ -308,6 +309,7 @@ function parseFormData(formData) {
 
     reference.comunidades.push({
       nome: comunidade.nome?.trim() || '',
+      tipo: comunidade.tipo?.trim() || '',
       municipio: comunidade.municipio?.trim() || '',
       estado: comunidade.estado?.trim() || '',
       local: comunidade.local?.trim() || '',

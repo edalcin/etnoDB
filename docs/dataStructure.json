@@ -12,6 +12,7 @@
   "comunidades": [
     {
       "nome": "Ponta do Almada",
+      "tipo": "Caiçaras",
       "municipio": "Ubatuba",
       "estado": "São Paulo",
       "local": "limite sul do Núcleo Picinguaba do Parque Estadual da Serra do Mar",
@@ -61,6 +62,7 @@
     },
     {
       "nome": "Praia do Camburí",
+      "tipo": "Caiçaras",
       "municipio": "Ubatuba",
       "estado": "São Paulo",
       "local": "Núcleo Picinguaba do Parque Estadual da Serra do Mar",

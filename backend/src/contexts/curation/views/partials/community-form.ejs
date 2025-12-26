@@ -29,6 +29,48 @@
       >
     </div>
 
+    <!-- Community Type -->
+    <div>
+      <label class="form-label" for="comunidades[<%= communityIndex %>][tipo]">
+        Tipo de Comunidade <span class="text-red-500">*</span>
+      </label>
+      <select
+        id="comunidades[<%= communityIndex %>][tipo]"
+        name="comunidades[<%= communityIndex %>][tipo]"
+        class="form-input"
+        required
+      >
+        <option value="">Selecione o tipo...</option>
+        <option value="Andirobeiras" <%= community?.tipo === 'Andirobeiras' ? 'selected' : '' %>>Andirobeiras</option>
+        <option value="Apanhadores de sempre-vivas" <%= community?.tipo === 'Apanhadores de sempre-vivas' ? 'selected' : '' %>>Apanhadores de sempre-vivas</option>
+        <option value="Caatingueiros" <%= community?.tipo === 'Caatingueiros' ? 'selected' : '' %>>Caatingueiros</option>
+        <option value="Caiçaras" <%= community?.tipo === 'Caiçaras' ? 'selected' : '' %>>Caiçaras</option>
+        <option value="Castanheiras" <%= community?.tipo === 'Castanheiras' ? 'selected' : '' %>>Castanheiras</option>
+        <option value="Catadores de mangaba" <%= community?.tipo === 'Catadores de mangaba' ? 'selected' : '' %>>Catadores de mangaba</option>
+        <option value="Ciganos" <%= community?.tipo === 'Ciganos' ? 'selected' : '' %>>Ciganos</option>
+        <option value="Cipozeiros" <%= community?.tipo === 'Cipozeiros' ? 'selected' : '' %>>Cipozeiros</option>
+        <option value="Extrativistas" <%= community?.tipo === 'Extrativistas' ? 'selected' : '' %>>Extrativistas</option>
+        <option value="Faxinalenses" <%= community?.tipo === 'Faxinalenses' ? 'selected' : '' %>>Faxinalenses</option>
+        <option value="Geraizeiros" <%= community?.tipo === 'Geraizeiros' ? 'selected' : '' %>>Geraizeiros</option>
+        <option value="Ilhéus" <%= community?.tipo === 'Ilhéus' ? 'selected' : '' %>>Ilhéus</option>
+        <option value="Indígenas" <%= community?.tipo === 'Indígenas' ? 'selected' : '' %>>Indígenas</option>
+        <option value="Isqueiros" <%= community?.tipo === 'Isqueiros' ? 'selected' : '' %>>Isqueiros</option>
+        <option value="Morroquianos" <%= community?.tipo === 'Morroquianos' ? 'selected' : '' %>>Morroquianos</option>
+        <option value="Pantaneiros" <%= community?.tipo === 'Pantaneiros' ? 'selected' : '' %>>Pantaneiros</option>
+        <option value="Pescadores artesanais" <%= community?.tipo === 'Pescadores artesanais' ? 'selected' : '' %>>Pescadores artesanais</option>
+        <option value="Piaçaveiros" <%= community?.tipo === 'Piaçaveiros' ? 'selected' : '' %>>Piaçaveiros</option>
+        <option value="Pomeranos" <%= community?.tipo === 'Pomeranos' ? 'selected' : '' %>>Pomeranos</option>
+        <option value="Povos de terreiro" <%= community?.tipo === 'Povos de terreiro' ? 'selected' : '' %>>Povos de terreiro</option>
+        <option value="Quebradeiras de coco babaçu" <%= community?.tipo === 'Quebradeiras de coco babaçu' ? 'selected' : '' %>>Quebradeiras de coco babaçu</option>
+        <option value="Quilombolas" <%= community?.tipo === 'Quilombolas' ? 'selected' : '' %>>Quilombolas</option>
+        <option value="Retireiros" <%= community?.tipo === 'Retireiros' ? 'selected' : '' %>>Retireiros</option>
+        <option value="Ribeirinhos" <%= community?.tipo === 'Ribeirinhos' ? 'selected' : '' %>>Ribeirinhos</option>
+        <option value="Seringueiros" <%= community?.tipo === 'Seringueiros' ? 'selected' : '' %>>Seringueiros</option>
+        <option value="Vazanteiros" <%= community?.tipo === 'Vazanteiros' ? 'selected' : '' %>>Vazanteiros</option>
+        <option value="Veredeiros" <%= community?.tipo === 'Veredeiros' ? 'selected' : '' %>>Veredeiros</option>
+      </select>
+    </div>
+
     <!-- State -->
     <div>
       <label class="form-label" for="comunidades[<%= communityIndex %>][estado]">
@@ -115,7 +157,7 @@
           type="button"
           class="btn btn-secondary btn-sm text-sm px-3 py-1"
           @click="plantCount++"
-          hx-post="/plant/add/<%= communityIndex %>"
+          hx-post="/reference/<%= referenceId %>/plant/add/<%= communityIndex %>"
           hx-target="#plants-container-<%= communityIndex %>"
           hx-swap="beforeend"
           hx-vals='js:{"plantIndex": plantCount}'
@@ -125,64 +167,15 @@
       </div>
 
       <div id="plants-container-<%= communityIndex %>" class="space-y-3">
-        <!-- Initial plant form -->
-        <div class="bg-gray-50 p-4 rounded border">
-          <div class="flex items-center justify-between mb-3">
-            <h5 class="text-sm font-semibold text-gray-700">Planta 1</h5>
-          </div>
-
-          <div class="space-y-3">
-            <!-- Scientific Name (comma-separated) -->
-            <div>
-              <label class="form-label text-sm" for="comunidades[<%= communityIndex %>][plantas][0][nomeCientifico]">
-                Nome Científico
-                <span class="text-gray-500 text-xs">(separados por vírgula)</span>
-              </label>
-              <input
-                type="text"
-                id="comunidades[<%= communityIndex %>][plantas][0][nomeCientifico]"
-                name="comunidades[<%= communityIndex %>][plantas][0][nomeCientifico]"
-                class="form-input text-sm"
-                value="<%= community && community.plantas && community.plantas[0] && community.plantas[0].nomeCientifico ? community.plantas[0].nomeCientifico.join(', ') : '' %>"
-                placeholder="Foeniculum vulgare, Bidens pilosa L."
-              >
-            </div>
-
-            <!-- Vernacular Name (comma-separated) -->
-            <div>
-              <label class="form-label text-sm" for="comunidades[<%= communityIndex %>][plantas][0][nomeVernacular]">
-                Nome Vernacular
-                <span class="text-gray-500 text-xs">(separados por vírgula)</span>
-              </label>
-              <input
-                type="text"
-                id="comunidades[<%= communityIndex %>][plantas][0][nomeVernacular]"
-                name="comunidades[<%= communityIndex %>][plantas][0][nomeVernacular]"
-                class="form-input text-sm"
-                value="<%= community && community.plantas && community.plantas[0] && community.plantas[0].nomeVernacular ? community.plantas[0].nomeVernacular.join(', ') : '' %>"
-                placeholder="erva-doce, picão, jiçara"
-              >
-            </div>
-
-            <p class="text-xs text-gray-600 italic">* Pelo menos um nome (científico ou vernacular) é obrigatório</p>
-
-            <!-- Type of Use (comma-separated) -->
-            <div>
-              <label class="form-label text-sm" for="comunidades[<%= communityIndex %>][plantas][0][tipoUso]">
-                Tipo de Uso
-                <span class="text-gray-500 text-xs">(separados por vírgula)</span>
-              </label>
-              <input
-                type="text"
-                id="comunidades[<%= communityIndex %>][plantas][0][tipoUso]"
-                name="comunidades[<%= communityIndex %>][plantas][0][tipoUso]"
-                class="form-input text-sm"
-                value="<%= community && community.plantas && community.plantas[0] && community.plantas[0].tipoUso ? community.plantas[0].tipoUso.join(', ') : '' %>"
-                placeholder="medicinal, alimentício, artesanato"
-              >
-            </div>
-          </div>
-        </div>
+        <!-- Existing plants or initial plant form -->
+        <% if (community && community.plantas && community.plantas.length > 0) { %>
+          <% community.plantas.forEach((planta, pIdx) => { %>
+            <%- include('plant-form', { communityIndex: communityIndex, plantIndex: pIdx, plant: planta }) %>
+          <% }); %>
+        <% } else { %>
+          <!-- Initial plant form when no plants exist -->
+          <%- include('plant-form', { communityIndex: communityIndex, plantIndex: 0, plant: null }) %>
+        <% } %>
       </div>
     </div>
   </div>

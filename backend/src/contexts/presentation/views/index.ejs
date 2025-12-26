@@ -32,66 +32,126 @@
       <h2 class="text-xl font-semibold text-gray-900 mb-4">Filtros de Busca</h2>
 
       <form method="GET" action="/" class="space-y-4">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Google-like Search -->
+        <div>
+          <label class="form-label" for="q">
+            Busca Geral (Google Like)
+            <span class="text-gray-500 text-xs">- busca em todos os campos</span>
+          </label>
+          <input
+            type="text"
+            id="q"
+            name="q"
+            class="form-input"
+            value="<%= filters.q || '' %>"
+            placeholder="Digite qualquer termo para buscar em toda a base de dados"
+          >
+        </div>
 
-          <!-- Community Filter -->
-          <div>
-            <label class="form-label" for="comunidade">
-              Comunidade
-            </label>
-            <input
-              type="text"
-              id="comunidade"
-              name="comunidade"
-              class="form-input"
-              value="<%= filters.comunidade %>"
-              placeholder="Ex: Ponta do Almada"
-            >
-          </div>
+        <div class="border-t pt-4">
+          <p class="text-sm text-gray-600 mb-3">Ou use os filtros específicos:</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-          <!-- Plant Filter -->
-          <div>
-            <label class="form-label" for="planta">
-              Planta (nome científico ou vernacular)
-            </label>
-            <input
-              type="text"
-              id="planta"
-              name="planta"
-              class="form-input"
-              value="<%= filters.planta %>"
-              placeholder="Ex: erva-doce, Foeniculum"
-            >
-          </div>
+            <!-- Community Type Filter -->
+            <div>
+              <label class="form-label" for="tipo">
+                Tipo de Comunidade
+              </label>
+              <select
+                id="tipo"
+                name="tipo"
+                class="form-input"
+              >
+                <option value="">Todos os tipos</option>
+                <option value="Andirobeiras" <%= filters.tipo === 'Andirobeiras' ? 'selected' : '' %>>Andirobeiras</option>
+                <option value="Apanhadores de sempre-vivas" <%= filters.tipo === 'Apanhadores de sempre-vivas' ? 'selected' : '' %>>Apanhadores de sempre-vivas</option>
+                <option value="Caatingueiros" <%= filters.tipo === 'Caatingueiros' ? 'selected' : '' %>>Caatingueiros</option>
+                <option value="Caiçaras" <%= filters.tipo === 'Caiçaras' ? 'selected' : '' %>>Caiçaras</option>
+                <option value="Castanheiras" <%= filters.tipo === 'Castanheiras' ? 'selected' : '' %>>Castanheiras</option>
+                <option value="Catadores de mangaba" <%= filters.tipo === 'Catadores de mangaba' ? 'selected' : '' %>>Catadores de mangaba</option>
+                <option value="Ciganos" <%= filters.tipo === 'Ciganos' ? 'selected' : '' %>>Ciganos</option>
+                <option value="Cipozeiros" <%= filters.tipo === 'Cipozeiros' ? 'selected' : '' %>>Cipozeiros</option>
+                <option value="Extrativistas" <%= filters.tipo === 'Extrativistas' ? 'selected' : '' %>>Extrativistas</option>
+                <option value="Faxinalenses" <%= filters.tipo === 'Faxinalenses' ? 'selected' : '' %>>Faxinalenses</option>
+                <option value="Geraizeiros" <%= filters.tipo === 'Geraizeiros' ? 'selected' : '' %>>Geraizeiros</option>
+                <option value="Ilhéus" <%= filters.tipo === 'Ilhéus' ? 'selected' : '' %>>Ilhéus</option>
+                <option value="Indígenas" <%= filters.tipo === 'Indígenas' ? 'selected' : '' %>>Indígenas</option>
+                <option value="Isqueiros" <%= filters.tipo === 'Isqueiros' ? 'selected' : '' %>>Isqueiros</option>
+                <option value="Morroquianos" <%= filters.tipo === 'Morroquianos' ? 'selected' : '' %>>Morroquianos</option>
+                <option value="Pantaneiros" <%= filters.tipo === 'Pantaneiros' ? 'selected' : '' %>>Pantaneiros</option>
+                <option value="Pescadores artesanais" <%= filters.tipo === 'Pescadores artesanais' ? 'selected' : '' %>>Pescadores artesanais</option>
+                <option value="Piaçaveiros" <%= filters.tipo === 'Piaçaveiros' ? 'selected' : '' %>>Piaçaveiros</option>
+                <option value="Pomeranos" <%= filters.tipo === 'Pomeranos' ? 'selected' : '' %>>Pomeranos</option>
+                <option value="Povos de terreiro" <%= filters.tipo === 'Povos de terreiro' ? 'selected' : '' %>>Povos de terreiro</option>
+                <option value="Quebradeiras de coco babaçu" <%= filters.tipo === 'Quebradeiras de coco babaçu' ? 'selected' : '' %>>Quebradeiras de coco babaçu</option>
+                <option value="Quilombolas" <%= filters.tipo === 'Quilombolas' ? 'selected' : '' %>>Quilombolas</option>
+                <option value="Retireiros" <%= filters.tipo === 'Retireiros' ? 'selected' : '' %>>Retireiros</option>
+                <option value="Ribeirinhos" <%= filters.tipo === 'Ribeirinhos' ? 'selected' : '' %>>Ribeirinhos</option>
+                <option value="Seringueiros" <%= filters.tipo === 'Seringueiros' ? 'selected' : '' %>>Seringueiros</option>
+                <option value="Vazanteiros" <%= filters.tipo === 'Vazanteiros' ? 'selected' : '' %>>Vazanteiros</option>
+                <option value="Veredeiros" <%= filters.tipo === 'Veredeiros' ? 'selected' : '' %>>Veredeiros</option>
+              </select>
+            </div>
 
-          <!-- State Filter -->
-          <div>
-            <label class="form-label" for="estado">
-              Estado
-            </label>
-            <input
-              type="text"
-              id="estado"
-              name="estado"
-              class="form-input"
-              value="<%= filters.estado %>"
-              placeholder="Ex: São Paulo"
-            >
-          </div>
+            <!-- Community Filter -->
+            <div>
+              <label class="form-label" for="comunidade">
+                Comunidade
+              </label>
+              <input
+                type="text"
+                id="comunidade"
+                name="comunidade"
+                class="form-input"
+                value="<%= filters.comunidade %>"
+                placeholder="Ex: Ponta do Almada"
+              >
+            </div>
 
-          <!-- Municipality Filter -->
-          <div>
-            <label class="form-label" for="municipio">
-              Município
-            </label>
-            <input
-              type="text"
-              id="municipio"
-              name="municipio"
-              class="form-input"
-              value="<%= filters.municipio %>"
-              placeholder="Ex: Ubatuba"
-            >
+            <!-- Plant Filter -->
+            <div>
+              <label class="form-label" for="planta">
+                Planta (nome científico ou vernacular)
+              </label>
+              <input
+                type="text"
+                id="planta"
+                name="planta"
+                class="form-input"
+                value="<%= filters.planta %>"
+                placeholder="Ex: erva-doce, Foeniculum"
+              >
+            </div>
+
+            <!-- State Filter -->
+            <div>
+              <label class="form-label" for="estado">
+                Estado
+              </label>
+              <input
+                type="text"
+                id="estado"
+                name="estado"
+                class="form-input"
+                value="<%= filters.estado %>"
+                placeholder="Ex: São Paulo"
+              >
+            </div>
+
+            <!-- Municipality Filter -->
+            <div>
+              <label class="form-label" for="municipio">
+                Município
+              </label>
+              <input
+                type="text"
+                id="municipio"
+                name="municipio"
+                class="form-input"
+                value="<%= filters.municipio %>"
+                placeholder="Ex: Ubatuba"
+              >
+            </div>
           </div>
         </div>
 
@@ -153,13 +213,6 @@
       <p class="text-xs text-gray-400 mt-1">
         Dados de comunidades tradicionais seguindo princípios C.A.R.E.
       </p>
-      <% if (showNavigation) { %>
-        <div class="mt-3 space-x-4">
-          <a href="http://localhost:3001" class="text-forest-300 hover:text-forest-200 text-sm">Entrada de Dados</a>
-          <a href="http://localhost:3002" class="text-forest-300 hover:text-forest-200 text-sm">Curadoria</a>
-          <a href="http://localhost:3003" class="text-forest-300 hover:text-forest-200 text-sm">Busca Pública</a>
-        </div>
-      <% } %>
     </div>
   </footer>
 

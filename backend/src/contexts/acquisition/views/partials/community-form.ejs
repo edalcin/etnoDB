@@ -29,6 +29,48 @@
       >
     </div>
 
+    <!-- Community Type -->
+    <div>
+      <label class="form-label" for="comunidades[<%= communityIndex %>][tipo]">
+        Tipo de Comunidade <span class="text-red-500">*</span>
+      </label>
+      <select
+        id="comunidades[<%= communityIndex %>][tipo]"
+        name="comunidades[<%= communityIndex %>][tipo]"
+        class="form-input"
+        required
+      >
+        <option value="">Selecione o tipo...</option>
+        <option value="Andirobeiras" <%= community?.tipo === 'Andirobeiras' ? 'selected' : '' %>>Andirobeiras</option>
+        <option value="Apanhadores de sempre-vivas" <%= community?.tipo === 'Apanhadores de sempre-vivas' ? 'selected' : '' %>>Apanhadores de sempre-vivas</option>
+        <option value="Caatingueiros" <%= community?.tipo === 'Caatingueiros' ? 'selected' : '' %>>Caatingueiros</option>
+        <option value="Caiçaras" <%= community?.tipo === 'Caiçaras' ? 'selected' : '' %>>Caiçaras</option>
+        <option value="Castanheiras" <%= community?.tipo === 'Castanheiras' ? 'selected' : '' %>>Castanheiras</option>
+        <option value="Catadores de mangaba" <%= community?.tipo === 'Catadores de mangaba' ? 'selected' : '' %>>Catadores de mangaba</option>
+        <option value="Ciganos" <%= community?.tipo === 'Ciganos' ? 'selected' : '' %>>Ciganos</option>
+        <option value="Cipozeiros" <%= community?.tipo === 'Cipozeiros' ? 'selected' : '' %>>Cipozeiros</option>
+        <option value="Extrativistas" <%= community?.tipo === 'Extrativistas' ? 'selected' : '' %>>Extrativistas</option>
+        <option value="Faxinalenses" <%= community?.tipo === 'Faxinalenses' ? 'selected' : '' %>>Faxinalenses</option>
+        <option value="Geraizeiros" <%= community?.tipo === 'Geraizeiros' ? 'selected' : '' %>>Geraizeiros</option>
+        <option value="Ilhéus" <%= community?.tipo === 'Ilhéus' ? 'selected' : '' %>>Ilhéus</option>
+        <option value="Indígenas" <%= community?.tipo === 'Indígenas' ? 'selected' : '' %>>Indígenas</option>
+        <option value="Isqueiros" <%= community?.tipo === 'Isqueiros' ? 'selected' : '' %>>Isqueiros</option>
+        <option value="Morroquianos" <%= community?.tipo === 'Morroquianos' ? 'selected' : '' %>>Morroquianos</option>
+        <option value="Pantaneiros" <%= community?.tipo === 'Pantaneiros' ? 'selected' : '' %>>Pantaneiros</option>
+        <option value="Pescadores artesanais" <%= community?.tipo === 'Pescadores artesanais' ? 'selected' : '' %>>Pescadores artesanais</option>
+        <option value="Piaçaveiros" <%= community?.tipo === 'Piaçaveiros' ? 'selected' : '' %>>Piaçaveiros</option>
+        <option value="Pomeranos" <%= community?.tipo === 'Pomeranos' ? 'selected' : '' %>>Pomeranos</option>
+        <option value="Povos de terreiro" <%= community?.tipo === 'Povos de terreiro' ? 'selected' : '' %>>Povos de terreiro</option>
+        <option value="Quebradeiras de coco babaçu" <%= community?.tipo === 'Quebradeiras de coco babaçu' ? 'selected' : '' %>>Quebradeiras de coco babaçu</option>
+        <option value="Quilombolas" <%= community?.tipo === 'Quilombolas' ? 'selected' : '' %>>Quilombolas</option>
+        <option value="Retireiros" <%= community?.tipo === 'Retireiros' ? 'selected' : '' %>>Retireiros</option>
+        <option value="Ribeirinhos" <%= community?.tipo === 'Ribeirinhos' ? 'selected' : '' %>>Ribeirinhos</option>
+        <option value="Seringueiros" <%= community?.tipo === 'Seringueiros' ? 'selected' : '' %>>Seringueiros</option>
+        <option value="Vazanteiros" <%= community?.tipo === 'Vazanteiros' ? 'selected' : '' %>>Vazanteiros</option>
+        <option value="Veredeiros" <%= community?.tipo === 'Veredeiros' ? 'selected' : '' %>>Veredeiros</option>
+      </select>
+    </div>
+
     <!-- State -->
     <div>
       <label class="form-label" for="comunidades[<%= communityIndex %>][estado]">

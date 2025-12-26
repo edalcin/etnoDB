@@ -24,6 +24,8 @@ const logger = require('../../shared/logger');
 router.get('/', async (req, res) => {
   try {
     const {
+      q,
+      tipo,
       comunidade,
       planta,
       estado,
@@ -34,6 +36,8 @@ router.get('/', async (req, res) => {
 
     // Build MongoDB query
     const query = buildSearchQuery({
+      q,
+      tipo,
       comunidade,
       planta,
       estado,
@@ -59,6 +63,8 @@ router.get('/', async (req, res) => {
       contextDescription: 'Explore conhecimento tradicional sobre plantas',
       showNavigation: true,
       filters: {
+        q: q || '',
+        tipo: tipo || '',
         comunidade: comunidade || '',
         planta: planta || '',
         estado: estado || '',
@@ -84,6 +90,8 @@ router.get('/', async (req, res) => {
       contextDescription: 'Explore conhecimento tradicional sobre plantas',
       showNavigation: true,
       filters: {
+        q: '',
+        tipo: '',
         comunidade: '',
         planta: '',
         estado: '',
@@ -117,6 +125,39 @@ function buildSearchQuery(filters) {
   };
 
   const conditions = [];
+
+  // Google-like search (searches across all fields)
+  if (filters.q && filters.q.trim().length > 0) {
+    const searchRegex = sanitizeRegex(filters.q);
+    conditions.push({
+      $or: [
+        { titulo: { $regex: searchRegex, $options: 'i' } },
+        { autores: { $regex: searchRegex, $options: 'i' } },
+        { resumo: { $regex: searchRegex, $options: 'i' } },
+        { DOI: { $regex: searchRegex, $options: 'i' } },
+        { 'comunidades.nome': { $regex: searchRegex, $options: 'i' } },
+        { 'comunidades.tipo': { $regex: searchRegex, $options: 'i' } },
+        { 'comunidades.estado': { $regex: searchRegex, $options: 'i' } },
+        { 'comunidades.municipio': { $regex: searchRegex, $options: 'i' } },
+        { 'comunidades.local': { $regex: searchRegex, $options: 'i' } },
+        { 'comunidades.atividadesEconomicas': { $regex: searchRegex, $options: 'i' } },
+        { 'comunidades.observacoes': { $regex: searchRegex, $options: 'i' } },
+        { 'comunidades.plantas.nomeCientifico': { $regex: searchRegex, $options: 'i' } },
+        { 'comunidades.plantas.nomeVernacular': { $regex: searchRegex, $options: 'i' } },
+        { 'comunidades.plantas.tipoUso': { $regex: searchRegex, $options: 'i' } }
+      ]
+    });
+  }
+
+  // Community type filter (exact match, case-insensitive)
+  if (filters.tipo && filters.tipo.trim().length > 0) {
+    conditions.push({
+      'comunidades.tipo': {
+        $regex: `^${sanitizeRegex(filters.tipo)}$`,
+        $options: 'i'
+      }
+    });
+  }
 
   // Community name filter (case-insensitive partial match)
   if (filters.comunidade && filters.comunidade.trim().length > 0) {

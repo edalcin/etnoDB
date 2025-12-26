@@ -43,8 +43,7 @@
     <%- include('partials/status-section', { reference: reference }) %>
 
     <!-- Reference Edit Form -->
-    <form method="POST" action="/reference/update/<%= reference._id %>?_method=PUT" class="space-y-8">
-      <input type="hidden" name="_method" value="PUT">
+    <form method="POST" action="/reference/update/<%= reference._id %>" class="space-y-8">
 
       <!-- Reference Metadata Section -->
       <section class="card">
@@ -151,7 +150,7 @@
         <div id="communities-container" class="space-y-6">
           <!-- Existing communities -->
           <% reference.comunidades.forEach((comunidade, idx) => { %>
-            <%- include('partials/community-form', { communityIndex: idx, community: comunidade }) %>
+            <%- include('partials/community-form', { communityIndex: idx, community: comunidade, referenceId: reference._id }) %>
           <% }); %>
         </div>
       </section>
@@ -174,35 +173,6 @@
       <p class="text-sm">etnoDB - Base de Dados Etnobotânica</p>
     </div>
   </footer>
-
-  <!-- Method override support for PUT requests -->
-  <script>
-    // Handle _method hidden field for PUT requests
-    document.querySelector('form').addEventListener('submit', function(e) {
-      const method = this.querySelector('[name="_method"]');
-      if (method && method.value === 'PUT') {
-        e.preventDefault();
-
-        const formData = new FormData(this);
-        const action = this.getAttribute('action').replace('?_method=PUT', '');
-
-        fetch(action, {
-          method: 'PUT',
-          body: new URLSearchParams(formData)
-        }).then(response => {
-          if (response.redirected) {
-            window.location.href = response.url;
-          } else {
-            return response.text().then(html => {
-              document.open();
-              document.write(html);
-              document.close();
-            });
-          }
-        });
-      }
-    });
-  </script>
 
 </body>
 </html>

@@ -116,6 +116,20 @@ router.get('/reference/edit/:id', async (req, res) => {
  * PUT /reference/update/:id - Update reference content
  */
 router.put('/reference/update/:id', async (req, res) => {
+  await handleReferenceUpdate(req, res);
+});
+
+/**
+ * POST /reference/update/:id - Update reference content (alternative method)
+ */
+router.post('/reference/update/:id', async (req, res) => {
+  await handleReferenceUpdate(req, res);
+});
+
+/**
+ * Handle reference update (shared logic for PUT and POST)
+ */
+async function handleReferenceUpdate(req, res) {
   try {
     // Parse form data (reuse parseFormData from acquisition)
     const referenceData = parseFormData(req.body);
@@ -160,7 +174,7 @@ router.put('/reference/update/:id', async (req, res) => {
       errors: ['Erro ao atualizar: ' + error.message]
     });
   }
-});
+}
 
 /**
  * POST /reference/status/:id - Update reference status only
@@ -200,7 +214,8 @@ router.post('/reference/:id/community/add', (req, res) => {
 
   res.render('partials/community-form', {
     communityIndex,
-    community: null
+    community: null,
+    referenceId: req.params.id
   });
 });
 
@@ -279,6 +294,7 @@ function parseFormData(formData) {
 
     reference.comunidades.push({
       nome: comunidade.nome?.trim() || '',
+      tipo: comunidade.tipo?.trim() || '',
       municipio: comunidade.municipio?.trim() || '',
       estado: comunidade.estado?.trim() || '',
       local: comunidade.local?.trim() || '',

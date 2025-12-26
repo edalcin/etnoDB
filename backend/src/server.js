@@ -58,12 +58,6 @@ async function startServer() {
     servers.push(presentationServer);
 
     logger.server('All contexts started successfully');
-    console.log('\n========================================');
-    console.log('etnoDB v1.0.0-DEBUG BUILD 2025-12-26');
-    console.log('========================================');
-    console.log('Server running in', config.nodeEnv, 'mode');
-    console.log('DEBUG LOGS ENABLED - Check logs on form submit');
-    console.log('========================================\n');
 
     // Graceful shutdown handling
     const shutdown = async (signal) => {

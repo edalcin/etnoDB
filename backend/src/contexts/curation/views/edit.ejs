@@ -40,7 +40,7 @@
     <% } %>
 
     <!-- Status Section -->
-    <%- include('partials/status-section', { reference }) %>
+    <%- include('partials/status-section', { reference: reference }) %>
 
     <!-- Reference Edit Form -->
     <form method="POST" action="/reference/update/<%= reference._id %>?_method=PUT" class="space-y-8">

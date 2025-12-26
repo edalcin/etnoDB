@@ -131,17 +131,17 @@
     <% if (results.length > 0) { %>
       <div class="results-grid">
         <% results.forEach(reference => { %>
-          <%- include('partials/result-card', { reference }) %>
+          <%- include('partials/result-card', { reference: reference }) %>
         <% }); %>
       </div>
 
       <!-- Pagination -->
       <% if (pagination.totalPages > 1) { %>
-        <%- include('partials/pagination', { pagination, filters }) %>
+        <%- include('partials/pagination', { pagination: pagination, filters: filters }) %>
       <% } %>
 
     <% } else { %>
-      <%- include('partials/empty-state', { filters }) %>
+      <%- include('partials/empty-state', { filters: filters }) %>
     <% } %>
 
   </main>

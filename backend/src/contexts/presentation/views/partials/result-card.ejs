@@ -95,9 +95,11 @@
   <!-- Reference Footer -->
   <footer class="border-t border-gray-200 pt-3 mt-3">
     <p class="text-xs text-gray-500">
-      Cadastrado em: <%= new Date(reference.createdAt).toLocaleDateString('pt-BR') %>
-      <% if (reference.updatedAt && reference.updatedAt.toString() !== reference.createdAt.toString()) { %>
-        | Atualizado em: <%= new Date(reference.updatedAt).toLocaleDateString('pt-BR') %>
+      <% if (reference.createdAt) { %>
+        Cadastrado em: <%= new Date(reference.createdAt).toLocaleDateString('pt-BR') %>
+        <% if (reference.updatedAt && reference.createdAt && reference.updatedAt.toString() !== reference.createdAt.toString()) { %>
+          | Atualizado em: <%= new Date(reference.updatedAt).toLocaleDateString('pt-BR') %>
+        <% } %>
       <% } %>
     </p>
   </footer>

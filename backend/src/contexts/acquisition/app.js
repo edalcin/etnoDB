@@ -23,6 +23,7 @@ app.use(express.json({ limit: '10mb' }));
 // Static files
 app.use('/styles', express.static(path.join(__dirname, '../../../../frontend/dist/styles')));
 app.use('/styles/acquisition', express.static(path.join(__dirname, '../../../../frontend/src/acquisition/styles')));
+app.use('/images', express.static(path.join(__dirname, '../../shared/public/images')));
 
 // Request logging
 app.use((req, res, next) => {

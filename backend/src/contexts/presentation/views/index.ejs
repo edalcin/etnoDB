@@ -61,6 +61,7 @@
             <div>
               <label class="form-label" for="tipo">
                 Tipo de Comunidade
+                <span class="text-xs text-gray-500">(Conforme o Decreto nº 11.481, de 6 de abril de 2023)</span>
               </label>
               <select
                 id="tipo"
@@ -68,31 +69,33 @@
                 class="form-input"
               >
                 <option value="">Todos os tipos</option>
-                <option value="Andirobeiras" <%= filters.tipo === 'Andirobeiras' ? 'selected' : '' %>>Andirobeiras</option>
-                <option value="Apanhadores de sempre-vivas" <%= filters.tipo === 'Apanhadores de sempre-vivas' ? 'selected' : '' %>>Apanhadores de sempre-vivas</option>
+                <option value="Andirobeiros" <%= filters.tipo === 'Andirobeiros' ? 'selected' : '' %>>Andirobeiros</option>
+                <option value="Apanhadores de flores sempre-vivas" <%= filters.tipo === 'Apanhadores de flores sempre-vivas' ? 'selected' : '' %>>Apanhadores de flores sempre-vivas</option>
+                <option value="Benzedeiros" <%= filters.tipo === 'Benzedeiros' ? 'selected' : '' %>>Benzedeiros</option>
                 <option value="Caatingueiros" <%= filters.tipo === 'Caatingueiros' ? 'selected' : '' %>>Caatingueiros</option>
+                <option value="Caboclos" <%= filters.tipo === 'Caboclos' ? 'selected' : '' %>>Caboclos</option>
                 <option value="Caiçaras" <%= filters.tipo === 'Caiçaras' ? 'selected' : '' %>>Caiçaras</option>
-                <option value="Castanheiras" <%= filters.tipo === 'Castanheiras' ? 'selected' : '' %>>Castanheiras</option>
                 <option value="Catadores de mangaba" <%= filters.tipo === 'Catadores de mangaba' ? 'selected' : '' %>>Catadores de mangaba</option>
-                <option value="Ciganos" <%= filters.tipo === 'Ciganos' ? 'selected' : '' %>>Ciganos</option>
                 <option value="Cipozeiros" <%= filters.tipo === 'Cipozeiros' ? 'selected' : '' %>>Cipozeiros</option>
+                <option value="Comunidades de fundos e fechos de pasto" <%= filters.tipo === 'Comunidades de fundos e fechos de pasto' ? 'selected' : '' %>>Comunidades de fundos e fechos de pasto</option>
+                <option value="Comunidades quilombolas" <%= filters.tipo === 'Comunidades quilombolas' ? 'selected' : '' %>>Comunidades quilombolas</option>
                 <option value="Extrativistas" <%= filters.tipo === 'Extrativistas' ? 'selected' : '' %>>Extrativistas</option>
+                <option value="Extrativistas costeiros e marinhos" <%= filters.tipo === 'Extrativistas costeiros e marinhos' ? 'selected' : '' %>>Extrativistas costeiros e marinhos</option>
                 <option value="Faxinalenses" <%= filters.tipo === 'Faxinalenses' ? 'selected' : '' %>>Faxinalenses</option>
                 <option value="Geraizeiros" <%= filters.tipo === 'Geraizeiros' ? 'selected' : '' %>>Geraizeiros</option>
                 <option value="Ilhéus" <%= filters.tipo === 'Ilhéus' ? 'selected' : '' %>>Ilhéus</option>
-                <option value="Indígenas" <%= filters.tipo === 'Indígenas' ? 'selected' : '' %>>Indígenas</option>
-                <option value="Isqueiros" <%= filters.tipo === 'Isqueiros' ? 'selected' : '' %>>Isqueiros</option>
+                <option value="Juventude de povos e comunidades tradicionais" <%= filters.tipo === 'Juventude de povos e comunidades tradicionais' ? 'selected' : '' %>>Juventude de povos e comunidades tradicionais</option>
                 <option value="Morroquianos" <%= filters.tipo === 'Morroquianos' ? 'selected' : '' %>>Morroquianos</option>
                 <option value="Pantaneiros" <%= filters.tipo === 'Pantaneiros' ? 'selected' : '' %>>Pantaneiros</option>
                 <option value="Pescadores artesanais" <%= filters.tipo === 'Pescadores artesanais' ? 'selected' : '' %>>Pescadores artesanais</option>
-                <option value="Piaçaveiros" <%= filters.tipo === 'Piaçaveiros' ? 'selected' : '' %>>Piaçaveiros</option>
-                <option value="Pomeranos" <%= filters.tipo === 'Pomeranos' ? 'selected' : '' %>>Pomeranos</option>
-                <option value="Povos de terreiro" <%= filters.tipo === 'Povos de terreiro' ? 'selected' : '' %>>Povos de terreiro</option>
+                <option value="Povo pomerano" <%= filters.tipo === 'Povo pomerano' ? 'selected' : '' %>>Povo pomerano</option>
+                <option value="Povos ciganos" <%= filters.tipo === 'Povos ciganos' ? 'selected' : '' %>>Povos ciganos</option>
+                <option value="Povos e comunidades de terreiro / matriz africana" <%= filters.tipo === 'Povos e comunidades de terreiro / matriz africana' ? 'selected' : '' %>>Povos e comunidades de terreiro / matriz africana</option>
+                <option value="Povos indígenas" <%= filters.tipo === 'Povos indígenas' ? 'selected' : '' %>>Povos indígenas</option>
                 <option value="Quebradeiras de coco babaçu" <%= filters.tipo === 'Quebradeiras de coco babaçu' ? 'selected' : '' %>>Quebradeiras de coco babaçu</option>
-                <option value="Quilombolas" <%= filters.tipo === 'Quilombolas' ? 'selected' : '' %>>Quilombolas</option>
-                <option value="Retireiros" <%= filters.tipo === 'Retireiros' ? 'selected' : '' %>>Retireiros</option>
+                <option value="Raizeiros" <%= filters.tipo === 'Raizeiros' ? 'selected' : '' %>>Raizeiros</option>
+                <option value="Retireiros do Araguaia" <%= filters.tipo === 'Retireiros do Araguaia' ? 'selected' : '' %>>Retireiros do Araguaia</option>
                 <option value="Ribeirinhos" <%= filters.tipo === 'Ribeirinhos' ? 'selected' : '' %>>Ribeirinhos</option>
-                <option value="Seringueiros" <%= filters.tipo === 'Seringueiros' ? 'selected' : '' %>>Seringueiros</option>
                 <option value="Vazanteiros" <%= filters.tipo === 'Vazanteiros' ? 'selected' : '' %>>Vazanteiros</option>
                 <option value="Veredeiros" <%= filters.tipo === 'Veredeiros' ? 'selected' : '' %>>Veredeiros</option>
               </select>

@@ -33,6 +33,7 @@
     <div>
       <label class="form-label" for="comunidades[<%= communityIndex %>][tipo]">
         Tipo de Comunidade
+        <span class="text-xs text-gray-500">(Conforme o Decreto nº 11.481, de 6 de abril de 2023)</span>
       </label>
       <select
         id="comunidades[<%= communityIndex %>][tipo]"
@@ -40,31 +41,33 @@
         class="form-input"
       >
         <option value="">Selecione o tipo...</option>
-        <option value="Andirobeiras" <%= community?.tipo === 'Andirobeiras' ? 'selected' : '' %>>Andirobeiras</option>
-        <option value="Apanhadores de sempre-vivas" <%= community?.tipo === 'Apanhadores de sempre-vivas' ? 'selected' : '' %>>Apanhadores de sempre-vivas</option>
+        <option value="Andirobeiros" <%= community?.tipo === 'Andirobeiros' ? 'selected' : '' %>>Andirobeiros</option>
+        <option value="Apanhadores de flores sempre-vivas" <%= community?.tipo === 'Apanhadores de flores sempre-vivas' ? 'selected' : '' %>>Apanhadores de flores sempre-vivas</option>
+        <option value="Benzedeiros" <%= community?.tipo === 'Benzedeiros' ? 'selected' : '' %>>Benzedeiros</option>
         <option value="Caatingueiros" <%= community?.tipo === 'Caatingueiros' ? 'selected' : '' %>>Caatingueiros</option>
+        <option value="Caboclos" <%= community?.tipo === 'Caboclos' ? 'selected' : '' %>>Caboclos</option>
         <option value="Caiçaras" <%= community?.tipo === 'Caiçaras' ? 'selected' : '' %>>Caiçaras</option>
-        <option value="Castanheiras" <%= community?.tipo === 'Castanheiras' ? 'selected' : '' %>>Castanheiras</option>
         <option value="Catadores de mangaba" <%= community?.tipo === 'Catadores de mangaba' ? 'selected' : '' %>>Catadores de mangaba</option>
-        <option value="Ciganos" <%= community?.tipo === 'Ciganos' ? 'selected' : '' %>>Ciganos</option>
         <option value="Cipozeiros" <%= community?.tipo === 'Cipozeiros' ? 'selected' : '' %>>Cipozeiros</option>
+        <option value="Comunidades de fundos e fechos de pasto" <%= community?.tipo === 'Comunidades de fundos e fechos de pasto' ? 'selected' : '' %>>Comunidades de fundos e fechos de pasto</option>
+        <option value="Comunidades quilombolas" <%= community?.tipo === 'Comunidades quilombolas' ? 'selected' : '' %>>Comunidades quilombolas</option>
         <option value="Extrativistas" <%= community?.tipo === 'Extrativistas' ? 'selected' : '' %>>Extrativistas</option>
+        <option value="Extrativistas costeiros e marinhos" <%= community?.tipo === 'Extrativistas costeiros e marinhos' ? 'selected' : '' %>>Extrativistas costeiros e marinhos</option>
         <option value="Faxinalenses" <%= community?.tipo === 'Faxinalenses' ? 'selected' : '' %>>Faxinalenses</option>
         <option value="Geraizeiros" <%= community?.tipo === 'Geraizeiros' ? 'selected' : '' %>>Geraizeiros</option>
         <option value="Ilhéus" <%= community?.tipo === 'Ilhéus' ? 'selected' : '' %>>Ilhéus</option>
-        <option value="Indígenas" <%= community?.tipo === 'Indígenas' ? 'selected' : '' %>>Indígenas</option>
-        <option value="Isqueiros" <%= community?.tipo === 'Isqueiros' ? 'selected' : '' %>>Isqueiros</option>
+        <option value="Juventude de povos e comunidades tradicionais" <%= community?.tipo === 'Juventude de povos e comunidades tradicionais' ? 'selected' : '' %>>Juventude de povos e comunidades tradicionais</option>
         <option value="Morroquianos" <%= community?.tipo === 'Morroquianos' ? 'selected' : '' %>>Morroquianos</option>
         <option value="Pantaneiros" <%= community?.tipo === 'Pantaneiros' ? 'selected' : '' %>>Pantaneiros</option>
         <option value="Pescadores artesanais" <%= community?.tipo === 'Pescadores artesanais' ? 'selected' : '' %>>Pescadores artesanais</option>
-        <option value="Piaçaveiros" <%= community?.tipo === 'Piaçaveiros' ? 'selected' : '' %>>Piaçaveiros</option>
-        <option value="Pomeranos" <%= community?.tipo === 'Pomeranos' ? 'selected' : '' %>>Pomeranos</option>
-        <option value="Povos de terreiro" <%= community?.tipo === 'Povos de terreiro' ? 'selected' : '' %>>Povos de terreiro</option>
+        <option value="Povo pomerano" <%= community?.tipo === 'Povo pomerano' ? 'selected' : '' %>>Povo pomerano</option>
+        <option value="Povos ciganos" <%= community?.tipo === 'Povos ciganos' ? 'selected' : '' %>>Povos ciganos</option>
+        <option value="Povos e comunidades de terreiro / matriz africana" <%= community?.tipo === 'Povos e comunidades de terreiro / matriz africana' ? 'selected' : '' %>>Povos e comunidades de terreiro / matriz africana</option>
+        <option value="Povos indígenas" <%= community?.tipo === 'Povos indígenas' ? 'selected' : '' %>>Povos indígenas</option>
         <option value="Quebradeiras de coco babaçu" <%= community?.tipo === 'Quebradeiras de coco babaçu' ? 'selected' : '' %>>Quebradeiras de coco babaçu</option>
-        <option value="Quilombolas" <%= community?.tipo === 'Quilombolas' ? 'selected' : '' %>>Quilombolas</option>
-        <option value="Retireiros" <%= community?.tipo === 'Retireiros' ? 'selected' : '' %>>Retireiros</option>
+        <option value="Raizeiros" <%= community?.tipo === 'Raizeiros' ? 'selected' : '' %>>Raizeiros</option>
+        <option value="Retireiros do Araguaia" <%= community?.tipo === 'Retireiros do Araguaia' ? 'selected' : '' %>>Retireiros do Araguaia</option>
         <option value="Ribeirinhos" <%= community?.tipo === 'Ribeirinhos' ? 'selected' : '' %>>Ribeirinhos</option>
-        <option value="Seringueiros" <%= community?.tipo === 'Seringueiros' ? 'selected' : '' %>>Seringueiros</option>
         <option value="Vazanteiros" <%= community?.tipo === 'Vazanteiros' ? 'selected' : '' %>>Vazanteiros</option>
         <option value="Veredeiros" <%= community?.tipo === 'Veredeiros' ? 'selected' : '' %>>Veredeiros</option>
       </select>

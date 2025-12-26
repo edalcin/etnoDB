@@ -10,33 +10,36 @@ const logger = require('../shared/logger');
 
 /**
  * Valid community types
+ * Conforme o Decreto nº 11.481, de 6 de abril de 2023
  */
 const VALID_COMMUNITY_TYPES = [
-  'Andirobeiras',
-  'Apanhadores de sempre-vivas',
+  'Andirobeiros',
+  'Apanhadores de flores sempre-vivas',
+  'Benzedeiros',
   'Caatingueiros',
+  'Caboclos',
   'Caiçaras',
-  'Castanheiras',
   'Catadores de mangaba',
-  'Ciganos',
   'Cipozeiros',
+  'Comunidades de fundos e fechos de pasto',
+  'Comunidades quilombolas',
   'Extrativistas',
+  'Extrativistas costeiros e marinhos',
   'Faxinalenses',
   'Geraizeiros',
   'Ilhéus',
-  'Indígenas',
-  'Isqueiros',
+  'Juventude de povos e comunidades tradicionais',
   'Morroquianos',
   'Pantaneiros',
   'Pescadores artesanais',
-  'Piaçaveiros',
-  'Pomeranos',
-  'Povos de terreiro',
+  'Povo pomerano',
+  'Povos ciganos',
+  'Povos e comunidades de terreiro / matriz africana',
+  'Povos indígenas',
   'Quebradeiras de coco babaçu',
-  'Quilombolas',
-  'Retireiros',
+  'Raizeiros',
+  'Retireiros do Araguaia',
   'Ribeirinhos',
-  'Seringueiros',
   'Vazanteiros',
   'Veredeiros'
 ];

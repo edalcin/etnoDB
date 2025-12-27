@@ -144,6 +144,11 @@ async function handleReferenceUpdate(req, res) {
     // Parse form data (reuse parseFormData from acquisition)
     const referenceData = parseFormData(req.body);
 
+    // Debug: Log if communities are missing
+    if (!referenceData.comunidades || referenceData.comunidades.length === 0) {
+      logger.curation(`WARNING: No communities found in form data. Form keys: ${Object.keys(req.body).filter(k => k.includes('comunidades')).join(', ')}`);
+    }
+
     // Validate reference data
     const validation = validateReference(referenceData);
 
@@ -152,12 +157,28 @@ async function handleReferenceUpdate(req, res) {
 
       const reference = await findReferenceById(req.params.id);
 
+      // Preserve original data when validation fails to avoid data loss
+      // Only update metadata fields, keep communities from form data if they exist
+      const preservedReference = {
+        ...reference,
+        titulo: referenceData.titulo || reference.titulo,
+        autores: referenceData.autores || reference.autores,
+        ano: referenceData.ano || reference.ano,
+        resumo: referenceData.resumo !== undefined ? referenceData.resumo : reference.resumo,
+        DOI: referenceData.DOI !== undefined ? referenceData.DOI : reference.DOI,
+        // Keep communities from form if they exist, otherwise use original
+        comunidades: (referenceData.comunidades && referenceData.comunidades.length > 0)
+          ? referenceData.comunidades
+          : reference.comunidades,
+        _id: reference._id
+      };
+
       return res.render('edit', {
         pageTitle: 'Editar Referência',
         contextName: 'Curadoria de Dados Etnobotânicos',
         contextDescription: 'Edição de referência científica',
         showNavigation: true,
-        reference: { ...reference, ...referenceData, _id: reference._id },
+        reference: preservedReference,
         errors: validation.errors
       });
     }

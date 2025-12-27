@@ -160,6 +160,12 @@ async function handleReferenceUpdate(req, res) {
     // Debug: Log if communities are missing
     if (!referenceData.comunidades || referenceData.comunidades.length === 0) {
       logger.curation(`WARNING: No communities found in parsed data. Form keys sample: ${comunidadeKeys.slice(0, 10).join(', ')}`);
+      // Log first 5 community field values to understand what's being received
+      const sampleValues = {};
+      comunidadeKeys.slice(0, 5).forEach(k => {
+        sampleValues[k] = req.body[k];
+      });
+      logger.curation(`Sample values: ${JSON.stringify(sampleValues)}`);
     }
 
     // Validate reference data

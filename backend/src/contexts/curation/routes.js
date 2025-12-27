@@ -141,12 +141,25 @@ router.post('/reference/update/:id', async (req, res) => {
  */
 async function handleReferenceUpdate(req, res) {
   try {
+    // Debug: Log raw form data keys
+    const comunidadeKeys = Object.keys(req.body).filter(k => k.includes('comunidades'));
+    logger.curation(`Form has ${comunidadeKeys.length} comunidade-related keys`);
+    if (comunidadeKeys.length > 0) {
+      logger.curation(`Sample keys: ${comunidadeKeys.slice(0, 5).join(', ')}`);
+    }
+
     // Parse form data (reuse parseFormData from acquisition)
     const referenceData = parseFormData(req.body);
 
+    // Debug: Log parsed data
+    logger.curation(`Parsed ${referenceData.comunidades.length} communities`);
+    if (referenceData.comunidades.length > 0) {
+      logger.curation(`First community: ${JSON.stringify(referenceData.comunidades[0].nome)}, plants: ${referenceData.comunidades[0].plantas.length}`);
+    }
+
     // Debug: Log if communities are missing
     if (!referenceData.comunidades || referenceData.comunidades.length === 0) {
-      logger.curation(`WARNING: No communities found in form data. Form keys: ${Object.keys(req.body).filter(k => k.includes('comunidades')).join(', ')}`);
+      logger.curation(`WARNING: No communities found in parsed data. Form keys sample: ${comunidadeKeys.slice(0, 10).join(', ')}`);
     }
 
     // Validate reference data
@@ -366,10 +379,19 @@ function parseFormData(formData) {
   };
 
   const comunidadesData = {};
+  let matchedKeys = 0;
+  const allKeys = Object.keys(formData);
+  const comunidadeKeysInForm = allKeys.filter(k => k.startsWith('comunidades['));
+
+  logger.curation(`parseFormData: Total ${allKeys.length} keys, ${comunidadeKeysInForm.length} start with 'comunidades['`);
+  if (comunidadeKeysInForm.length > 0) {
+    logger.curation(`First 3 comunidade keys: ${comunidadeKeysInForm.slice(0, 3).join(', ')}`);
+  }
 
   Object.keys(formData).forEach(key => {
     const match = key.match(/^comunidades\[(\d+)\]\[(.+)\]$/);
     if (match) {
+      matchedKeys++;
       const [, index, field] = match;
       const idx = parseInt(index);
 
@@ -392,6 +414,8 @@ function parseFormData(formData) {
       }
     }
   });
+
+  logger.curation(`parseFormData: After matching, comunidadesData has indices: ${Object.keys(comunidadesData).join(', ')}`);
 
   Object.keys(comunidadesData).sort().forEach(idx => {
     const comunidade = comunidadesData[idx];
@@ -418,6 +442,11 @@ function parseFormData(formData) {
       plantas: plantas  // Don't filter here - let validation catch empty plants
     });
   });
+
+  logger.curation(`parseFormData: matched ${matchedKeys} keys, created ${reference.comunidades.length} communities`);
+  if (matchedKeys > 0 && reference.comunidades.length === 0) {
+    logger.curation(`WARNING: Had matched keys but no communities created. ComunidadesData: ${JSON.stringify(Object.keys(comunidadesData))}`);
+  }
 
   return reference;
 }

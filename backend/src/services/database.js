@@ -116,35 +116,24 @@ async function updateReferenceById(id, updateData) {
 
     logger.database(`Executing findOneAndUpdate for ObjectId: ${objectId}`);
 
-    // Debug: Check if document exists BEFORE update
-    const existsBefore = await collection.findOne({ _id: objectId });
-    console.log('DEBUG: Document exists before update?', existsBefore ? 'YES' : 'NO');
-    if (existsBefore) {
-      console.log('DEBUG: Existing document ID:', existsBefore._id.toString());
-    }
-
+    // MongoDB driver v6+ returns document directly, not { value: document }
     const result = await collection.findOneAndUpdate(
       { _id: objectId },
       { $set: updatedDoc },
       { returnDocument: 'after' }
     );
 
-    console.log('DEBUG: findOneAndUpdate result:', result);
-    console.log('DEBUG: result.value:', result?.value);
-    console.log('DEBUG: result.ok:', result?.ok);
-    console.log('DEBUG: result.lastErrorObject:', result?.lastErrorObject);
+    logger.database(`findOneAndUpdate completed, checking result...`);
 
-    logger.database(`findOneAndUpdate result: ${result ? 'found' : 'null'}`);
-    logger.database(`result.value: ${result?.value ? 'exists' : 'null/undefined'}`);
-
-    if (!result.value) {
+    // In MongoDB driver v6+, the document is returned directly
+    if (!result) {
       logger.error(`Reference with ID ${id} (ObjectId: ${objectId}) NOT FOUND in database`);
       throw new Error('Referência não encontrada');
     }
 
     logger.database(`Reference updated successfully with ID: ${id}`);
 
-    return result.value;
+    return result;
   } catch (error) {
     logger.error(`Failed to update reference ${id}:`, error.message);
     throw new Error(`Falha ao atualizar referência: ${error.message}`);
@@ -167,6 +156,7 @@ async function updateReferenceStatus(id, status) {
     const collection = database.getCollection(config.database.collection);
     const objectId = typeof id === 'string' ? new ObjectId(id) : id;
 
+    // MongoDB driver v6+ returns document directly, not { value: document }
     const result = await collection.findOneAndUpdate(
       { _id: objectId },
       {
@@ -178,13 +168,13 @@ async function updateReferenceStatus(id, status) {
       { returnDocument: 'after' }
     );
 
-    if (!result.value) {
+    if (!result) {
       throw new Error('Referência não encontrada');
     }
 
     logger.database(`Reference status updated to "${status}" for ID: ${id}`);
 
-    return result.value;
+    return result;
   } catch (error) {
     logger.error('Failed to update reference status:', error.message);
     throw new Error(`Falha ao atualizar status: ${error.message}`);

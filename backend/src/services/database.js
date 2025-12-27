@@ -115,11 +115,24 @@ async function updateReferenceById(id, updateData) {
     const updatedDoc = updateReference(updateData);
 
     logger.database(`Executing findOneAndUpdate for ObjectId: ${objectId}`);
+
+    // Debug: Check if document exists BEFORE update
+    const existsBefore = await collection.findOne({ _id: objectId });
+    console.log('DEBUG: Document exists before update?', existsBefore ? 'YES' : 'NO');
+    if (existsBefore) {
+      console.log('DEBUG: Existing document ID:', existsBefore._id.toString());
+    }
+
     const result = await collection.findOneAndUpdate(
       { _id: objectId },
       { $set: updatedDoc },
       { returnDocument: 'after' }
     );
+
+    console.log('DEBUG: findOneAndUpdate result:', result);
+    console.log('DEBUG: result.value:', result?.value);
+    console.log('DEBUG: result.ok:', result?.ok);
+    console.log('DEBUG: result.lastErrorObject:', result?.lastErrorObject);
 
     logger.database(`findOneAndUpdate result: ${result ? 'found' : 'null'}`);
     logger.database(`result.value: ${result?.value ? 'exists' : 'null/undefined'}`);

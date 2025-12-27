@@ -152,6 +152,12 @@ router.post('/reference/update/:id', async (req, res) => {
  */
 async function handleReferenceUpdate(req, res) {
   try {
+    console.log('DEBUG ===  UPDATE REFERENCE START ===');
+    console.log('DEBUG: Reference ID from params:', req.params.id);
+    console.log('DEBUG: ID type:', typeof req.params.id);
+    console.log('DEBUG: ID length:', req.params.id.length);
+    console.log('DEBUG: Request method:', req.method);
+
     logger.curation(`=== UPDATE REFERENCE START ===`);
     logger.curation(`Reference ID from params: ${req.params.id}`);
     logger.curation(`Request method: ${req.method}`);

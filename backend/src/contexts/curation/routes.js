@@ -56,6 +56,9 @@ router.get('/', async (req, res) => {
     });
 
     logger.curation(`Listing ${references.length} references (status: ${status || 'all'}, sort: ${sortField} ${order})`);
+    if (references.length > 0) {
+      logger.curation(`First reference ID: ${references[0]._id}, title: ${references[0].titulo}`);
+    }
 
     res.render('index', {
       pageTitle: 'Curadoria',
@@ -92,16 +95,23 @@ router.get('/', async (req, res) => {
  */
 router.get('/reference/edit/:id', async (req, res) => {
   try {
+    logger.curation(`=== GET EDIT PAGE ===`);
+    logger.curation(`Requested reference ID: ${req.params.id}`);
+    logger.curation(`ID length: ${req.params.id.length}, type: ${typeof req.params.id}`);
+
     const reference = await findReferenceById(req.params.id);
 
     if (!reference) {
+      logger.error(`Reference ${req.params.id} NOT FOUND when loading edit page`);
       return res.status(404).render('error', {
         message: 'Referência não encontrada',
         error: {}
       });
     }
 
-    logger.curation(`Editing reference: ${reference._id}`);
+    logger.curation(`Reference found: ${reference._id}`);
+    logger.curation(`Reference has ${reference.comunidades.length} communities`);
+    logger.curation(`Reference title: ${reference.titulo}`);
 
     res.render('edit', {
       pageTitle: 'Editar Referência',
@@ -113,7 +123,8 @@ router.get('/reference/edit/:id', async (req, res) => {
     });
 
   } catch (error) {
-    logger.error('Failed to load reference for editing:', error.message);
+    logger.error(`Failed to load reference ${req.params.id} for editing:`, error.message);
+    logger.error(`Stack:`, error.stack);
 
     res.status(500).render('error', {
       message: 'Erro ao carregar referência: ' + error.message,

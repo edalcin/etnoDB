@@ -141,32 +141,8 @@ router.post('/reference/update/:id', async (req, res) => {
  */
 async function handleReferenceUpdate(req, res) {
   try {
-    // Debug: Log raw form data keys
-    const comunidadeKeys = Object.keys(req.body).filter(k => k.includes('comunidades'));
-    logger.curation(`Form has ${comunidadeKeys.length} comunidade-related keys`);
-    if (comunidadeKeys.length > 0) {
-      logger.curation(`Sample keys: ${comunidadeKeys.slice(0, 5).join(', ')}`);
-    }
-
-    // Parse form data (reuse parseFormData from acquisition)
+    // Parse form data
     const referenceData = parseFormData(req.body);
-
-    // Debug: Log parsed data
-    logger.curation(`Parsed ${referenceData.comunidades.length} communities`);
-    if (referenceData.comunidades.length > 0) {
-      logger.curation(`First community: ${JSON.stringify(referenceData.comunidades[0].nome)}, plants: ${referenceData.comunidades[0].plantas.length}`);
-    }
-
-    // Debug: Log if communities are missing
-    if (!referenceData.comunidades || referenceData.comunidades.length === 0) {
-      logger.curation(`WARNING: No communities found in parsed data. Form keys sample: ${comunidadeKeys.slice(0, 10).join(', ')}`);
-      // Log first 5 community field values to understand what's being received
-      const sampleValues = {};
-      comunidadeKeys.slice(0, 5).forEach(k => {
-        sampleValues[k] = req.body[k];
-      });
-      logger.curation(`Sample values: ${JSON.stringify(sampleValues)}`);
-    }
 
     // Validate reference data
     const validation = validateReference(referenceData);
@@ -371,9 +347,51 @@ function filterEmptyPlants(plantas) {
 
 /**
  * Parse form data into reference structure
- * (Same logic as acquisition context)
+ * Handles both pre-parsed (Express urlencoded with extended:true) and raw form data
  */
 function parseFormData(formData) {
+  // Check if Express already parsed comunidades as array (extended: true)
+  if (Array.isArray(formData.comunidades)) {
+    logger.curation(`parseFormData: Data already parsed as array by Express`);
+
+    // Data is already in the correct format (parsed by Express urlencoded)
+    const reference = {
+      titulo: formData.titulo?.trim() || '',
+      autores: parseCommaSeparated(formData.autores),
+      ano: parseInt(formData.ano) || 0,
+      resumo: formData.resumo?.trim() || '',
+      DOI: formData.DOI?.trim() || '',
+      status: formData.status || Status.PENDING,
+      comunidades: formData.comunidades.map(com => ({
+        nome: com.nome?.trim() || '',
+        tipo: com.tipo?.trim() || '',
+        municipio: com.municipio?.trim() || '',
+        estado: formatStateName(com.estado || ''),
+        local: com.local?.trim() || '',
+        atividadesEconomicas: Array.isArray(com.atividadesEconomicas)
+          ? com.atividadesEconomicas
+          : parseCommaSeparated(com.atividadesEconomicas),
+        observacoes: com.observacoes?.trim() || '',
+        plantas: (com.plantas || []).map(p => ({
+          nomeCientifico: Array.isArray(p.nomeCientifico)
+            ? p.nomeCientifico
+            : parseCommaSeparated(p.nomeCientifico),
+          nomeVernacular: (Array.isArray(p.nomeVernacular)
+            ? p.nomeVernacular
+            : parseCommaSeparated(p.nomeVernacular)).map(formatVernacularName),
+          tipoUso: Array.isArray(p.tipoUso)
+            ? p.tipoUso
+            : parseCommaSeparated(p.tipoUso)
+        }))  // Don't filter here - let validation catch empty plants
+      }))
+    };
+
+    logger.curation(`parseFormData: Parsed ${reference.comunidades.length} communities from Express array`);
+    return reference;
+  }
+
+  // Original parsing for non-pre-parsed data
+  logger.curation(`parseFormData: Using regex-based parsing`);
   const reference = {
     titulo: formData.titulo?.trim() || '',
     autores: parseCommaSeparated(formData.autores),
@@ -386,13 +404,6 @@ function parseFormData(formData) {
 
   const comunidadesData = {};
   let matchedKeys = 0;
-  const allKeys = Object.keys(formData);
-  const comunidadeKeysInForm = allKeys.filter(k => k.startsWith('comunidades['));
-
-  logger.curation(`parseFormData: Total ${allKeys.length} keys, ${comunidadeKeysInForm.length} start with 'comunidades['`);
-  if (comunidadeKeysInForm.length > 0) {
-    logger.curation(`First 3 comunidade keys: ${comunidadeKeysInForm.slice(0, 3).join(', ')}`);
-  }
 
   Object.keys(formData).forEach(key => {
     const match = key.match(/^comunidades\[(\d+)\]\[(.+)\]$/);
@@ -421,8 +432,6 @@ function parseFormData(formData) {
     }
   });
 
-  logger.curation(`parseFormData: After matching, comunidadesData has indices: ${Object.keys(comunidadesData).join(', ')}`);
-
   Object.keys(comunidadesData).sort().forEach(idx => {
     const comunidade = comunidadesData[idx];
 
@@ -450,10 +459,6 @@ function parseFormData(formData) {
   });
 
   logger.curation(`parseFormData: matched ${matchedKeys} keys, created ${reference.comunidades.length} communities`);
-  if (matchedKeys > 0 && reference.comunidades.length === 0) {
-    logger.curation(`WARNING: Had matched keys but no communities created. ComunidadesData: ${JSON.stringify(Object.keys(comunidadesData))}`);
-  }
-
   return reference;
 }
 

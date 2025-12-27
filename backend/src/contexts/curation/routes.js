@@ -141,6 +141,10 @@ router.post('/reference/update/:id', async (req, res) => {
  */
 async function handleReferenceUpdate(req, res) {
   try {
+    logger.curation(`=== UPDATE REFERENCE START ===`);
+    logger.curation(`Reference ID from params: ${req.params.id}`);
+    logger.curation(`Request method: ${req.method}`);
+
     // Parse form data
     const referenceData = parseFormData(req.body);
 
@@ -149,8 +153,15 @@ async function handleReferenceUpdate(req, res) {
 
     if (!validation.isValid) {
       logger.curation(`Validation failed: ${validation.errors.length} errors`);
+      logger.curation(`Fetching reference ${req.params.id} from database to preserve data...`);
 
       const reference = await findReferenceById(req.params.id);
+
+      if (!reference) {
+        logger.error(`Reference ${req.params.id} NOT FOUND in database during validation error handling`);
+      } else {
+        logger.curation(`Reference ${req.params.id} found in database, has ${reference.comunidades.length} communities`);
+      }
 
       // Preserve original data when validation fails to avoid data loss
       // Only update metadata fields, keep communities from form data if they exist
@@ -179,24 +190,43 @@ async function handleReferenceUpdate(req, res) {
     }
 
     // Filter empty plants before saving (only after validation passes)
+    logger.curation(`Validation passed. Filtering empty plants and updating reference ${req.params.id}...`);
     referenceData.comunidades = referenceData.comunidades.map(com => ({
       ...com,
       plantas: filterEmptyPlants(com.plantas)
     }));
 
+    logger.curation(`Calling updateReferenceById for ${req.params.id} with ${referenceData.comunidades.length} communities`);
+
     // Update reference
     const updated = await updateReferenceById(req.params.id, referenceData);
 
-    logger.curation(`Reference updated successfully: ${updated._id}`);
+    if (!updated) {
+      logger.error(`updateReferenceById returned null/undefined for ${req.params.id}`);
+    } else {
+      logger.curation(`Reference updated successfully: ${updated._id}`);
+    }
 
     // Redirect to list with success message
     res.redirect('/?success=true');
 
   } catch (error) {
-    logger.error('Failed to update reference:', error.message);
+    logger.error(`=== UPDATE REFERENCE ERROR ===`);
+    logger.error(`Failed to update reference ${req.params.id}:`, error.message);
+    logger.error(`Error stack:`, error.stack);
 
+    logger.curation(`Fetching reference ${req.params.id} to show error page...`);
     const reference = await findReferenceById(req.params.id);
 
+    if (!reference) {
+      logger.error(`Reference ${req.params.id} NOT FOUND when trying to show error page`);
+      return res.status(404).render('error', {
+        message: 'Referência não encontrada',
+        error: {}
+      });
+    }
+
+    logger.curation(`Rendering error page for reference ${req.params.id}`);
     res.render('edit', {
       pageTitle: 'Editar Referência',
       contextName: 'Curadoria de Dados Etnobotânicos',

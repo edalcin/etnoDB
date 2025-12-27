@@ -103,26 +103,37 @@ async function findReferenceById(id) {
  */
 async function updateReferenceById(id, updateData) {
   try {
+    logger.database(`updateReferenceById called with ID: ${id}`);
+    logger.database(`ID type: ${typeof id}`);
+
     const collection = database.getCollection(config.database.collection);
     const objectId = typeof id === 'string' ? new ObjectId(id) : id;
 
+    logger.database(`Converted to ObjectId: ${objectId}`);
+    logger.database(`Update data has ${updateData.comunidades?.length || 0} communities`);
+
     const updatedDoc = updateReference(updateData);
 
+    logger.database(`Executing findOneAndUpdate for ObjectId: ${objectId}`);
     const result = await collection.findOneAndUpdate(
       { _id: objectId },
       { $set: updatedDoc },
       { returnDocument: 'after' }
     );
 
+    logger.database(`findOneAndUpdate result: ${result ? 'found' : 'null'}`);
+    logger.database(`result.value: ${result?.value ? 'exists' : 'null/undefined'}`);
+
     if (!result.value) {
+      logger.error(`Reference with ID ${id} (ObjectId: ${objectId}) NOT FOUND in database`);
       throw new Error('Referência não encontrada');
     }
 
-    logger.database(`Reference updated with ID: ${id}`);
+    logger.database(`Reference updated successfully with ID: ${id}`);
 
     return result.value;
   } catch (error) {
-    logger.error('Failed to update reference:', error.message);
+    logger.error(`Failed to update reference ${id}:`, error.message);
     throw new Error(`Falha ao atualizar referência: ${error.message}`);
   }
 }

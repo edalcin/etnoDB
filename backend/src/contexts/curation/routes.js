@@ -183,6 +183,12 @@ async function handleReferenceUpdate(req, res) {
       });
     }
 
+    // Filter empty plants before saving (only after validation passes)
+    referenceData.comunidades = referenceData.comunidades.map(com => ({
+      ...com,
+      plantas: filterEmptyPlants(com.plantas)
+    }));
+
     // Update reference
     const updated = await updateReferenceById(req.params.id, referenceData);
 
@@ -409,7 +415,7 @@ function parseFormData(formData) {
       local: comunidade.local?.trim() || '',
       atividadesEconomicas: parseCommaSeparated(comunidade.atividadesEconomicas),
       observacoes: comunidade.observacoes?.trim() || '',
-      plantas: filterEmptyPlants(plantas)
+      plantas: plantas  // Don't filter here - let validation catch empty plants
     });
   });
 

@@ -147,6 +147,12 @@ router.post('/reference/submit', async (req, res) => {
       });
     }
 
+    // Filter empty plants before saving (only after validation passes)
+    referenceData.comunidades = referenceData.comunidades.map(com => ({
+      ...com,
+      plantas: filterEmptyPlants(com.plantas)
+    }));
+
     // Insert reference into database
     const inserted = await insertReference(referenceData);
 
@@ -218,7 +224,7 @@ function parseFormData(formData) {
           ? com.atividadesEconomicas
           : parseCommaSeparated(com.atividadesEconomicas),
         observacoes: com.observacoes?.trim() || '',
-        plantas: filterEmptyPlants((com.plantas || []).map(p => ({
+        plantas: (com.plantas || []).map(p => ({
           nomeCientifico: Array.isArray(p.nomeCientifico)
             ? p.nomeCientifico
             : parseCommaSeparated(p.nomeCientifico),
@@ -228,7 +234,7 @@ function parseFormData(formData) {
           tipoUso: Array.isArray(p.tipoUso)
             ? p.tipoUso
             : parseCommaSeparated(p.tipoUso)
-        })))
+        }))  // Don't filter here - let validation catch empty plants
       }))
     };
 
@@ -301,7 +307,7 @@ function parseFormData(formData) {
       local: comunidade.local?.trim() || '',
       atividadesEconomicas: parseCommaSeparated(comunidade.atividadesEconomicas),
       observacoes: comunidade.observacoes?.trim() || '',
-      plantas: filterEmptyPlants(plantas)
+      plantas: plantas  // Don't filter here - let validation catch empty plants
     });
   });
 

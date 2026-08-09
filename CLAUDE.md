@@ -85,23 +85,35 @@ docker-compose up -d
 - 2025-12-25: Added Node.js 20 LTS (Alpine Linux base) + Express.js (web framework), better-sqlite3 (SQLite + JSON1), EJS (templates), HTMX + Alpine.js (frontend), Tailwind CSS
 
 <!-- MANUAL ADDITIONS START -->
-## Regra: Mudanças no submódulo `bioculttermos`
+## BioCultTermos — onde manter o código
 
-Toda alteração feita dentro de `bioculttermos/` (submódulo compartilhado, mesmo remoto de
-`github.com/edalcin/BioCultTermos` usado por todas as unidades federadas) segue este fluxo — ver
-ADR-007 e ADR-010 em `Arquitetura-BioCultural/docs/architecture-decisions/`:
+O `bioculttermos/` deste repositório é a **Cópia de Trabalho** do Módulo Compartilhado BioCultTermos
+nesta Unidade Hospedeira — não é um sub-repositório nem um clone descartável. É aqui que se edita o
+código do BioCultTermos quando a mudança é motivada pelo BioCultDB.
 
-1. **Commit + push para o remoto compartilhado** (obrigatório): `cd bioculttermos && git push origin main`.
-2. **Documentar em `BioCultTermos/CHANGELOG.md`** (obrigatório) — data, unidade de origem (BioCultDB),
-   resumo, SHA. O BioCultTermos é a documentação central do módulo compartilhado (ADR-010 G2).
-3. **Bump do ponteiro + commit no BioCultDB** (obrigatório): `cd .. && git add bioculttermos && git commit`.
-4. **Bump nas outras unidades hospedeiras é opcional** (ADR-007 F3, reafirmado pelo ADR-010) — cada uma
-   decide quando incorporar.
+Regras vigentes — ADR-012 em `Arquitetura-BioCultural/docs/architecture-decisions/`, que **supersede
+parcialmente ADR-007 F3 e ADR-010** no ponto em que declaravam o bump entre unidades opcional:
+
+- **Nunca** clone o BioCultTermos fora de uma Unidade Hospedeira (G2). Um clone standalone não pode ser
+  executado nem testado desde o ADR-007 F2, e só envelhece até divergir.
+- Antes de editar: `git -C bioculttermos pull --ff-only`. Se falhar, há commit local esquecido — resolva
+  antes de tocar em qualquer coisa.
+- Todo commit precisa ser **seguro para as quatro unidades** (G4/G5): nada específico do BioCultDB entra
+  no código do módulo.
+- Commit + push ao remoto compartilhado e registro em `bioculttermos/CHANGELOG.md` — data, unidade de
+  origem (BioCultDB), resumo, SHA — continuam obrigatórios (ADR-010 G2). Com
+  `push.recurseSubmodules=on-demand`, o `git push` na raiz publica o módulo e o ponteiro juntos.
+- A adoção de novas versões do módulo é **obrigatória e assíncrona** (G4), não mais opcional: esta
+  unidade deve zerar seu Atraso de Módulo, no seu tempo.
+- Veja o Atraso de Módulo das quatro unidades: `pwsh Arquitetura-BioCultural/bin/termos-status.ps1`.
 
 **Build Docker**: use sempre `docker/build-unidade.sh` (nunca `docker compose build` direto) — ele falha
 cedo se o submodule local não bater com o commit pinado, e carimba `/app/BUILD_INFO` com os SHAs do
 BioCultDB e do bioculttermos, verificável em runtime via `docker exec <container> cat /app/BUILD_INFO`
 (ADR-010 G3). Ver `docker/Dockerfile.unidade` e `verify-container-setup.sh`.
+
+Estratégia completa: `Arquitetura-BioCultural/docs/gestaoBioCultTermos/` · Decisão:
+`Arquitetura-BioCultural/docs/architecture-decisions/ADR-012-manutencao-codigo-bioculttermos.md`
 <!-- MANUAL ADDITIONS END -->
 
 ## graphify

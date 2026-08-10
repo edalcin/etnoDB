@@ -85,9 +85,10 @@ para a Unidade de Fontes Secundárias.
 |---|---|---|
 | `comunidades.plantas.nomeCientifico` no BioCultDB | Campo obrigatório da Planta | **Igual** — formulário, validação, FTS, estatísticas, etnoChat |
 | Campos monitorados pela Aquisição | 5 | **4** — tipo de comunidade, nome vernacular, tipo de uso, atividade econômica |
-| Os 864 conceitos já semeados | `candidate`, nunca curados | **Preservados e legíveis**, congelados, fora da fila de curadoria |
-| Fontes de um conceito legado (`SourceService`) | Resolve | **Igual** — o resolvedor do campo permanece, só de leitura |
-| Ponte vernacular ↔ científico | Prevista como RT entre conceitos | Referência **externa** (WFO/IPNI), fora do escopo desta entrega |
+| Os 864 conceitos já semeados | `candidate`, nunca curados | **Removidos** do `etnotermos`, com rótulos, relações e índice FTS |
+| Campo Semântico no filtro do Admin | Opção no *pulldown* | **Não existe mais** na tela |
+| Fontes de um conceito (`SourceService`) | Resolve também por nome científico | Resolvedor do campo **removido** |
+| Ponte vernacular ↔ científico | Prevista como RT entre conceitos | Co-ocorrência na Evidência; URI externa quando houver consumidor |
 
 ```mermaid
 graph LR
@@ -183,11 +184,12 @@ Backup do SQLite antes do *redeploy*, pela convenção do
 |---|---|
 | `backend/src/services/AcquisitionService.js:10-16` | Remover `'comunidades.plantas.nomeCientifico'` de `MONITORED_FIELDS`; comentar por quê, com ponteiro para esta decisão |
 | `backend/src/services/AcquisitionService.js:79-83` | Remover a chamada `collect(...)` do laço de plantas |
-| `backend/src/services/SourceService.js:19-20` | **Manter** o construtor de SQL — os conceitos legados precisam continuar resolvendo suas Fontes. Marcar como legado, somente leitura |
-| `backend/src/contexts/admin/views/concepts/list.ejs:72` | Manter a opção do filtro (o curador precisa achar o legado), relabelar: `Nomes Científicos de Plantas (histórico — fora de escopo)` |
+| `backend/src/services/SourceService.js` | **Remover** o construtor de SQL do campo — sem conceitos científicos, não há o que resolver |
+| `backend/src/contexts/admin/views/concepts/list.ejs` | **Remover** a opção do filtro por Campo Semântico |
+| `backend/src/contexts/admin/views/partials/help/labels.ejs`, `relations.ejs` | Remover a ajuda que ensinava a tratar nome científico como conceito |
 | `backend/src/contexts/public/views/index.ejs` | **Nada a fazer** — o bloco de cartões é código morto (ver Fase 0) |
-| `backend/tests/unit/acquisition-service.test.js:242-265` | Inverter o teste: nome científico presente no registro **não** gera conceito. É a prova executável do escopo |
-| `backend/tests/contract/admin-concepts-api.test.js:280-287` | Continua válido (o `value` da opção permanece). Só confirmar que passa |
+| `backend/tests/unit/acquisition-service.test.js` | Inverter: nome científico presente no registro **não** gera conceito, e o vernacular irmão continua gerando |
+| `backend/tests/contract/admin-concepts-api.test.js` | Inverter: o filtro **não** oferece mais o campo |
 
 ### Fase 2 — Documentação
 
@@ -195,10 +197,10 @@ Backup do SQLite antes do *redeploy*, pela convenção do
 
 | Arquivo | Alteração |
 |---|---|
-| `README.md:257` | "Campos gerenciados": quatro campos; nota de uma linha sobre o legado congelado |
+| `README.md:257` | "Campos gerenciados": quatro campos; nomenclatura científica declarada fora do vocabulário |
 | `CHANGELOG.md` | Entrada nova apontando para esta decisão |
 | `manual/07-guia-de-decisao.md` §7.2 (l. 80-88) e §7.3 (l. 94-139) | Reescrever a **conclusão**, preservando o **raciocínio**: nome científico e vernacular continuam não sendo o mesmo conceito — só que agora o científico não é conceito **aqui**. Fica dado do BioCultDB + autoridade externa. Atualizar os dois diagramas |
-| `manual/10-campo-semantico-inteiro.md:14-18, 86` | Tabela: marcar a linha `nomeCientifico` como fora de escopo (número preservado como registro histórico) |
+| `manual/10-campo-semantico-inteiro.md` | Tabela: linha do `nomeCientifico` tachada e marcada como removida (número 864 preservado como registro) |
 | `manual/11-erros-comuns.md` | Linha nova: "Curar um nome científico" → fora de escopo, ver §7.3 |
 | `manual/12-glossario.md:17` | Verbete "Campo Semântico": os quatro campos em escopo |
 
@@ -221,34 +223,63 @@ Backup do SQLite antes do *redeploy*, pela convenção do
 anteriores ao modelo SKOS-XL atual, já divergentes do Manual) e
 `bioculttermos/specs/**` (registro do processo de especificação original).
 
-### Fase 3 — Implantação e verificação
+### Fase 3 — Purga, implantação e verificação
 
-1. *Commit* no submódulo, *commit* do ponteiro no BioCultDB, *push* de ambos (só `main`).
-2. Reconstruir a imagem e redeployar o container, pelo
+1. Purga do vocabulário derivado com `purga-nomes-cientificos.mjs`, backup verificado antes e
+   execução seca antes da real.
+2. *Commit* no submódulo, *commit* do ponteiro no BioCultDB, *push* de ambos (só `main`).
+3. Reconstruir a imagem e redeployar o container, pelo
    [runbook de produção](../operacao/corte-producao-unidade.md).
-3. **Verificação — cada afirmação com sua prova:**
 
-| Afirmação | Prova |
+**Executado em 2026-08-10.** Backup `backup-pre-purga-nomes-cientificos-2026-08-10T11-04-55Z.sqlite`
+(`PRAGMA integrity_check` = ok). Relatório completo da execução, com a lista dos 864 rótulos
+removidos, em [`purga-nomes-cientificos-executada.json`](purga-nomes-cientificos-executada.json).
+
+| Afirmação | Prova | Resultado |
+|---|---|---|
+| Nenhum conceito de nome científico sobrou | Consulta por `sourceFields` | **0** |
+| A contagem bate com o previsto | 2632 − 864 | **1768** conceitos |
+| O índice FTS ficou em sincronia | `COUNT(etnotermos_fts)` | **1768** |
+| Nenhuma referência órfã | Varredura de relações contra ids existentes | **0** |
+| O conceito vernacular sobreviveu | `aroeira` | `active`, `related=[]`, com auditoria |
+| O banco está íntegro | `PRAGMA integrity_check` | **ok** |
+| **O dado de origem não foi tocado** | `biocultdb_records` | **29** Evidências, **1827** ocorrências de nome científico |
+| A aquisição não semeia mais o campo | Executar Aquisição após o redeploy | a confirmar no redeploy |
+| O BioCultDB não regrediu | Busca por planta e painel "Top plantas" | a confirmar no redeploy |
+
+### O único artefato de curadoria existente — e por que ele estava errado
+
+Os 864 conceitos tinham **zero** rótulos `alt`, **zero** `hidden`, **zero** definições e **zero**
+notas de escopo: treze meses sem uma decisão de curadoria, o que é a evidência empírica do argumento
+desta decisão. Havia exatamente um artefato: a relação `related` recíproca entre `aroeira`
+(vernacular) e `schinus terebinthifolius` (científico) — a "ponte" que o modelo anterior prescrevia.
+
+O dado de origem mostra que ela era **falsa**:
+
+| `nomeCientifico` na Evidência | `nomeVernacular` |
 |---|---|
-| A aquisição não semeia mais nome científico | Rodar "Executar Aquisição"; o log da execução não traz a linha do campo, e o total de conceitos fica **inalterado** |
-| Nenhum dado apagado | Repetir a consulta 1 da Fase 0: os números por campo × status são **idênticos** aos da linha de base |
-| O legado continua acessível | Filtrar por "Nomes Científicos de Plantas (histórico…)" no Admin; abrir um conceito e confirmar que o painel **Fontes** ainda resolve |
-| Os quatro campos restantes continuam íntegros | Aquisição com `criados=0` nos quatro |
-| O BioCultDB não regrediu | Busca por planta (nome científico) na Apresentação continua retornando; painel analítico mantém o "Top plantas" |
+| `Myracrodruon urundeuva` | aroeira |
+| `Schinus terebinthifolia` | aroeira |
+| `Schinus terebintifolius` | aroeira |
+| `Schinus terebinthifolius Raddi` | aroeira |
+
+`aroeira` cobre **dois gêneros** e quatro grafias. A relação curada afirmava um 1:1 que o dado
+desmente — a sub-diferenciação etnotaxonômica descrita na
+[Avaliação 1](avaliacao-campos-semanticos.md). A co-ocorrência na Evidência é mais verdadeira que o
+conceito espelho.
 
 ### Reversão
 
-Reverter os dois *commits* e redeployar. Como **nenhuma fase escreve em `etnotermos`**, não há
-restauração de dado: o campo volta ao `MONITORED_FIELDS` e a próxima aquisição reencontra os 864
-conceitos exatamente onde estavam. O backup da Fase 0 cobre apenas o risco genérico do *redeploy*.
+Restaurar o backup e reexecutar a aquisição; reverter os *commits* e redeployar. O vocabulário
+derivado é reconstruível — é exatamente o que a aquisição faz.
 
 ## Invariante desta decisão
 
-> **Nenhum dado é apagado.** Nem o `nomeCientifico` das Evidências em `biocultdb_records`, nem os
-> conceitos já semeados em `etnotermos`. A mudança é de **escopo de curadoria**, executada como
-> "parar de semear + relabelar" — nunca como migração ou expurgo. Qualquer variante deste plano que
-> proponha `DELETE`, `UPDATE` em massa ou depreciação em lote dos 864 conceitos **contraria esta
-> decisão**.
+> **O dado de origem é intocável; o vocabulário derivado é reconstruível.**
+> `biocultdb_records` — onde o nome científico vive como dado da Evidência — não é lido nem escrito
+> por esta decisão, e permanece com as 29 Evidências e 1827 ocorrências que já tinha. O que saiu do
+> `etnotermos` foi conceito **derivado**, semeado pela aquisição e reproduzível por ela. Conceito com
+> `sourceFields` **misto** nunca é removido: perde apenas a entrada do campo científico.
 
 ---
 

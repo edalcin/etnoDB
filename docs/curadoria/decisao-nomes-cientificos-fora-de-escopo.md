@@ -244,8 +244,9 @@ removidos, em [`purga-nomes-cientificos-executada.json`](purga-nomes-cientificos
 | O conceito vernacular sobreviveu | `aroeira` | `active`, `related=[]`, com auditoria |
 | O banco está íntegro | `PRAGMA integrity_check` | **ok** |
 | **O dado de origem não foi tocado** | `biocultdb_records` | **29** Evidências, **1827** ocorrências de nome científico |
-| A aquisição não semeia mais o campo | Executar Aquisição após o redeploy | a confirmar no redeploy |
-| O BioCultDB não regrediu | Busca por planta e painel "Top plantas" | a confirmar no redeploy |
+| A aquisição não semeia mais o campo | Executar Aquisição após o redeploy | `created=0` nos **4** campos, total **1768** inalterado, **0** ressemeados |
+| O Campo Semântico sumiu da interface | Filtro do Admin em produção | oferece só os **4** campos em escopo |
+| O BioCultDB não regrediu | Busca por planta na Apresentação | `Croton blanchetianus`, `campestris`, `heliotropiifolius` retornam |
 
 ### O único artefato de curadoria existente — e por que ele estava errado
 

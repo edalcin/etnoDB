@@ -130,6 +130,27 @@ cobertura de vocabulário, paginação do admin, bloqueio do processo de aquisi�
 ativação, busca de relações) — histórico completo e resultado agregado (28 registros → 2536
 conceitos candidatos) em [`integracao.md`](../../integracao.md) §11 "Consolidação pós-corte".
 
+### Redeploy de 2026-08-10 — purga dos nomes científicos (ADR-014)
+
+Mesmo padrão do corte: `docker stop` (checkpoint limpo do WAL) → backup a frio →
+`docker rm` → `docker pull` explícito → `docker run` do bloco acima. Imagem
+`build.commit=9780915`. Backups: `backup-pre-purga-nomes-cientificos-2026-08-10T11-04-55Z.sqlite`
+(antes da purga de dados) e `backup-pre-deploy-purga-2026-08-10T11-14-52Z.sqlite` (antes do
+redeploy), ambos com `PRAGMA integrity_check` = ok.
+
+Verificado depois: `:3093/` → 200; `:4001` sem auth → 401, com auth → 200; o filtro "Campo
+semântico" oferece exatamente os quatro campos em escopo; aquisição com `created=0` nos quatro e
+**nenhum** conceito de nome científico ressemeado; busca por nome científico na Apresentação
+continua retornando. Detalhes em
+[`../curadoria/decisao-nomes-cientificos-fora-de-escopo.md`](../curadoria/decisao-nomes-cientificos-fora-de-escopo.md).
+
+> **Lição operacional (quase-incidente).** Ao recriar o container via SSH, a senha do admin foi
+> passada como `"$ADMIN_PW"` dentro do script remoto, mas a variável só existia na máquina local —
+> o container subiu `healthy` com `ADMIN_PASSWORD` **vazio**. `healthy` não prova autenticação:
+> o healthcheck bate numa rota sem auth. Recriado com a senha embutida no script enviado por
+> **stdin** (nunca em `argv`, que aparece em `ps`), e a verificação passou a exigir
+> `401` sem credencial **e** `200` com credencial — não só o healthcheck.
+
 ## Referências
 
 - `docs/decisions/ADR-001-integracao-bioculttermos.md` — decisão arquitetural completa

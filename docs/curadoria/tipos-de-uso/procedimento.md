@@ -408,7 +408,8 @@ docker start BioCultDB
 ## 8. Repetindo em outro Campo Semântico
 
 O procedimento é genérico; muda o filtro e o desenho da taxonomia. Para
-`comunidades.plantas.nomeVernacular` (982 termos) ou `nomeCientifico` (864):
+`comunidades.plantas.nomeVernacular` (982 termos) ou `comunidades.atividadesEconomicas` (36) ou
+`comunidades.tipo` (9):
 
 ```sql
 SELECT json_extract(doc,'$.id'), json_extract(doc,'$.prefLabels[0].literalForm')
@@ -425,8 +426,9 @@ co-iguais precisa da nota de escopo prescrita no Manual §3.5. E vale a regra de
 nomes vernaculares da mesma planta são rótulos alternativos de **um** conceito, exceto quando a
 comunidade os distingue como etnotáxons diferentes.
 
-**`nomeCientifico` não se funde com `nomeVernacular`.** Manual §7.3: são dois conceitos que
-co-referem, ligados por mapeamento, nunca fundidos — governanças diferentes (ICN × comunidade).
+**`nomeCientifico` não entra nesta lista.** O campo saiu do escopo de curadoria em 2026-08-10 — a
+questão de fundir ou não com `nomeVernacular` não se coloca mais aqui, ver
+[decisão](../decisao-nomes-cientificos-fora-de-escopo.md).
 
 **O risco de a aquisição desfazer a curadoria vale para todos os campos.** `upsertConcept` é o mesmo
 código. O §3 se aplica integralmente.
@@ -944,7 +946,7 @@ A busca pública confirma cada regra de decisão do §5, ponta a ponta:
 |---|---|
 | Vocabulário (`etnotermos`) | 2632 conceitos: 309 `active`, 1912 `candidate`, 411 `deprecated` |
 | Campo curado | `comunidades.plantas.tipoUso` — 744 conceitos, 333 vivos |
-| Campos ainda crus | `nomeVernacular` (982), `nomeCientifico` (864), `atividadesEconomicas` (36), `tipo` (9) — ver §8 |
+| Campos ainda crus | `nomeVernacular` (982), `atividadesEconomicas` (36), `tipo` (9) — ver §8. `nomeCientifico` (864) fora de escopo desde 2026-08-10, ver [decisão](../decisao-nomes-cientificos-fora-de-escopo.md) |
 | Imagem em produção | `9550783`, container `healthy` — dois redeploys nesta sessão: o primeiro para eliminar o agendador (D14), o segundo para o estado de execução na interface (D15) |
 | Código | curadoria em si é dado, não código. O código alterado nesta sessão: remoção do agendador (D14), estado de execução e guarda de ciclo único na interface (D15), e a derivação do endereço da interface pública no `header.ejs` |
 | Backups para restaurar | `backup-pre-curadoria-tipouso-2026-08-07T08-31-59Z.sqlite` (antes da curadoria) · `backup-pre-deploy-sem-cron-2026-08-07T09-14-32Z.sqlite` · `backup-pre-deploy-ui-aquisicao-2026-08-07T09-35-56Z.sqlite` — §7 |

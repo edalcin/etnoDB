@@ -91,5 +91,6 @@ BioCultDB. *Primária* é o registrado diretamente com a comunidade — domínio
 
 **Vocabulário Controlado**:
 O conjunto de termos aceitos para os campos que o BioCultTermos governa (tipo de comunidade, tipo de
-uso, nomes científicos e vernaculares, atividades econômicas), modelado em SKOS-XL.
+uso, nomes vernaculares, atividades econômicas), modelado em SKOS-XL. Nome científico é dado da
+Planta, regido pelo ICN — fora do vocabulário.
 _Avoid_: Taxonomia, Dicionário, Lista de valores

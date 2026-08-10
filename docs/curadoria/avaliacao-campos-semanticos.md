@@ -1,5 +1,14 @@
 # Avaliação: unificar "Nomes Científicos de Plantas" e "Nomes Vernaculares de Plantas"?
 
+> [!IMPORTANT]
+> **Atualizado em 2026-08-10 por [`decisao-nomes-cientificos-fora-de-escopo.md`](decisao-nomes-cientificos-fora-de-escopo.md).**
+> O **raciocínio** destas três avaliações continua válido — nome científico e nome vernacular
+> co-referem, mas não são o mesmo conceito. O que mudou é a **implementação**: o Campo Semântico
+> "Nomes Científicos de Plantas" saiu do escopo de curadoria do BioCultTermos. O nome científico
+> deixa de ser conceito local e permanece como **dado da Evidência no BioCultDB**, verificável em
+> autoridade externa (WFO/IPNI/GBIF). Onde estas avaliações prescrevem um mapeamento para um
+> conceito científico **local**, leia: referência a uma autoridade **externa**.
+
 > **Questão.** Considerando o [Manual de Curadoria](https://edalcin.github.io/BioCultTermos/) e o padrão SKOS-XL, seria
 > razoável unificar os campos semânticos **"Nomes Científicos de Plantas"** e **"Nomes
 > Vernaculares de Plantas"** num só conceito, visto que ambos seriam representações do mesmo
@@ -65,6 +74,11 @@ conceito** (`gripe` / `influenza` / nome indígena da *mesma* doença). Científ
 governança diferentes.
 
 ## O modelo correto
+
+> **Superado quanto ao alvo do mapeamento.** Desde a decisão de 2026-08-10, o lado científico não é
+> mais um *scheme* curado localmente: é a autoridade externa (WFO/IPNI/GBIF), e a co-ocorrência
+> vernacular ↔ científico já está registrada por Evidência no objeto `planta` do BioCultDB. A
+> distinção conceitual abaixo permanece exata; só o alvo do `match` mudou de local para externo.
 
 Manter **dois campos / dois *schemes*** e ligá-los por **relação de mapeamento**, não por rótulo:
 

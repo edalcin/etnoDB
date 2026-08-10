@@ -215,8 +215,10 @@ persiste entre reinícios).
 porta **4001** expõe a curadoria de termos, protegida por HTTP Basic Auth
 (`ADMIN_USERNAME`/`ADMIN_PASSWORD`), com busca por nome (sugestões enquanto digita) para relacionar
 conceitos entre si. O `AcquisitionService` lê os registros gravados em `biocultdb_records` (via
-BioCultDB), extrai valores de **5 campos monitorados** — tipo de comunidade, nome científico, nome
-vernacular, tipo de uso e atividade econômica — e cria conceitos SKOS-XL com `status: candidate`;
+BioCultDB), extrai valores de **4 campos monitorados** — tipo de comunidade, nome vernacular,
+tipo de uso e atividade econômica — e cria conceitos SKOS-XL com `status: candidate`; nome
+científico saiu do escopo de curadoria em 2026-08-10 (ver
+[decisão](docs/curadoria/decisao-nomes-cientificos-fora-de-escopo.md));
 também semeia um vocabulário estático de referência de tipos de uso (`docs/referencia/tipoUso.txt`, ~450
 termos do domínio etnobotânico), cobrindo o vocabulário do domínio além do que já foi digitado em
 algum registro. Um curador promove cada candidato a `active` pela interface 4001. A aquisição é

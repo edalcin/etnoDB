@@ -57,7 +57,8 @@ de cada campanha de curadoria já executada.
 | Arquivo | O que é |
 |---|---|
 | [`Manual.md`](curadoria/Manual.md) | **Manual de Curadoria** — publicado como site em [edalcin.github.io/BioCultTermos](https://edalcin.github.io/BioCultTermos/), capítulo por capítulo: termo × conceito, rótulos `pref`/`alt`/`hidden`, notas de escopo, hierarquia, idiomas (ISO 639-3), CARE. É o critério normativo de qualquer curadoria; o arquivo local é só um ponteiro. |
-| [`avaliacao-campos-semanticos.md`](curadoria/avaliacao-campos-semanticos.md) | Análise: unificar "Nomes Científicos de Plantas" e "Nomes Vernaculares de Plantas" num só conceito? **Veredito: não** — etnotaxonomia e nomenclatura científica não são o mesmo conceito. |
+| [`avaliacao-campos-semanticos.md`](curadoria/avaliacao-campos-semanticos.md) | Três análises sobre o modelo do vocabulário: unificar nomes científicos e vernaculares num só conceito (**não**), o `pref` quando não há preferência cultural, e `alt` × RT entre nomes vernaculares. O raciocínio segue válido; o alvo do mapeamento foi atualizado pela decisão abaixo. |
+| [`decisao-nomes-cientificos-fora-de-escopo.md`](curadoria/decisao-nomes-cientificos-fora-de-escopo.md) | **Decisão (2026-08-10)**: o Campo Semântico "Nomes Científicos de Plantas" sai do escopo de curadoria do BioCultTermos — nome científico é regido pelo ICN e verificável em autoridade externa. Contém o plano de implementação em quatro fases. Nenhum dado é apagado. |
 
 ### `curadoria/tipos-de-uso/` — campanha do campo `comunidades.plantas.tipoUso`
 
@@ -116,5 +117,3 @@ Material de origem, não artefato de processo: é daqui que sai o vocabulário e
 | [`../integracao.md`](../integracao.md) | Checklist executado da integração com o BioCultTermos, glossário e os bugs de estabilização pós-corte. |
 | [`../CONTEXT.md`](../CONTEXT.md) | Linguagem ubíqua do domínio — os termos que o código e estes documentos usam. |
 | [`../CLAUDE.md`](../CLAUDE.md) | Convenções do repositório para agentes de IA. |
-</content>
-<parameter name="i">Writing docs index README

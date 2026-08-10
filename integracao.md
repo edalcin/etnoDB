@@ -29,6 +29,10 @@ resultado — detalhes em §11:
   vocabulário estático de referência (`docs/referencia/tipoUso.txt`, ~450 termos), garantindo que o
   vocabulário candidato cubra o domínio completo, não só o que já foi digitado em registros
   existentes.
+
+  > **Revertido em escopo (2026-08-10):** `comunidades.plantas.nomeCientifico` saiu do escopo de
+  > curadoria do BioCultTermos — ver
+  > [decisão](docs/curadoria/decisao-nomes-cientificos-fora-de-escopo.md).
 - **6 bugs de produção encontrados e corrigidos durante a estabilização pós-corte** (fora do
   escopo original deste documento, mas parte do mesmo esforço de integração — detalhes em §11):
   autenticação HTTP Basic com re-prompt quebrado, links de edição de conceito quebrados (`_id` vs
@@ -261,7 +265,7 @@ originalmente.
 | **`biocultdb_records`** | Tabela do BioCultDB (referências científicas, comunidades, plantas). Propriedade exclusiva do BioCultDB — o BioCultTermos só lê, nunca escreve. |
 | **`etnotermos` / `etnotermos_fts` / `etnotermos_acquisition_log` / `etnotermos_audit_log`** | Tabelas do BioCultTermos no mesmo arquivo. Propriedade exclusiva do BioCultTermos. |
 | **SKOS-XL** | *Simple Knowledge Organization System eXtension for Labels* (padrão W3C) — modelo de conceito/rótulo usado pelo BioCultTermos para vocabulário controlado multilíngue (`prefLabel`, `altLabel`, `broader`/`narrower`/`related`). |
-| **`AcquisitionService`** | Serviço do BioCultTermos (`bioculttermos/backend/src/services/AcquisitionService.js`) que lê `biocultdb_records`, extrai valores de 5 campos monitorados (tipo de comunidade, nome vernacular, nome científico, tipo de uso, atividade econômica) e cria conceitos `candidate` no `etnotermos`; também semeia o vocabulário estático de referência (`docs/referencia/tipoUso.txt`, via `bioculttermos/backend/src/data/referenceTerms.js`) mesmo sem ocorrência ainda em `biocultdb_records`. Disparado sob demanda pelo botão **"Executar Aquisição"** do dashboard admin (`POST /acquisition/run`). |
+| **`AcquisitionService`** | Serviço do BioCultTermos (`bioculttermos/backend/src/services/AcquisitionService.js`) que lê `biocultdb_records`, extrai valores de 4 campos monitorados (tipo de comunidade, nome vernacular, tipo de uso, atividade econômica) e cria conceitos `candidate` no `etnotermos`; também semeia o vocabulário estático de referência (`docs/referencia/tipoUso.txt`, via `bioculttermos/backend/src/data/referenceTerms.js`) mesmo sem ocorrência ainda em `biocultdb_records`. Nome científico saiu do escopo de curadoria em 2026-08-10 — ver [decisão](docs/curadoria/decisao-nomes-cientificos-fora-de-escopo.md). Disparado sob demanda pelo botão **"Executar Aquisição"** do dashboard admin (`POST /acquisition/run`). |
 | **`candidate` / `active` / `deprecated`** | Ciclo de vida de um conceito SKOS-XL no BioCultTermos: criado como `candidate` pelo `AcquisitionService` a cada execução sob demanda, promovido a `active` por um curador/terminólogo (porta 4001), ou marcado `deprecated` (com `replacedBy` opcional). |
 | **HTTP Basic Auth + bcrypt** | Mecanismo de autenticação da porta 4001 (admin). Middleware `requireAuth` (`bioculttermos/backend/src/lib/auth/basicAuth.js`) decodifica o header `Authorization: Basic ...` e compara com hash bcrypt. |
 | **`ADMIN_USERNAME` / `ADMIN_PASSWORD`** | Par de env vars (Opção B de `config/index.js:22-28`) para um único usuário admin, senha em texto plano hasheada no boot. Opção escolhida nesta integração (vs. `ADMIN_USERS` JSON multi-usuário). |
@@ -319,6 +323,10 @@ literatura etnobotânica) nunca era usado por nenhum código — só documentaç
 ciclo de aquisição (idempotente), independente do que já existe em `biocultdb_records` — curador
 ainda revisa cada um antes de promover a `active`. `BioCultTermos@9c40c96` → `BioCultDB@36eed01`.
 
+> **Revertido em escopo (2026-08-10):** `comunidades.plantas.nomeCientifico` saiu do escopo de
+> curadoria do BioCultTermos — ver
+> [decisão](docs/curadoria/decisao-nomes-cientificos-fora-de-escopo.md).
+
 ### 11.5 `AcquisitionService.run()` travando o processo admin em execuções longas
 
 Com os ~454 termos de referência somados aos já minerados (~1400), um ciclo de aquisição passou a
@@ -342,6 +350,10 @@ ativa (checavam uma variável nunca passada pela rota). **Correção**: paginaç
 adicionada, resposta HTMX corrigida para renderizar só o fragmento esperado, filtro "Campo
 semântico" ganhou a opção `nomeCientifico`, estado visual dos filtros corrigido.
 `BioCultTermos@ecb89d6` → `BioCultDB@d1c156b`.
+
+> **Revertido em escopo (2026-08-10):** a opção `nomeCientifico` do filtro "Campo semântico" segue
+> disponível para achar o legado, mas o campo saiu do escopo de curadoria — ver
+> [decisão](docs/curadoria/decisao-nomes-cientificos-fora-de-escopo.md).
 
 ### 11.7 "Ativar Conceito": confirmação dupla e falha silenciosa
 

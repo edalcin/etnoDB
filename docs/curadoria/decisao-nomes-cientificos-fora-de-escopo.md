@@ -70,8 +70,9 @@ tem de acontecer na origem (prompt de extração, validação na Aquisição, ou
 autoridade externa). Curar a cópia é decorativo para este fim.
 
 **"O público perde um índice navegável de espécies."**
-Ele nunca existiu: os conceitos de nome científico estão todos `candidate`, e a interface pública
-lista apenas `active` — o cartão sequer aparece na home. A Fase 0 confirma isso com número.
+Ele nunca existiu, por dois motivos independentes: os conceitos de nome científico estão todos
+`candidate`, e a interface pública lista apenas `active`; além disso o bloco de cartões "Campos
+semânticos" da home é código morto e nunca renderizou para campo nenhum (ver Fase 0).
 
 **"Outra unidade federada (BioCultRelatos, BioCultAcervos) pode querer curar nomes científicos."**
 O argumento vale igual, ou pior: a autoridade nomenclatural é **global**, então uma cópia *por
@@ -130,10 +131,18 @@ o alvo *local*. Três razões para aceitar:
 
 Quatro fases. **Nenhuma toca dado.** Fases 1 e 2 podem correr em paralelo; a 3 depende das duas.
 
-### Fase 0 — Inventário em produção (somente leitura)
+### Fase 0 — Linha de base em produção (somente leitura, **não bloqueante**)
 
-Antes de qualquer alteração, rodar contra o SQLite de produção — decide dois pontos abertos e
-serve de linha de base para a verificação da Fase 3:
+> **Correção de 2026-08-10, depois da Fase 1.** Esta fase foi redigida supondo que ela decidiria se
+> a home pública precisava de um rótulo para o campo. **Não decide nada:** o bloco "Campos
+> semânticos" de `public/views/index.ejs:47-70` itera `sourceGroups`, variável que **nenhuma rota
+> jamais define** — a rota `public/routes/index.js:24-29` passa `sourceFields`. O `typeof
+> sourceGroups !== 'undefined'` engole o bloco em silêncio: os cartões nunca renderizam, e o
+> `FIELD_LABELS` ao lado é código morto. Achado **pré-existente**, alheio a esta decisão; anotado
+> aqui e deixado para tratamento em separado. Consequência: **nada a fazer na interface pública**, e
+> a Fase 0 vira apenas linha de base de verificação — pode rodar junto com a Fase 3.
+
+Rodar contra o SQLite de produção; serve de linha de base para a tabela de verificação da Fase 3:
 
 ```sql
 -- 1. Distribuição por campo × status (confirma "nenhum active" e o total de 864)
@@ -162,11 +171,8 @@ WHERE EXISTS (SELECT 1 FROM json_each(json_extract(e.doc,'$.sourceFields')) je
     OR json_array_length(COALESCE(json_extract(e.doc,'$.related'),'[]')) > 0);
 ```
 
-**Decisões que a consulta 1 fecha:**
-- `active > 0` → a home pública mostra um cartão com o caminho cru do campo; então acrescentar
-  `'comunidades.plantas.nomeCientifico': 'Nomes Científicos (histórico)'` ao `FIELD_LABELS` de
-  `bioculttermos/backend/src/contexts/public/views/index.ejs:51`.
-- `active = 0` → nada a fazer no público (o `FIELD_LABELS` já omite o campo).
+A consulta 1 dá o número exato de conceitos por campo × status. Guarde a saída: é contra ela que a
+Fase 3 prova que **nenhum dado se moveu**.
 
 Backup do SQLite antes do *redeploy*, pela convenção do
 [§7 do procedimento](tipos-de-uso/procedimento.md#7-backup-e-recuperação).
@@ -179,7 +185,7 @@ Backup do SQLite antes do *redeploy*, pela convenção do
 | `backend/src/services/AcquisitionService.js:79-83` | Remover a chamada `collect(...)` do laço de plantas |
 | `backend/src/services/SourceService.js:19-20` | **Manter** o construtor de SQL — os conceitos legados precisam continuar resolvendo suas Fontes. Marcar como legado, somente leitura |
 | `backend/src/contexts/admin/views/concepts/list.ejs:72` | Manter a opção do filtro (o curador precisa achar o legado), relabelar: `Nomes Científicos de Plantas (histórico — fora de escopo)` |
-| `backend/src/contexts/public/views/index.ejs:51-56` | Condicional à Fase 0 (ver acima) |
+| `backend/src/contexts/public/views/index.ejs` | **Nada a fazer** — o bloco de cartões é código morto (ver Fase 0) |
 | `backend/tests/unit/acquisition-service.test.js:242-265` | Inverter o teste: nome científico presente no registro **não** gera conceito. É a prova executável do escopo |
 | `backend/tests/contract/admin-concepts-api.test.js:280-287` | Continua válido (o `value` da opção permanece). Só confirmar que passa |
 

@@ -94,3 +94,20 @@ O conjunto de termos aceitos para os campos que o BioCultTermos governa (tipo de
 uso, nomes vernaculares, atividades econômicas), modelado em SKOS-XL. Nome científico é dado da
 Planta, regido pelo ICN — fora do vocabulário.
 _Avoid_: Taxonomia, Dicionário, Lista de valores
+
+### Vocabulário
+
+**Conceito**:
+A unidade de sentido do Vocabulário Controlado, independente de como é nomeada. A Apresentação
+conta Conceitos, nunca Rótulos.
+_Avoid_: Termo (sozinho), Entrada, Verbete
+
+**Rótulo**:
+Cada forma textual pela qual um Conceito pode ser nomeado. *alimentar*, *alimentação*, *comida* e
+*fome* são quatro Rótulos de um Conceito só.
+_Avoid_: Sinônimo, Variante, Label
+
+**Termo Preferencial**:
+O Rótulo eleito pela Curadoria para representar o Conceito onde ele precisa aparecer uma vez só —
+eixo de gráfico, faceta, contagem. Não é o Rótulo *correto*: os demais não são erro.
+_Avoid_: Termo aceito, Termo canônico, Nome oficial, prefLabel

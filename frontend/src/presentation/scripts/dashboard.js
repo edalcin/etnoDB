@@ -524,24 +524,63 @@ async function loadSankeyChart(filters, limitUsos = 10) {
         drawSankeyChart('chart-sankey', sankeyData);
       } else {
         console.error('Invalid sankey data:', sankeyData);
-        drawSankeyChart('chart-sankey', { links: [], useTypeOrder: [], communityTypeOrder: [] });
+        drawSankeyChart('chart-sankey', { links: [], useTypeOrder: [], communityTypeOrder: [], variants: {} });
       }
     } else {
       console.error('Sankey error:', sankeyRes.status, sankeyRes.statusText);
       const errorData = await sankeyRes.json();
       console.error('Error details:', errorData);
-      drawSankeyChart('chart-sankey', { links: [], useTypeOrder: [], communityTypeOrder: [] });
+      drawSankeyChart('chart-sankey', { links: [], useTypeOrder: [], communityTypeOrder: [], variants: {} });
     }
   } catch (error) {
     console.error('Error loading sankey chart:', error);
-    drawSankeyChart('chart-sankey', { links: [], useTypeOrder: [], communityTypeOrder: [] });
+    drawSankeyChart('chart-sankey', { links: [], useTypeOrder: [], communityTypeOrder: [], variants: {} });
   }
+}
+
+/**
+ * Escape a string for safe interpolation into HTML tooltip markup.
+ * @param {*} value
+ * @returns {string}
+ */
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, (ch) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[ch]));
+}
+
+/**
+ * Build the HTML tooltip for one Sankey flow. When the target label absorbed
+ * synonymous terms (Termo Preferencial aggregation), list them so the merge
+ * is visible instead of reading as missing data.
+ * @param {{source: string, target: string, value: number}} item
+ * @param {Object<string, string[]>} variants - preferred label -> raw variants
+ * @returns {string}
+ */
+function buildSankeyTooltip(item, variants) {
+  const rawVariants = (variants && variants[item.target]) || [];
+  const otherLabels = rawVariants.filter((label) => label !== item.target);
+
+  let html = '<div style="padding:8px 12px;font-family:system-ui;font-size:13px;">'
+    + `<b>${escapeHtml(item.source)} \u2192 ${escapeHtml(item.target)}</b><br>`
+    + `${escapeHtml(item.value)} ocorrência(s)`;
+
+  if (otherLabels.length > 0) {
+    html += `<br><span style="color:#6b7280;">agrega: ${escapeHtml(otherLabels.join(', '))}</span>`;
+  }
+
+  html += '</div>';
+  return html;
 }
 
 /**
  * Draw Sankey diagram for community type to use type relationships
  * @param {string} elementId - DOM element ID
- * @param {Object} data - { links, useTypeOrder, communityTypeOrder }
+ * @param {Object} data - { links, useTypeOrder, communityTypeOrder, variants }
  */
 function drawSankeyChart(elementId, data) {
   const container = document.getElementById(elementId);
@@ -557,7 +596,8 @@ function drawSankeyChart(elementId, data) {
   }
 
   try {
-    const { links, useTypeOrder, communityTypeOrder } = data;
+    const { links, useTypeOrder, communityTypeOrder, variants } = data;
+    const hasVariants = !!(variants && Object.keys(variants).length > 0);
 
     // Sort links by community type order (source) and use type order (target)
     // This helps Google Charts render nodes in the correct order
@@ -572,12 +612,20 @@ function drawSankeyChart(elementId, data) {
       return aTargetIdx - bTargetIdx;
     });
 
-    // Prepare data for Google Charts Sankey
-    const chartData = [['De', 'Para', 'Quantidade']];
+    // Prepare data for Google Charts Sankey. When variants exist, add a
+    // tooltip column so merged labels (Termo Preferencial) show what was
+    // aggregated instead of just disappearing with no explanation.
+    const chartData = hasVariants
+      ? [['De', 'Para', 'Quantidade', { type: 'string', role: 'tooltip', p: { html: true } }]]
+      : [['De', 'Para', 'Quantidade']];
 
     sortedLinks.forEach(item => {
       if (item && item.source && item.target && item.value) {
-        chartData.push([item.source, item.target, item.value]);
+        chartData.push(
+          hasVariants
+            ? [item.source, item.target, item.value, buildSankeyTooltip(item, variants)]
+            : [item.source, item.target, item.value]
+        );
       }
     });
 
@@ -620,12 +668,14 @@ function drawSankeyChart(elementId, data) {
         },
         iterations: 0 // Disable automatic reordering to preserve our sort order
       },
-      tooltip: {
-        textStyle: {
-          fontName: 'system-ui',
-          fontSize: 13
-        }
-      }
+      tooltip: hasVariants
+        ? { isHtml: true }
+        : {
+            textStyle: {
+              fontName: 'system-ui',
+              fontSize: 13
+            }
+          }
     };
 
     const chart = new google.visualization.Sankey(container);

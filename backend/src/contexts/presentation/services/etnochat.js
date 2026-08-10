@@ -11,6 +11,7 @@ const database = require('../../../shared/database');
 const { Status } = require('../../../models/Evidence');
 const logger = require('../../../shared/logger');
 const { createClient, validateApiKey, getModels, getProviders } = require('../../../services/ai-providers');
+const { expandLabels } = require('../../../services/vocabulary');
 
 // Load system prompt
 const systemPromptPath = path.join(__dirname, '../prompts/etnochat-system.md');
@@ -149,6 +150,20 @@ const FIELD_WHITELIST = {
   'comunidades.plantas.tipoUso':        { arrays: ["$.comunidades", "$.plantas"], leaf: "$.tipoUso", leafIsArray: true }
 };
 
+/**
+ * Vocabulary-controlled field paths (ADR-003) — values here are Rótulos of a
+ * BioCultTermos Conceito, so a filter must expand to every sibling label
+ * naming the same Concept, not just the exact string the LLM guessed. Only
+ * two of these currently intersect with FIELD_WHITELIST; the set is kept
+ * complete regardless so it stays correct as fields are whitelisted later.
+ */
+const VOCABULARY_CONTROLLED_FIELDS = new Set([
+  'comunidades.tipo',
+  'comunidades.atividadesEconomicas',
+  'comunidades.plantas.nomeVernacular',
+  'comunidades.plantas.tipoUso'
+]);
+
 const SUPPORTED_OPERATORS = new Set(['eq', 'contains', 'in', 'gte', 'lte']);
 
 /**
@@ -188,15 +203,38 @@ function resolveValueExpr(fieldDef) {
  * Build the parameterized comparison SQL for one condition. `valor` is
  * NEVER concatenated into the SQL string — it is only ever pushed onto
  * `params` and bound through `?` placeholders.
+ *
+ * When `campo` is vocabulary-controlled (ADR-003) and the comparison is not
+ * numeric, `eq`/`contains`/`in` expand `valor` to every label naming the
+ * same BioCultTermos Conceito via `expandLabels` and OR/IN across them —
+ * so a filter on `alimentício` also matches evidence recorded as
+ * `alimentação`. Absent the label map (or a non-controlled field),
+ * `expandLabels` degrades to `[valor]` and the SQL is identical to before.
  */
-function buildComparison(leafExpr, operador, valor, numeric, params) {
+function buildComparison(leafExpr, operador, valor, numeric, params, campo, db) {
+  const expandable = !numeric && VOCABULARY_CONTROLLED_FIELDS.has(campo);
+
   switch (operador) {
-    case 'eq':
+    case 'eq': {
+      if (expandable) {
+        const labels = expandLabels(db, valor);
+        labels.forEach((label) => params.push(label));
+        const clause = labels.map(() => `LOWER(${leafExpr}) = LOWER(?)`).join(' OR ');
+        return labels.length > 1 ? `(${clause})` : clause;
+      }
       params.push(valor);
       return numeric ? `${leafExpr} = ?` : `LOWER(${leafExpr}) = LOWER(?)`;
-    case 'contains':
+    }
+    case 'contains': {
+      if (expandable) {
+        const labels = expandLabels(db, valor);
+        labels.forEach((label) => params.push(label));
+        const clause = labels.map(() => `LOWER(${leafExpr}) LIKE '%' || LOWER(?) || '%'`).join(' OR ');
+        return labels.length > 1 ? `(${clause})` : clause;
+      }
       params.push(valor);
       return `LOWER(${leafExpr}) LIKE '%' || LOWER(?) || '%'`;
+    }
     case 'gte':
       params.push(valor);
       return `${leafExpr} >= ?`;
@@ -207,8 +245,11 @@ function buildComparison(leafExpr, operador, valor, numeric, params) {
       if (!Array.isArray(valor) || valor.length === 0) {
         throw new Error('Operador "in" requer um array de valores não vazio');
       }
-      valor.forEach((v) => params.push(v));
-      const placeholders = valor.map(() => (numeric ? '?' : 'LOWER(?)')).join(', ');
+      const values = expandable
+        ? [...new Set(valor.flatMap((v) => expandLabels(db, v)))]
+        : valor;
+      values.forEach((v) => params.push(v));
+      const placeholders = values.map(() => (numeric ? '?' : 'LOWER(?)')).join(', ');
       return numeric ? `${leafExpr} IN (${placeholders})` : `LOWER(${leafExpr}) IN (${placeholders})`;
     }
     default:
@@ -221,7 +262,7 @@ function buildComparison(leafExpr, operador, valor, numeric, params) {
  * SQL. Throws if `campo`/`operador` are not in the whitelist — this check
  * runs BEFORE any database access, so a rejected field never reaches SQLite.
  */
-function buildConditionSql(condition, params) {
+function buildConditionSql(condition, params, db) {
   const { campo, operador, valor } = condition || {};
   const fieldDef = FIELD_WHITELIST[campo];
   if (!fieldDef) {
@@ -234,7 +275,7 @@ function buildConditionSql(condition, params) {
   }
 
   const { joins, leafExpr } = resolveValueExpr(fieldDef);
-  const comparison = buildComparison(leafExpr, operador, valor, fieldDef.numeric, params);
+  const comparison = buildComparison(leafExpr, operador, valor, fieldDef.numeric, params, campo, db);
 
   return joins.length > 0 ? `EXISTS (SELECT 1 FROM ${joins.join(', ')} WHERE ${comparison})` : comparison;
 }
@@ -260,8 +301,9 @@ async function executeQuery(conditions) {
       database.connect();
     }
 
+    const db = database.getConnection();
     const params = [];
-    const clauses = conditions.map((condition) => buildConditionSql(condition, params));
+    const clauses = conditions.map((condition) => buildConditionSql(condition, params, db));
 
     // Always force approved-only results and cap the result set.
     clauses.push(`json_extract(doc, '$.status') = ?`);

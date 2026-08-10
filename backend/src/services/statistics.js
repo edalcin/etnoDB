@@ -19,6 +19,7 @@
 const database = require('../shared/database');
 const logger = require('../shared/logger');
 const { Status } = require('../models/Evidence');
+const vocabulary = require('./vocabulary');
 
 /**
  * Ensure the shared SQLite connection is open (idempotent, synchronous).
@@ -104,8 +105,13 @@ function buildComunidadeFilter(filters = {}, { includeEstado = true, includeTipo
   }
 
   if (includeTipo && filters['comunidades.tipo']) {
-    clauses.push("json_extract(com.value,'$.tipo') = ?");
-    params.push(filters['comunidades.tipo']);
+    // Picking a Termo Preferencial in the facet has to find the Evidências that
+    // recorded any other Rótulo of the same Concept, or the chart and the list
+    // stop agreeing on how many there are (ADR-003).
+    const labels = vocabulary.expandLabels(getDb(), filters['comunidades.tipo']);
+    const placeholders = labels.map(() => 'LOWER(?)').join(', ');
+    clauses.push(`LOWER(json_extract(com.value,'$.tipo')) IN (${placeholders})`);
+    params.push(...labels);
   }
 
   return {
@@ -240,16 +246,31 @@ async function getCommunityCount(filters = {}) {
     const docs = docsCte(filters);
     const com = comunidadesCte(filters);
 
+    // `comunidades.tipo` is Vocabulário Controlado too: fold each type into its
+    // Termo Preferencial before counting, so two labels of one Concept are one
+    // slice (ADR-003). The fold has to happen after the DISTINCT-community
+    // grouping, hence the outer join over `grouped`.
+    const mapped = vocabulary.hasLabelMap(db);
+    const tipo = vocabulary.labelMapJoin('grouped.tipo', 'lm_tipo', mapped);
+
     const sql = `
       WITH ${docs.sql},
-      ${com.sql}
+      ${com.sql},
+      grouped AS (
+        SELECT
+          json_extract(comunidade,'$.nome') AS nome,
+          json_extract(comunidade,'$.estado') AS estado,
+          COALESCE(json_extract(comunidade,'$.municipio'), '') AS municipio,
+          MAX(json_extract(comunidade,'$.tipo')) AS tipo
+        FROM comunidades
+        GROUP BY nome, estado, municipio
+      )
       SELECT
-        json_extract(comunidade,'$.nome') AS nome,
-        json_extract(comunidade,'$.estado') AS estado,
-        COALESCE(json_extract(comunidade,'$.municipio'), '') AS municipio,
-        MAX(json_extract(comunidade,'$.tipo')) AS tipo
-      FROM comunidades
-      GROUP BY nome, estado, municipio
+        grouped.tipo AS tipo,
+        ${mapped ? 'lm_tipo.concept_id' : 'NULL'} AS conceptId,
+        ${mapped ? 'lm_tipo.pref_label' : 'NULL'} AS prefLabel
+      FROM grouped
+      ${tipo.join}
     `;
 
     const rows = db.prepare(sql).all(...docs.params, ...com.params);
@@ -259,14 +280,17 @@ async function getCommunityCount(filters = {}) {
       return { total: 0, byType: [] };
     }
 
-    // Agregar contagem por tipo
+    // Agregar contagem por tipo. A community whose Concept has no publicly
+    // showable label still counts in the total, but never names a slice —
+    // CARE access levels outrank the chart.
     const typeCount = {};
     rows.forEach((row) => {
-      const tipo = row.tipo || 'Não especificado';
-      typeCount[tipo] = (typeCount[tipo] || 0) + 1;
+      if (row.conceptId !== null && row.prefLabel === null) return;
+      const tipoLabel = row.prefLabel || row.tipo || 'Não especificado';
+      typeCount[tipoLabel] = (typeCount[tipoLabel] || 0) + 1;
     });
 
-    const byType = Object.entries(typeCount).map(([tipo, count]) => ({ tipo, count }));
+    const byType = Object.entries(typeCount).map(([tipoLabel, count]) => ({ tipo: tipoLabel, count }));
 
     return {
       total: rows.length,
@@ -643,9 +667,15 @@ async function getTopEvidencesByPlants(limit = 10, filters = {}) {
 
 /**
  * Get Sankey diagram data: community type -> use type relationships
+ *
+ * Both axes are Vocabulário Controlado, so both are folded into their Termo
+ * Preferencial before anything is counted (ADR-003). Order matters: the Top-N
+ * cut runs AFTER the fold, otherwise `alimentar` and `alimentação` compete for
+ * separate slots and can push a genuinely distinct use out of the chart.
+ *
  * @param {Object} filters - Query filters
  * @param {number} limitUsos - Limit to top N use types (default: 10)
- * @returns {Promise<Object>} { links: Array of {source, target, value}, useTypeOrder: Array of use types sorted by frequency }
+ * @returns {Promise<Object>} { links, useTypeOrder, communityTypeOrder, variants }
  */
 async function getSankeyData(filters = {}, limitUsos = 10) {
   try {
@@ -654,19 +684,36 @@ async function getSankeyData(filters = {}, limitUsos = 10) {
     const com = comunidadesCte(filters);
     const baseParams = [...docs.params, ...com.params];
 
+    const mapped = vocabulary.hasLabelMap(db);
+    const uso = vocabulary.labelMapJoin('tu.value', 'lm_uso', mapped);
+    const tipo = vocabulary.labelMapJoin(
+      "json_extract(plantas.comunidade,'$.tipo')",
+      'lm_tipo',
+      mapped
+    );
+
+    // `usos` carries both forms: the preferred one drives every GROUP BY, the
+    // raw one only feeds the tooltip that discloses what was merged.
     const usosCte = `
       plantas AS (
         SELECT comunidades.comunidade, pl.value AS planta
         FROM comunidades, json_each(comunidades.comunidade, '$.plantas') AS pl
       ),
       usos AS (
-        SELECT plantas.comunidade, tu.value AS tipoUso
-        FROM plantas, json_each(plantas.planta, '$.tipoUso') AS tu
+        SELECT
+          COALESCE(${tipo.expr}, 'Não especificado') AS tipoComunidade,
+          ${uso.expr} AS tipoUso,
+          tu.value AS tipoUsoRaw
+        FROM plantas
+        ${tipo.join}, json_each(plantas.planta, '$.tipoUso') AS tu
+        ${uso.join}
         WHERE tu.value IS NOT NULL AND tu.value != ''
+          ${uso.where ? `AND ${uso.where}` : ''}
+          ${tipo.where ? `AND ${tipo.where}` : ''}
       )
     `;
 
-    // First, get the top N use types by total count (ordered by frequency)
+    // Top N use types by frequency — counted per concept, not per label.
     const topUsosRows = db
       .prepare(`
         WITH ${docs.sql}, ${com.sql}, ${usosCte}
@@ -674,20 +721,18 @@ async function getSankeyData(filters = {}, limitUsos = 10) {
       `)
       .all(...baseParams, limitUsos);
 
-    // Create ordered list of use types by frequency (descending)
     const useTypeOrder = topUsosRows.map((row) => row.tipoUso);
 
     if (useTypeOrder.length === 0) {
-      return { links: [], useTypeOrder: [], communityTypeOrder: [] };
+      return { links: [], useTypeOrder: [], communityTypeOrder: [], variants: {} };
     }
 
     const usoPlaceholders = useTypeOrder.map(() => '?').join(', ');
 
-    // Get top community types by total count (filtered to only the top N use types)
     const topCommunityRows = db
       .prepare(`
         WITH ${docs.sql}, ${com.sql}, ${usosCte}
-        SELECT COALESCE(json_extract(comunidade,'$.tipo'), 'Não especificado') AS tipoComunidade, COUNT(*) AS total
+        SELECT tipoComunidade, COUNT(*) AS total
         FROM usos
         WHERE tipoUso IN (${usoPlaceholders})
         GROUP BY tipoComunidade
@@ -697,12 +742,11 @@ async function getSankeyData(filters = {}, limitUsos = 10) {
 
     const communityTypeOrder = topCommunityRows.map((row) => row.tipoComunidade);
 
-    // Now get Sankey data filtered to only include top N use types
     const links = db
       .prepare(`
         WITH ${docs.sql}, ${com.sql}, ${usosCte}
         SELECT
-          COALESCE(json_extract(comunidade,'$.tipo'), 'Não especificado') AS source,
+          tipoComunidade AS source,
           tipoUso AS target,
           COUNT(*) AS value
         FROM usos
@@ -711,12 +755,26 @@ async function getSankeyData(filters = {}, limitUsos = 10) {
       `)
       .all(...baseParams, ...useTypeOrder);
 
+    let variants = {};
+    if (mapped) {
+      const variantRows = db
+        .prepare(`
+          WITH ${docs.sql}, ${com.sql}, ${usosCte}
+          SELECT DISTINCT tipoUso AS display, tipoUsoRaw AS raw
+          FROM usos
+          WHERE tipoUso IN (${usoPlaceholders})
+        `)
+        .all(...baseParams, ...useTypeOrder);
+      variants = vocabulary.groupVariants(variantRows);
+    }
+
     logger.database(`Sankey data returned ${links.length} connections (top ${limitUsos} use types)`);
 
     return {
       links,
       useTypeOrder,
-      communityTypeOrder
+      communityTypeOrder,
+      variants
     };
   } catch (error) {
     logger.error('Sankey data aggregation failed:', error.message);

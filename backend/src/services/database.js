@@ -23,6 +23,7 @@ const path = require('path');
 const database = require('../shared/database');
 const logger = require('../shared/logger');
 const { createEvidence, updateEvidence, Status } = require('../models/Evidence');
+const { expandLabels } = require('./vocabulary');
 
 /**
  * Whitelist of searchable JSON paths and how to reach them from `doc`.
@@ -48,6 +49,20 @@ const FIELD_REGISTRY = {
   'comunidades.plantas.nomeVernacular': { scope: 'planta-array', path: '$.nomeVernacular' },
   'comunidades.plantas.tipoUso': { scope: 'planta-array', path: '$.tipoUso' }
 };
+
+/**
+ * Vocabulary-controlled fields: their raw label must expand to every synonym
+ * naming the same Concept before comparison, so filters and facets agree
+ * with the aggregations (ADR-003). Mirrors BioCultTermos' MONITORED_FIELDS —
+ * `comunidades.plantas.nomeCientifico` stays OUT: taxonomic names have been
+ * governed by the ICN, not BioCultTermos, since 2026-08-10.
+ */
+const VOCABULARY_CONTROLLED_FIELDS = new Set([
+  'comunidades.tipo',
+  'comunidades.atividadesEconomicas',
+  'comunidades.plantas.nomeVernacular',
+  'comunidades.plantas.tipoUso'
+]);
 
 const VALID_SORT_FIELDS = new Set(['titulo', 'autores', 'ano', 'status', 'createdAt']);
 
@@ -79,10 +94,14 @@ function buildFieldCondition(field, op, value, params) {
   }
 
   const cmp = (expr) => {
-    params.push(value);
-    return op === 'contains'
-      ? `LOWER(${expr}) LIKE '%' || LOWER(?) || '%'`
-      : `LOWER(${expr}) = LOWER(?)`;
+    const labels = VOCABULARY_CONTROLLED_FIELDS.has(field) ? expandLabels(getDb(), value) : [value];
+    const parts = labels.map((label) => {
+      params.push(label);
+      return op === 'contains'
+        ? `LOWER(${expr}) LIKE '%' || LOWER(?) || '%'`
+        : `LOWER(${expr}) = LOWER(?)`;
+    });
+    return parts.length > 1 ? `(${parts.join(' OR ')})` : parts[0];
   };
 
   switch (meta.scope) {

@@ -51,7 +51,7 @@
     <%- include('partials/status-section', { evidence: evidence }) %>
 
     <!-- Evidence Edit Form -->
-    <form method="POST" action="/evidence/update/<%= evidence._id %>" class="space-y-8">
+    <form method="POST" action="/evidence/update/<%= evidence.id %>" class="space-y-8">
 
       <!-- Evidence Metadata Section -->
       <section class="card">
@@ -145,7 +145,7 @@
           <button
             type="button"
             class="btn btn-secondary"
-            @click="htmx.ajax('POST', '/evidence/<%= evidence._id %>/community/add', {
+            @click="htmx.ajax('POST', '/evidence/<%= evidence.id %>/community/add', {
               target: '#communities-container',
               swap: 'beforeend',
               values: { communityIndex: communityCount }
@@ -158,7 +158,7 @@
         <div id="communities-container" class="space-y-6">
           <!-- Existing communities -->
           <% evidence.comunidades.forEach((comunidade, idx) => { %>
-            <%- include('partials/community-form', { communityIndex: idx, community: comunidade, evidenceId: evidence._id }) %>
+            <%- include('partials/community-form', { communityIndex: idx, community: comunidade, evidenceId: evidence.id }) %>
           <% }); %>
         </div>
       </section>

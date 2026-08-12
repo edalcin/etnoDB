@@ -3,7 +3,7 @@
     <div>
       <h2 class="text-xl font-semibold text-gray-900 mb-2">Status da Evidência</h2>
       <p class="text-sm text-gray-600">
-        ID: <code class="font-mono text-xs bg-gray-100 px-2 py-1 rounded"><%= evidence._id %></code>
+        ID: <code class="font-mono text-xs bg-gray-100 px-2 py-1 rounded"><%= evidence.id %></code>
       </p>
     </div>
     <div>
@@ -12,7 +12,7 @@
   </div>
 
   <!-- Status Change Form -->
-  <form method="POST" action="/evidence/status/<%= evidence._id %>" class="mt-4">
+  <form method="POST" action="/evidence/status/<%= evidence.id %>" class="mt-4">
     <div class="bg-gray-50 rounded-lg p-4">
       <label class="form-label mb-3">Alterar Status:</label>
 
@@ -175,7 +175,7 @@
         </div>
         <!-- Actions -->
         <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-3">
-          <form method="POST" action="/evidence/delete/<%= evidence._id %>">
+          <form method="POST" action="/evidence/delete/<%= evidence.id %>">
             <button
               type="submit"
               class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:w-auto"

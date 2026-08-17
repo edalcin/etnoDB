@@ -1,0 +1,722 @@
+{
+  "campoSemantico": "comunidades.atividadesEconomicas",
+  "geradoEm": "2026-08-17",
+  "manual": "https://edalcin.github.io/BioCultTermos/",
+  "backupPreCuradoria": "backup-pre-curadoria-atividadeseconomicas-2026-08-17T17-19-02Z.sqlite",
+  "conceitosServico": {
+    "indeterminado": "c3480024-e256-4657-b00a-d8120bc3ee97"
+  },
+  "resumo": {
+    "termosColetados": 36,
+    "paisNovos": 6,
+    "sobreviventes": 32,
+    "depreciados": 4,
+    "relacoesBroader": 32,
+    "relacoesRelated": 2,
+    "rotulosOcultos": 4,
+    "definicoes": 12,
+    "notasDeEscopo": 13,
+    "ativacoes": 36
+  },
+  "paisNovos": [
+    {
+      "label": "sistema agrícola",
+      "language": "por",
+      "conceptId": "5b28911e-0557-4138-ab97-9a09f199d8c1"
+    },
+    {
+      "label": "cultivo por espécie",
+      "language": "por",
+      "conceptId": "9ec016d9-4b5e-43e5-8765-e9eb55ada526"
+    },
+    {
+      "label": "atividade pesqueira",
+      "language": "por",
+      "conceptId": "67519be7-fcf9-420e-9baf-7ca591eb7500"
+    },
+    {
+      "label": "extrativismo vegetal",
+      "language": "por",
+      "conceptId": "9edfba35-3726-448d-a3ab-272c22609bcc"
+    },
+    {
+      "label": "transformação artesanal",
+      "language": "por",
+      "conceptId": "696cb8ec-2de9-4666-9541-18946c68d1dd"
+    },
+    {
+      "label": "comércio e serviços",
+      "language": "por",
+      "conceptId": "26eff594-e92f-4c6c-b107-516fc85fdead"
+    }
+  ],
+  "termos": [
+    {
+      "termo": "agricultura",
+      "conceptId": "817f4bfb-98f2-4cfe-9287-8a51c57c7e51",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 21,
+      "natureza": "ramo ou sistema agrícola",
+      "compartilhadoComTipoUso": false,
+      "operacao": "MANTER",
+      "statusFinal": "active"
+    },
+    {
+      "termo": "agricultura de pequena escala",
+      "conceptId": "9e11b243-cb78-4950-9ac7-3aec34433368",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 1,
+      "natureza": "ramo ou sistema agrícola",
+      "compartilhadoComTipoUso": false,
+      "operacao": "MANTER",
+      "statusFinal": "active"
+    },
+    {
+      "termo": "agricultura de sequeiro",
+      "conceptId": "5b0824d2-680a-46c2-97da-5416d6240d8c",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 1,
+      "natureza": "ramo ou sistema agrícola",
+      "compartilhadoComTipoUso": false,
+      "operacao": "MANTER",
+      "statusFinal": "active"
+    },
+    {
+      "termo": "agricultura de subsistência",
+      "conceptId": "0397863d-872b-4a68-aca4-6b590fe6a438",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 12,
+      "natureza": "ramo ou sistema agrícola",
+      "compartilhadoComTipoUso": false,
+      "operacao": "MANTER",
+      "statusFinal": "active"
+    },
+    {
+      "termo": "apicultura",
+      "conceptId": "8dcede04-c16d-41c8-aeed-542f713a76e4",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 1,
+      "natureza": "criação animal",
+      "compartilhadoComTipoUso": false,
+      "operacao": "MANTER",
+      "statusFinal": "active"
+    },
+    {
+      "termo": "artesanato",
+      "conceptId": "80541af2-fc18-4cd8-b603-5edb83448646",
+      "statusAtual": "active",
+      "version": 5,
+      "frequenciaNoCorpus": 1,
+      "natureza": "transformação artesanal",
+      "compartilhadoComTipoUso": true,
+      "operacao": "MANTER",
+      "statusFinal": "active"
+    },
+    {
+      "termo": "atividades domésticas",
+      "conceptId": "2c6c4382-87f8-42c1-b4f7-ffeddb2e3695",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 2,
+      "natureza": "trabalho doméstico",
+      "compartilhadoComTipoUso": false,
+      "operacao": "MANTER",
+      "statusFinal": "active"
+    },
+    {
+      "termo": "bovinocultura de leite",
+      "conceptId": "4f04f80b-c725-4981-89b9-7fb4824e88bd",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 1,
+      "natureza": "criação animal",
+      "compartilhadoComTipoUso": false,
+      "operacao": "MANTER",
+      "statusFinal": "active"
+    },
+    {
+      "termo": "coleta de frutos silvestres",
+      "conceptId": "b95549ea-a0b6-4a36-98d0-7c92bc001c5d",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 1,
+      "natureza": "extrativismo vegetal",
+      "compartilhadoComTipoUso": false,
+      "operacao": "MANTER",
+      "statusFinal": "active"
+    },
+    {
+      "termo": "coleta do palmito juçara",
+      "conceptId": "212e949f-5d87-48ab-a86e-aa31104092da",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 7,
+      "natureza": "extrativismo vegetal",
+      "compartilhadoComTipoUso": false,
+      "operacao": "MANTER",
+      "statusFinal": "active"
+    },
+    {
+      "termo": "comércio local",
+      "conceptId": "b7a1803f-78f0-42da-9738-ca34f5e605f5",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 1,
+      "natureza": "comércio ou serviço",
+      "compartilhadoComTipoUso": false,
+      "operacao": "MANTER",
+      "statusFinal": "active"
+    },
+    {
+      "termo": "criação de cabras",
+      "conceptId": "9faad851-8aa4-4eca-9905-ec658fd23619",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 1,
+      "natureza": "criação animal",
+      "compartilhadoComTipoUso": false,
+      "operacao": "MANTER",
+      "statusFinal": "active"
+    },
+    {
+      "termo": "criação de cabras leiteiras",
+      "conceptId": "7aa75ff2-975f-4be1-a999-3920bbe898e3",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 1,
+      "natureza": "criação animal",
+      "compartilhadoComTipoUso": false,
+      "operacao": "MANTER",
+      "statusFinal": "active"
+    },
+    {
+      "termo": "criação de gado",
+      "conceptId": "3d28286d-e726-4fea-90fa-4d7ac3444e14",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 1,
+      "natureza": "criação animal",
+      "compartilhadoComTipoUso": false,
+      "operacao": "MANTER",
+      "statusFinal": "active"
+    },
+    {
+      "termo": "criação de gado e cabras",
+      "conceptId": "75b19297-4fd5-4f30-ad86-ab29ecc8597e",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 1,
+      "natureza": "criação animal",
+      "compartilhadoComTipoUso": false,
+      "operacao": "HID2",
+      "statusFinal": "deprecated"
+    },
+    {
+      "termo": "cultivo de banana",
+      "conceptId": "d2828aaf-e95f-4f81-9313-42876b098ff0",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 1,
+      "natureza": "cultivo nomeado pela espécie",
+      "compartilhadoComTipoUso": false,
+      "operacao": "MANTER",
+      "statusFinal": "active"
+    },
+    {
+      "termo": "cultivo de batata-doce",
+      "conceptId": "5c91fde5-b4f5-47da-9554-ad380d19f4d5",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 1,
+      "natureza": "cultivo nomeado pela espécie",
+      "compartilhadoComTipoUso": false,
+      "operacao": "MANTER",
+      "statusFinal": "active"
+    },
+    {
+      "termo": "cultivo de café",
+      "conceptId": "d29a1cba-ec22-4594-b307-1833079a39dc",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 1,
+      "natureza": "cultivo nomeado pela espécie",
+      "compartilhadoComTipoUso": false,
+      "operacao": "MANTER",
+      "statusFinal": "active"
+    },
+    {
+      "termo": "cultivo de feijão",
+      "conceptId": "8a817dd6-2789-47aa-93ed-1f1f6b21125a",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 1,
+      "natureza": "cultivo nomeado pela espécie",
+      "compartilhadoComTipoUso": false,
+      "operacao": "MANTER",
+      "statusFinal": "active"
+    },
+    {
+      "termo": "cultivo de laranja",
+      "conceptId": "b672f1e4-f54e-48ef-835d-c78cc87acb49",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 1,
+      "natureza": "cultivo nomeado pela espécie",
+      "compartilhadoComTipoUso": false,
+      "operacao": "MANTER",
+      "statusFinal": "active"
+    },
+    {
+      "termo": "cultivo de mandioca",
+      "conceptId": "10e5af4e-00bd-4db7-bf99-fce28eb72a0f",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 1,
+      "natureza": "cultivo nomeado pela espécie",
+      "compartilhadoComTipoUso": false,
+      "operacao": "MANTER",
+      "statusFinal": "active"
+    },
+    {
+      "termo": "cultivo de milho",
+      "conceptId": "3a24439d-8ea9-42b5-8925-432197b3455f",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 1,
+      "natureza": "cultivo nomeado pela espécie",
+      "compartilhadoComTipoUso": false,
+      "operacao": "MANTER",
+      "statusFinal": "active"
+    },
+    {
+      "termo": "dona de casa",
+      "conceptId": "7203e8fd-cf40-4855-85d0-ed23709a2eaa",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 1,
+      "natureza": "ocupação declarada, não atividade",
+      "compartilhadoComTipoUso": false,
+      "operacao": "HID",
+      "statusFinal": "deprecated"
+    },
+    {
+      "termo": "estudante",
+      "conceptId": "59c4d46d-2aeb-49da-86f7-086b5a7e85ed",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 1,
+      "natureza": "ocupação declarada, não atividade",
+      "compartilhadoComTipoUso": false,
+      "operacao": "DEP",
+      "statusFinal": "deprecated"
+    },
+    {
+      "termo": "exploração do palmito para venda",
+      "conceptId": "e52c9674-2c99-4409-8333-64f8caaba0af",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 7,
+      "natureza": "extrativismo vegetal",
+      "compartilhadoComTipoUso": false,
+      "operacao": "MANTER",
+      "statusFinal": "active"
+    },
+    {
+      "termo": "fabricação artesanal de aguardente",
+      "conceptId": "c8a84aff-4ca3-431c-af77-358579a68733",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 1,
+      "natureza": "transformação artesanal",
+      "compartilhadoComTipoUso": false,
+      "operacao": "MANTER",
+      "statusFinal": "active"
+    },
+    {
+      "termo": "fabricação artesanal de farinha",
+      "conceptId": "85fc08f7-5ddc-4005-9efe-cd86982757a3",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 1,
+      "natureza": "transformação artesanal",
+      "compartilhadoComTipoUso": false,
+      "operacao": "MANTER",
+      "statusFinal": "active"
+    },
+    {
+      "termo": "lavrador",
+      "conceptId": "ce6c0990-e80a-4ce4-ac88-9263fc989fbc",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 1,
+      "natureza": "ocupação declarada, não atividade",
+      "compartilhadoComTipoUso": false,
+      "operacao": "HID",
+      "statusFinal": "deprecated"
+    },
+    {
+      "termo": "manejo de sementes de juçara para venda",
+      "conceptId": "1d4459a2-6a6a-4961-9611-5e2a3f5cb4fc",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 7,
+      "natureza": "extrativismo vegetal",
+      "compartilhadoComTipoUso": false,
+      "operacao": "MANTER",
+      "statusFinal": "active"
+    },
+    {
+      "termo": "monitoria ambiental",
+      "conceptId": "4efa8337-077c-4648-88e0-cbf81293064c",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 2,
+      "natureza": "comércio ou serviço",
+      "compartilhadoComTipoUso": false,
+      "operacao": "MANTER",
+      "statusFinal": "active"
+    },
+    {
+      "termo": "pecuária",
+      "conceptId": "dcd58183-2d6c-43ac-8c6e-83a5f432c202",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 2,
+      "natureza": "criação animal",
+      "compartilhadoComTipoUso": false,
+      "operacao": "MANTER",
+      "statusFinal": "active"
+    },
+    {
+      "termo": "pesca",
+      "conceptId": "26c037de-1a51-419b-8e6f-2fb53b0567a3",
+      "statusAtual": "active",
+      "version": 3,
+      "frequenciaNoCorpus": 7,
+      "natureza": "pesca",
+      "compartilhadoComTipoUso": true,
+      "operacao": "MANTER",
+      "statusFinal": "active"
+    },
+    {
+      "termo": "pesca artesanal",
+      "conceptId": "dbf52979-6810-435c-8e60-7c9bad399797",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 2,
+      "natureza": "pesca",
+      "compartilhadoComTipoUso": false,
+      "operacao": "MANTER",
+      "statusFinal": "active"
+    },
+    {
+      "termo": "produção canavieira",
+      "conceptId": "9c46bba3-4c68-4c45-ab7a-6b17d15af1da",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 1,
+      "natureza": "cultivo nomeado pela espécie",
+      "compartilhadoComTipoUso": false,
+      "operacao": "MANTER",
+      "statusFinal": "active"
+    },
+    {
+      "termo": "produção de hortaliças orgânicas",
+      "conceptId": "59e45290-0e3b-4e9b-9ff1-dbe8877aa4fd",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 1,
+      "natureza": "cultivo nomeado pela espécie",
+      "compartilhadoComTipoUso": false,
+      "operacao": "MANTER",
+      "statusFinal": "active"
+    },
+    {
+      "termo": "turismo",
+      "conceptId": "4cb8afb9-29b9-4c56-b566-ead38f312d4e",
+      "statusAtual": "candidate",
+      "version": 1,
+      "frequenciaNoCorpus": 6,
+      "natureza": "comércio ou serviço",
+      "compartilhadoComTipoUso": false,
+      "operacao": "MANTER",
+      "statusFinal": "active"
+    }
+  ],
+  "absorcoes": [
+    {
+      "op": "HID2",
+      "hidden_in": [
+        "criação de gado",
+        "criação de cabras"
+      ],
+      "replacedBy": "criação de gado",
+      "rationale": "termo composto: nomeia dois conceitos; rótulo oculto em ambos e depreciação apontando o primeiro (Manual §7.4)",
+      "termo": "criação de gado e cabras"
+    },
+    {
+      "op": "HID",
+      "hidden_in": [
+        "agricultura"
+      ],
+      "replacedBy": "agricultura",
+      "rationale": "ocupação, não atividade: nomeia a agricultura pelo agente; oculto em `agricultura` mantém a busca e não exibe a pessoa como atividade",
+      "termo": "lavrador"
+    },
+    {
+      "op": "HID",
+      "hidden_in": [
+        "atividades domésticas"
+      ],
+      "replacedBy": "atividades domésticas",
+      "rationale": "ocupação, não atividade: nomeia o trabalho doméstico pelo agente",
+      "termo": "dona de casa"
+    },
+    {
+      "op": "DEP",
+      "hidden_in": [],
+      "replacedBy": "__indeterminado__",
+      "rationale": "não nomeia atividade econômica alguma e não é outro nome de `indeterminado`: depreciação simples, sem rótulo (o oculto afirmaria falsa equivalência)",
+      "termo": "estudante"
+    }
+  ],
+  "broader": [
+    {
+      "conceito": "sistema agrícola",
+      "pai": "agricultura"
+    },
+    {
+      "conceito": "cultivo por espécie",
+      "pai": "agricultura"
+    },
+    {
+      "conceito": "agricultura de subsistência",
+      "pai": "sistema agrícola"
+    },
+    {
+      "conceito": "agricultura de pequena escala",
+      "pai": "sistema agrícola"
+    },
+    {
+      "conceito": "agricultura de sequeiro",
+      "pai": "sistema agrícola"
+    },
+    {
+      "conceito": "cultivo de banana",
+      "pai": "cultivo por espécie"
+    },
+    {
+      "conceito": "cultivo de batata-doce",
+      "pai": "cultivo por espécie"
+    },
+    {
+      "conceito": "cultivo de café",
+      "pai": "cultivo por espécie"
+    },
+    {
+      "conceito": "cultivo de feijão",
+      "pai": "cultivo por espécie"
+    },
+    {
+      "conceito": "cultivo de laranja",
+      "pai": "cultivo por espécie"
+    },
+    {
+      "conceito": "cultivo de mandioca",
+      "pai": "cultivo por espécie"
+    },
+    {
+      "conceito": "cultivo de milho",
+      "pai": "cultivo por espécie"
+    },
+    {
+      "conceito": "produção canavieira",
+      "pai": "cultivo por espécie"
+    },
+    {
+      "conceito": "produção de hortaliças orgânicas",
+      "pai": "cultivo por espécie"
+    },
+    {
+      "conceito": "produção de hortaliças orgânicas",
+      "pai": "sistema agrícola"
+    },
+    {
+      "conceito": "criação de gado",
+      "pai": "pecuária"
+    },
+    {
+      "conceito": "criação de cabras",
+      "pai": "pecuária"
+    },
+    {
+      "conceito": "apicultura",
+      "pai": "pecuária"
+    },
+    {
+      "conceito": "criação de cabras leiteiras",
+      "pai": "criação de cabras"
+    },
+    {
+      "conceito": "bovinocultura de leite",
+      "pai": "criação de gado"
+    },
+    {
+      "conceito": "pesca",
+      "pai": "atividade pesqueira"
+    },
+    {
+      "conceito": "pesca artesanal",
+      "pai": "atividade pesqueira"
+    },
+    {
+      "conceito": "coleta de frutos silvestres",
+      "pai": "extrativismo vegetal"
+    },
+    {
+      "conceito": "coleta do palmito juçara",
+      "pai": "extrativismo vegetal"
+    },
+    {
+      "conceito": "exploração do palmito para venda",
+      "pai": "extrativismo vegetal"
+    },
+    {
+      "conceito": "manejo de sementes de juçara para venda",
+      "pai": "extrativismo vegetal"
+    },
+    {
+      "conceito": "artesanato",
+      "pai": "transformação artesanal"
+    },
+    {
+      "conceito": "fabricação artesanal de aguardente",
+      "pai": "transformação artesanal"
+    },
+    {
+      "conceito": "fabricação artesanal de farinha",
+      "pai": "transformação artesanal"
+    },
+    {
+      "conceito": "comércio local",
+      "pai": "comércio e serviços"
+    },
+    {
+      "conceito": "turismo",
+      "pai": "comércio e serviços"
+    },
+    {
+      "conceito": "monitoria ambiental",
+      "pai": "comércio e serviços"
+    }
+  ],
+  "related": [
+    {
+      "a": "exploração do palmito para venda",
+      "b": "coleta do palmito juçara"
+    },
+    {
+      "a": "manejo de sementes de juçara para venda",
+      "b": "coleta do palmito juçara"
+    }
+  ],
+  "notas": {
+    "agricultura": {
+      "definition": "Atividade econômica de cultivo de espécies vegetais pela comunidade, para consumo próprio ou para venda.",
+      "scopeNote": "Faceta de 1º nível das Atividades Econômicas. Cobre o cultivo deliberado; a obtenção de produto vegetal de população silvestre ou apenas manejada vai em `extrativismo vegetal`. A modalidade de agricultura (finalidade, escala, regime hídrico) fica sob `sistema agrícola`; a atividade nomeada pela espécie cultivada, sob `cultivo por espécie`. `lavrador` — a pessoa, não a atividade — é rótulo oculto deste conceito."
+    },
+    "sistema agrícola": {
+      "definition": "Modalidade de agricultura definida pela finalidade da produção, pela escala do estabelecimento ou pelo regime hídrico, e não pela espécie cultivada.",
+      "scopeNote": "Use para o termo que qualifica *como* ou *para quê* se cultiva (`agricultura de subsistência`, `de pequena escala`, `de sequeiro`). O termo que nomeia *o que* se cultiva vai em `cultivo por espécie`. Um termo pode pertencer aos dois ramos quando carrega as duas informações — é o caso de `produção de hortaliças orgânicas`."
+    },
+    "cultivo por espécie": {
+      "definition": "Atividade agrícola nomeada pela espécie ou pelo grupo de espécies cultivado.",
+      "scopeNote": "Reúne os termos da forma `cultivo de <espécie>` e as designações consagradas de uma lavoura específica (`produção canavieira`). A modalidade de agricultura, independente da espécie, fica em `sistema agrícola`."
+    },
+    "pecuária": {
+      "definition": "Atividade econômica de criação de animais pela comunidade, para consumo próprio ou para venda.",
+      "scopeNote": "Faceta de 1º nível. Abrange a criação de qualquer animal de produção, inclusive a de abelhas (`apicultura`), e não só o rebanho bovino ou caprino. A captura de animal em ambiente natural não é pecuária: a de organismos aquáticos vai em `atividade pesqueira`."
+    },
+    "criação de gado": {
+      "definition": "Criação de bovinos, para corte, leite ou tração.",
+      "scopeNote": "Entende-se `gado` como rebanho bovino — leitura que o próprio corpus sustenta, já que o termo composto `criação de gado e cabras` opõe gado a cabras. A criação de caprinos vai em `criação de cabras`."
+    },
+    "criação de cabras": {
+      "definition": "Criação de caprinos, para corte, leite ou pele."
+    },
+    "atividade pesqueira": {
+      "definition": "Atividade econômica de captura de peixes e de outros organismos aquáticos.",
+      "scopeNote": "Faceta de 1º nível. Existe como nó próprio porque o conceito `pesca` já é compartilhado com o Campo Semântico \"Tipos de Usos de Plantas\", onde significa *planta empregada na pesca*: `pesca` recebe esta faceta como segundo pai (poli-hierarquia), e `pesca artesanal` é ligada diretamente a esta faceta para não herdar o ramo `material e tecnológico`, que não descreve atividade econômica."
+    },
+    "extrativismo vegetal": {
+      "definition": "Obtenção de produto vegetal de população silvestre ou apenas manejada, sem cultivo deliberado.",
+      "scopeNote": "Faceta de 1º nível. Inclui a coleta para consumo próprio, a exploração comercial e o manejo de população nativa — caso das sementes de juçara, que não chega a ser cultivo. O cultivo deliberado de espécie vegetal vai em `agricultura`."
+    },
+    "transformação artesanal": {
+      "definition": "Beneficiamento artesanal de matéria-prima em produto, pela própria comunidade.",
+      "scopeNote": "Faceta de 1º nível. Reúne tanto o artesanato propriamente dito quanto o beneficiamento artesanal de alimento e bebida (`fabricação artesanal de farinha`, `de aguardente`) — que não são artesanato e por isso são ligados à faceta, não a `artesanato`. O conceito `artesanato` é compartilhado com \"Tipos de Usos de Plantas\" e recebe esta faceta como segundo pai."
+    },
+    "comércio e serviços": {
+      "definition": "Atividade econômica de venda de mercadoria ou de prestação de serviço pela comunidade.",
+      "scopeNote": "Faceta de 1º nível. Abriga o comércio de mercadoria, o turismo e o serviço remunerado prestado por moradores, inclusive a `monitoria ambiental` executada em unidade de conservação. Não se confunde com a venda do próprio produto agrícola ou extrativo, que permanece no ramo da atividade que o produz — é por isso que `exploração do palmito para venda` fica em `extrativismo vegetal`."
+    },
+    "atividades domésticas": {
+      "definition": "Trabalho de manutenção da casa e da família, executado sem remuneração.",
+      "scopeNote": "Faceta de 1º nível, registrada porque as fontes a declaram entre as atividades econômicas das comunidades. Que o trabalho doméstico não remunerado seja ou não \"atividade econômica\" é questão em disputa na literatura econômica; o vocabulário preserva o que a fonte afirmou em vez de descartá-lo. `dona de casa` — a pessoa, não a atividade — é rótulo oculto deste conceito."
+    },
+    "pesca": {
+      "scopeNote": "Conceito compartilhado por dois Campos Semânticos: em \"Tipos de Usos de Plantas\" significa *planta empregada na pesca* (daí o pai `material e tecnológico`); em \"Atividades Econômicas\" significa *a pesca como meio de vida da comunidade* (daí o pai `atividade pesqueira`). A poli-hierarquia é deliberada e as duas leituras respondem por este mesmo conceito."
+    },
+    "artesanato": {
+      "scopeNote": "Conceito compartilhado por dois Campos Semânticos: em \"Tipos de Usos de Plantas\" significa *planta empregada em artesanato* (daí o pai `material e tecnológico`); em \"Atividades Econômicas\" significa *o artesanato como meio de vida da comunidade* (daí o pai `transformação artesanal`). A poli-hierarquia é deliberada."
+    },
+    "__indeterminado__": {
+      "definition": "Destino terminal de termos que não nomeiam aquilo que o Campo Semântico registra: termo vazio, duvidoso ou sem conteúdo informativo.",
+      "scopeNote": "Conceito de serviço, compartilhado por todos os Campos Semânticos. Recebe a depreciação de termos sem substituto legítimo — a alternativa, deixá-los `candidate` para sempre, é erro de curadoria (Manual §5). Usado em \"Tipos de Usos de Plantas\" (2026-08-07) e em \"Atividades Econômicas\" (2026-08-17, termo `estudante`).",
+      "historyNote": "Definição generalizada em 2026-08-17: era \"Registro de uso sem informação suficiente para classificação\", redação presa ao campo \"Tipos de Usos de Plantas\". Reescrita para servir a qualquer Campo Semântico, quando a curadoria de \"Atividades Econômicas\" precisou do mesmo destino terminal para `estudante`."
+    }
+  },
+  "ativar": [
+    "agricultura de subsistência",
+    "fabricação artesanal de farinha",
+    "fabricação artesanal de aguardente",
+    "turismo",
+    "agricultura",
+    "atividades domésticas",
+    "monitoria ambiental",
+    "bovinocultura de leite",
+    "produção canavieira",
+    "coleta do palmito juçara",
+    "exploração do palmito para venda",
+    "manejo de sementes de juçara para venda",
+    "pesca artesanal",
+    "comércio local",
+    "pecuária",
+    "agricultura de sequeiro",
+    "criação de cabras leiteiras",
+    "apicultura",
+    "produção de hortaliças orgânicas",
+    "criação de gado",
+    "criação de cabras",
+    "cultivo de batata-doce",
+    "cultivo de mandioca",
+    "cultivo de banana",
+    "cultivo de laranja",
+    "cultivo de feijão",
+    "cultivo de milho",
+    "cultivo de café",
+    "agricultura de pequena escala",
+    "coleta de frutos silvestres",
+    "sistema agrícola",
+    "cultivo por espécie",
+    "atividade pesqueira",
+    "extrativismo vegetal",
+    "transformação artesanal",
+    "comércio e serviços"
+  ]
+}

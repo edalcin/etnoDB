@@ -6,7 +6,7 @@
 >
 > **Regras de manutenção:** ao final de cada sessão, atualizar a data, o estado e a lista de pendências. Pendência resolvida não é apagada: é marcada como feita, com o `onde`. Caminhos são relativos à raiz deste repositório.
 
-**Estado em:** 2026-08-30
+**Estado em:** 2026-09-03
 
 ---
 
@@ -27,6 +27,7 @@ Implementados: extração de metadados de PDF por IA (ADR-002, absorveu o BioCul
 | 3 | **Endpoint de harvest** (`GET /api/federation/records`, paginado, com redação na fronteira) não implementado | ADR-016 da arquitetura; consumidor é o Pluriverso, que também não existe ainda |
 | 4 | **Qualidade da extração por IA não medida** com PDFs reais — risco registrado na própria ADR-002 e nunca quantificado | ADR-002 (Aceito, implementado) |
 | 5 | **Generalizar o `AcquisitionService`** do BioCultTermos para aceitar lista de pares `{tabela, campos[]}` — hoje é específico do BioCultDB e bloqueia Relatos, Acervos e Naturalistas | `integracao.md`; é pendência **desta** unidade porque o código vive aqui |
+| 6 | **Auditar prompts de extração por IA contra vazamento de dado sensível** — verificar se algum prompt do fluxo de aquisição/curadoria envia a provedor externo conteúdo de registro cujo nível efetivo de acesso seja diferente de `public`, checar se há log do que foi enviado, e declarar o resultado. Distinta da pendência 4: aquela é sobre acurácia da extração, esta é sobre vazamento. Não hipotética — o BioCultDB está em produção com extração por IA (ADR-011 da arquitetura) | Levantada em reunião com o Comitê Gestor do USEFLORA em 18/08/2026 (`Arquitetura-BioCultural/docs/reunioes/reuniao-useflora-2026-08-18.md`), prazo sugerido de 3 semanas para as notas técnicas; regra a cumprir em `Arquitetura-BioCultural/governanca/propostaGovernanca.md` §5.12 |
 
 ## 3. Onde está cada coisa
 
